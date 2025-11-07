@@ -5,6 +5,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
+import { Mail, Lock } from 'lucide-react'
+import Button from '@/components/ui/Button'
+import Input from '@/components/ui/Input'
+import Card from '@/components/ui/Card'
+import Alert from '@/components/ui/Alert'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -28,81 +33,91 @@ export default function LoginPage() {
       })
 
       if (result?.error) {
-        setError('Invalid email or password')
+        setError('Invalid email or password / البريد الإلكتروني أو كلمة المرور غير صحيحة')
         return
       }
 
       router.push('/dashboard')
       router.refresh()
     } catch (err: any) {
-      setError('An error occurred during login')
+      setError('An error occurred during login / حدث خطأ أثناء تسجيل الدخول')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F5F5DC] to-white flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-b from-[#F5F5DC] to-white flex items-center justify-center px-4 py-8">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-4">
+          <Link href="/" className="inline-flex items-center gap-2 mb-4 hover:opacity-80 transition-opacity">
             <Image src="/logo.png" alt="Youspeak" width={50} height={50} />
             <span className="text-2xl font-bold text-[#004E89]">Youspeak</span>
           </Link>
-          <h1 className="text-3xl font-bold text-[#004E89] mb-2">Welcome Back / مرحباً بعودتك</h1>
-          <p className="text-gray-600">Sign in to your account</p>
+          <h1 className="text-3xl font-bold text-[#004E89] mb-2">
+            Welcome Back / مرحباً بعودتك
+          </h1>
+          <p className="text-gray-600">
+            Sign in to your account / قم بتسجيل الدخول
+          </p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg p-8">
+        <Card variant="elevated" padding="lg">
           {error && (
-            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+            <Alert 
+              variant="error" 
+              dismissible 
+              onDismiss={() => setError('')}
+              className="mb-6"
+            >
               {error}
-            </div>
+            </Alert>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email / البريد الإلكتروني
-              </label>
-              <input
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004E89] focus:border-transparent"
-              />
-            </div>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <Input
+              type="email"
+              label="Email / البريد الإلكتروني"
+              placeholder="your.email@example.com"
+              required
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              leftIcon={<Mail className="h-5 w-5" />}
+              inputSize="lg"
+            />
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Password / كلمة المرور
-              </label>
-              <input
-                type="password"
-                required
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004E89] focus:border-transparent"
-              />
-            </div>
+            <Input
+              type="password"
+              label="Password / كلمة المرور"
+              placeholder="••••••••"
+              required
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              leftIcon={<Lock className="h-5 w-5" />}
+              inputSize="lg"
+            />
 
-            <button
+            <Button
               type="submit"
-              disabled={loading}
-              className="w-full bg-[#004E89] text-white py-3 rounded-lg font-semibold hover:bg-[#003A6A] transition-colors disabled:opacity-50"
+              variant="primary"
+              size="lg"
+              fullWidth
+              loading={loading}
             >
-              {loading ? 'Signing in...' : 'Login / تسجيل الدخول'}
-            </button>
+              {loading ? 'Signing in... / جارٍ تسجيل الدخول' : 'Login / تسجيل الدخول'}
+            </Button>
           </form>
 
           <p className="mt-6 text-center text-gray-600">
-            Don't have an account?{' '}
-            <Link href="/auth/register" className="text-[#004E89] font-semibold hover:underline">
+            Don't have an account? / ليس لديك حساب؟{' '}
+            <Link 
+              href="/auth/register" 
+              className="text-[#004E89] font-semibold hover:underline transition-all"
+            >
               Register / سجل
             </Link>
           </p>
-        </div>
+        </Card>
       </div>
     </div>
   )
