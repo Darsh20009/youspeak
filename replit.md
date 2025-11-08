@@ -124,9 +124,22 @@ Youspeak is a bilingual (Arabic/English) online English learning platform built 
 8. Add WhatsApp notification integration
 9. Create deployment configuration
 
-## Recent Changes (2024-11-07)
+## Recent Changes
+
+### 2024-11-08
+- ✅ Connected external PostgreSQL database (filess.io)
+- ✅ Created custom schema `youspeak_exercisein` to handle permission restrictions
+- ✅ Migrated Prisma schema from SQLite to PostgreSQL
+- ✅ Converted ENUMs to String types for compatibility
+- ✅ Created all 12 database tables successfully
+- ✅ Seeded database with admin user and 4 subscription packages
+- ✅ Updated lib/prisma.ts to auto-inject schema parameter
+- ✅ Verified dev server running on port 5000
+- 🔄 Starting Student Dashboard implementation
+
+### 2024-11-07
 - Initial project structure setup
-- Database schema designed and pushed
+- Database schema designed
 - Authentication system implemented
 - Landing page and registration/login forms created
 - Workflow configured on port 5000

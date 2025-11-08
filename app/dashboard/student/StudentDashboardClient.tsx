@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 import { 
   Home, BookOpen, Calendar, MessageCircle, Trophy, 
@@ -11,6 +10,11 @@ import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import Alert from '@/components/ui/Alert'
 import Badge from '@/components/ui/Badge'
+import HomeTab from './components/HomeTab'
+import MyLearnTab from './components/MyLearnTab'
+import SessionsTab from './components/SessionsTab'
+import HomeworkTab from './components/HomeworkTab'
+import PackagesTab from './components/PackagesTab'
 
 interface StudentDashboardClientProps {
   user: {
@@ -144,195 +148,6 @@ export default function StudentDashboardClient({ user }: StudentDashboardClientP
           </div>
         </div>
       </div>
-    </div>
-  )
-}
-
-function HomeTab({ isActive }: { isActive: boolean }) {
-  return (
-    <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-[#004E89]">
-        Dashboard / لوحة التحكم
-      </h2>
-
-      <div className="grid md:grid-cols-3 gap-4">
-        <Card variant="elevated">
-          <div className="text-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-full mx-auto mb-3 flex items-center justify-center">
-              <Calendar className="h-6 w-6 text-[#004E89]" />
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Next Session</h3>
-            <p className="text-sm text-gray-600">No upcoming sessions</p>
-            <p className="text-sm text-gray-600">لا توجد حصص قادمة</p>
-          </div>
-        </Card>
-
-        <Card variant="elevated">
-          <div className="text-center">
-            <div className="w-12 h-12 bg-green-100 rounded-full mx-auto mb-3 flex items-center justify-center">
-              <Trophy className="h-6 w-6 text-green-600" />
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Words Learned</h3>
-            <p className="text-2xl font-bold text-[#004E89]">0</p>
-            <p className="text-sm text-gray-600">كلمة محفوظة</p>
-          </div>
-        </Card>
-
-        <Card variant="elevated">
-          <div className="text-center">
-            <div className="w-12 h-12 bg-purple-100 rounded-full mx-auto mb-3 flex items-center justify-center">
-              <BookOpen className="h-6 w-6 text-purple-600" />
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Assignments</h3>
-            <p className="text-2xl font-bold text-[#004E89]">0</p>
-            <p className="text-sm text-gray-600">واجب مطلوب</p>
-          </div>
-        </Card>
-      </div>
-
-      <Card variant="elevated">
-        <h3 className="text-xl font-bold text-[#004E89] mb-4">
-          Quick Actions / إجراءات سريعة
-        </h3>
-        <div className="grid md:grid-cols-2 gap-4">
-          <Link href="https://wa.me/201091515594" target="_blank">
-            <Button variant="outline" fullWidth>
-              Contact Support / تواصل مع الدعم
-            </Button>
-          </Link>
-          {isActive && (
-            <Button variant="primary" fullWidth>
-              Schedule Assessment / احجز اختبار تحديد المستوى
-            </Button>
-          )}
-        </div>
-      </Card>
-    </div>
-  )
-}
-
-function MyLearnTab({ isActive }: { isActive: boolean }) {
-  return (
-    <div>
-      <h2 className="text-3xl font-bold text-[#004E89] mb-6">
-        MyLearn - My Words / كلماتي
-      </h2>
-      <Alert variant="info">
-        <p>This feature allows you to save and review English words with Arabic translations.</p>
-        <p>هذه الميزة تسمح لك بحفظ ومراجعة الكلمات الإنجليزية مع الترجمة العربية.</p>
-      </Alert>
-      {!isActive && (
-        <Alert variant="warning" className="mt-4">
-          <p>Activate your account to access this feature / قم بتفعيل حسابك للوصول لهذه الميزة</p>
-        </Alert>
-      )}
-    </div>
-  )
-}
-
-function SessionsTab({ isActive }: { isActive: boolean }) {
-  return (
-    <div>
-      <h2 className="text-3xl font-bold text-[#004E89] mb-6">
-        My Sessions / حصصي
-      </h2>
-      <Alert variant="info">
-        <p>View your scheduled sessions and join live classes here.</p>
-        <p>شاهد حصصك المجدولة وانضم للحصص المباشرة هنا.</p>
-      </Alert>
-      {!isActive && (
-        <Alert variant="warning" className="mt-4">
-          <p>Activate your account to book sessions / قم بتفعيل حسابك لحجز الحصص</p>
-        </Alert>
-      )}
-    </div>
-  )
-}
-
-function HomeworkTab({ isActive }: { isActive: boolean }) {
-  return (
-    <div>
-      <h2 className="text-3xl font-bold text-[#004E89] mb-6">
-        My Homework / واجباتي
-      </h2>
-      <Alert variant="info">
-        <p>Submit your assignments and view feedback from your teacher.</p>
-        <p>قم بتسليم واجباتك واطلع على تعليقات المدرس.</p>
-      </Alert>
-      {!isActive && (
-        <Alert variant="warning" className="mt-4">
-          <p>Activate your account to access homework / قم بتفعيل حسابك للوصول للواجبات</p>
-        </Alert>
-      )}
-    </div>
-  )
-}
-
-function PackagesTab({ isActive }: { isActive: boolean }) {
-  const packages = [
-    {
-      title: 'Single Level',
-      titleAr: 'مستوى واحد',
-      price: 200,
-      lessons: 8,
-      duration: '2 months / شهرين',
-    },
-    {
-      title: 'Monthly',
-      titleAr: 'شهري',
-      price: 360,
-      lessons: 12,
-      duration: '1 month / شهر واحد',
-      recommended: true,
-    },
-    {
-      title: 'Quarterly',
-      titleAr: 'ربع سنوي',
-      price: 1000,
-      lessons: 36,
-      duration: '3 months / ٣ أشهر',
-    },
-  ]
-
-  return (
-    <div>
-      <h2 className="text-3xl font-bold text-[#004E89] mb-6">
-        Packages / الباقات
-      </h2>
-      <div className="grid md:grid-cols-3 gap-6">
-        {packages.map((pkg) => (
-          <Card 
-            key={pkg.title}
-            variant="elevated"
-            className={pkg.recommended ? 'ring-2 ring-[#004E89]' : ''}
-          >
-            {pkg.recommended && (
-              <Badge variant="primary" className="mb-4">
-                Recommended / موصى به
-              </Badge>
-            )}
-            <h3 className="text-xl font-bold text-[#004E89] mb-2">{pkg.title}</h3>
-            <p className="text-gray-600 mb-4">{pkg.titleAr}</p>
-            <p className="text-4xl font-bold text-[#004E89] mb-4">{pkg.price} SAR</p>
-            <p className="text-gray-700 mb-2">{pkg.lessons} lessons / حصة</p>
-            <p className="text-gray-600 mb-6">{pkg.duration}</p>
-            <Button variant={pkg.recommended ? 'primary' : 'outline'} fullWidth>
-              Select / اختر
-            </Button>
-          </Card>
-        ))}
-      </div>
-      <Alert variant="info" className="mt-6">
-        <p>
-          <strong>Payment Instructions / تعليمات الدفع:</strong><br />
-          After selecting a package, you will receive payment details via WhatsApp at{' '}
-          <strong>+201091515594</strong>
-        </p>
-        <p className="mt-2">
-          بعد اختيار الباقة، ستستلم تعليمات الدفع عبر الواتساب على{' '}
-          <strong>+201091515594</strong>
-        </p>
-      </Alert>
     </div>
   )
 }
