@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["youspeak_exercisein"]
 }
 
 model User {
@@ -27,6 +28,8 @@ model User {
   sentMessages   Chat[]        @relation("SentMessages")
   receivedMessages Chat[]      @relation("ReceivedMessages")
   sessions       SessionStudent[]
+  
+  @@schema("youspeak_exercisein")
 }
 
 model StudentProfile {
@@ -42,6 +45,8 @@ model StudentProfile {
   isVerified    Boolean       @default(false)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  
+  @@schema("youspeak_exercisein")
 }
 
 model TeacherProfile {
@@ -53,6 +58,8 @@ model TeacherProfile {
   sessionsCreated Session[] @relation("TeacherSessions")
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  
+  @@schema("youspeak_exercisein")
 }
 
 model Package {
@@ -68,6 +75,8 @@ model Package {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   subscriptions Subscription[]
+  
+  @@schema("youspeak_exercisein")
 }
 
 model Subscription {
@@ -82,6 +91,8 @@ model Subscription {
   endDate    DateTime?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  
+  @@schema("youspeak_exercisein")
 }
 
 model Session {
@@ -98,6 +109,8 @@ model Session {
   updatedAt   DateTime        @updatedAt
   students    SessionStudent[]
   assignments Assignment[]
+  
+  @@schema("youspeak_exercisein")
 }
 
 model SessionStudent {
@@ -110,6 +123,7 @@ model SessionStudent {
   createdAt DateTime @default(now())
 
   @@unique([sessionId, studentId])
+  @@schema("youspeak_exercisein")
 }
 
 model Word {
@@ -124,6 +138,8 @@ model Word {
   reviewCount       Int      @default(0)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+  
+  @@schema("youspeak_exercisein")
 }
 
 model Assignment {
@@ -137,6 +153,8 @@ model Assignment {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   submissions   Submission[]
+  
+  @@schema("youspeak_exercisein")
 }
 
 model Submission {
@@ -152,6 +170,8 @@ model Submission {
   grammarErrors  String?
   submittedAt    DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  
+  @@schema("youspeak_exercisein")
 }
 
 model Chat {
@@ -164,6 +184,8 @@ model Chat {
   attachments String?
   isSaved     Boolean  @default(false)
   createdAt   DateTime @default(now())
+  
+  @@schema("youspeak_exercisein")
 }
 
 model AuditLog {
@@ -172,4 +194,6 @@ model AuditLog {
   userId    String?
   details   String?
   createdAt DateTime @default(now())
+  
+  @@schema("youspeak_exercisein")
 }

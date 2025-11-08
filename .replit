@@ -4,6 +4,7 @@ expertMode = true
 
 [nix]
 channel = "stable-25_05"
+packages = ["postgresql"]
 
 [workflows]
 runButton = "Project"
@@ -54,5 +55,5 @@ localPort = 42629
 externalPort = 3000
 
 [[ports]]
-localPort = 44711
+localPort = 44873
 externalPort = 5000
