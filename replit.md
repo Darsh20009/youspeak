@@ -4,20 +4,24 @@
 Youspeak is a bilingual (Arabic/English) online English learning platform built for Mister Youssef. The platform provides live interactive classes, vocabulary tracking, homework management, and a complete learning management system.
 
 ## Project Status
-- ✅ Next.js 15 frontend setup with TypeScript and Tailwind CSS
-- ✅ Prisma ORM configured with PostgreSQL (Replit-managed)
-- ✅ Database schema created (users, sessions, packages, words, assignments, chat)
+- ✅ Next.js 16 frontend setup with TypeScript and Tailwind CSS v4
+- ✅ Prisma ORM configured with PostgreSQL (External filess.io)
+- ✅ Database schema created (12 tables: users, sessions, packages, words, assignments, chat, etc.)
+- ✅ External PostgreSQL database connected and seeded
 - ✅ Authentication system with NextAuth.js and bcrypt
-- ✅ Landing page with bilingual support
+- ✅ Landing page with bilingual support (Arabic/English)
 - ✅ Registration and login pages
-- ⏳ Dashboard pages (in progress)
-- ⏳ Admin panel (pending)
+- 🔄 Student Dashboard (starting next)
+- ⏳ Teacher Dashboard (pending)
+- ⏳ Admin Dashboard (pending)
+- ⏳ Package subscription flow (pending)
 - ⏳ Live class integration with Jitsi (pending)
 
 ## Tech Stack
-- **Frontend**: Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS
+- **Frontend**: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4
 - **Backend**: Next.js API Routes, NextAuth.js
-- **Database**: PostgreSQL (Replit-managed via Neon)
+- **Database**: PostgreSQL (External via filess.io at pdk8zc.h.filess.io)
+- **Database Schema**: youspeak_exercisein (custom schema)
 - **ORM**: Prisma
 - **Authentication**: NextAuth.js with JWT strategy
 - **Real-time**: Socket.IO (for chat)
@@ -74,8 +78,8 @@ Youspeak is a bilingual (Arabic/English) online English learning platform built 
 ## Environment Setup
 
 ### Required Secrets
-- `DATABASE_URL`: PostgreSQL connection string (Replit-managed)
-- `NEXTAUTH_SECRET`: JWT signing secret
+- `EXTERNAL_DATABASE_URL`: External PostgreSQL connection string (filess.io)
+- `NEXTAUTH_SECRET`: JWT signing secret (auto-configured)
 
 ### Admin Credentials (After Seed)
 - **Email**: admin@youspeak.com
@@ -92,15 +96,21 @@ Youspeak is a bilingual (Arabic/English) online English learning platform built 
 - **dev-server**: Runs on port 5000 with `npm run dev`
 - Configured for Replit proxy with `allowedDevOrigins`
 
-## Database Migration Note
-**IMPORTANT**: The project initially used an external filess.io PostgreSQL database, but due to permission restrictions (user lacking schema ownership), we switched to Replit's built-in PostgreSQL (Neon-backed) which provides:
-- Full schema control and permissions
-- Automatic backups
-- Better integration with Replit platform
-- Production-ready managed service
+## Database Configuration
+**External PostgreSQL Setup**: The project uses an external PostgreSQL database hosted on filess.io. Due to restricted default schema permissions, we created a custom schema `youspeak_exercisein` that the application user owns and controls.
+
+### Database Schema Handling
+- Custom schema: `youspeak_exercisein`
+- Prisma uses String types instead of PostgreSQL ENUMs (due to permission restrictions)
+- The lib/prisma.ts automatically appends `?schema=youspeak_exercisein` to the connection URL
+- All 12 tables successfully created and seeded with initial data
+
+### Initial Data
+- Admin user: admin@youspeak.com / admin123
+- 4 subscription packages (Single Level, Monthly, Quarterly, Trial)
 
 ## Known Issues
-- Database seeding requires manual execution after permissions are resolved
+- Next.js middleware deprecation warning (cosmetic, not blocking)
 - Image aspect ratio warning for logo (cosmetic only)
 
 ## Next Steps

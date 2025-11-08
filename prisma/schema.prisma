@@ -3,30 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
-}
-
-enum UserRole {
-  STUDENT
-  TEACHER
-  ADMIN
-  ASSISTANT
-  GUEST
-}
-
-enum SessionStatus {
-  SCHEDULED
-  ONGOING
-  COMPLETED
-  CANCELLED
-}
-
-enum LanguageLevel {
-  A1
-  A2
-  B1
-  B2
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -35,7 +13,7 @@ model User {
   name          String
   phone         String?
   passwordHash  String
-  role          UserRole  @default(STUDENT)
+  role          String    @default("STUDENT")
   profilePhoto  String?
   isActive      Boolean   @default(false)
   createdAt     DateTime  @default(now())
@@ -56,9 +34,9 @@ model StudentProfile {
   userId        String        @unique
   user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   age           Int?
-  levelInitial  LanguageLevel?
-  levelCurrent  LanguageLevel?
-  targetLevel   LanguageLevel?
+  levelInitial  String?
+  levelCurrent  String?
+  targetLevel   String?
   goal          String?
   preferredTime String?
   isVerified    Boolean       @default(false)
@@ -113,7 +91,7 @@ model Session {
   title       String
   startTime   DateTime
   endTime     DateTime
-  status      SessionStatus   @default(SCHEDULED)
+  status      String          @default("SCHEDULED")
   roomId      String?         @unique
   recordingUrl String?
   createdAt   DateTime        @default(now())
