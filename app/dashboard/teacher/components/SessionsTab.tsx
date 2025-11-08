@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Calendar, Clock, Users, Plus, Video } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
@@ -26,6 +27,7 @@ interface Session {
 }
 
 export default function SessionsTab({ teacherProfileId }: { teacherProfileId: string }) {
+  const router = useRouter()
   const [sessions, setSessions] = useState<Session[]>([])
   const [loading, setLoading] = useState(true)
   const [showCreateForm, setShowCreateForm] = useState(false)
@@ -164,12 +166,14 @@ export default function SessionsTab({ teacherProfileId }: { teacherProfileId: st
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
-                    {session.roomId && (
-                      <Button variant="primary" size="sm">
-                        <Video className="h-4 w-4 mr-2" />
-                        Start / ابدأ
-                      </Button>
-                    )}
+                    <Button 
+                      variant="primary" 
+                      size="sm"
+                      onClick={() => router.push(`/session/${session.id}`)}
+                    >
+                      <Video className="h-4 w-4 mr-2" />
+                      Start / ابدأ
+                    </Button>
                   </div>
                 </div>
               </Card>

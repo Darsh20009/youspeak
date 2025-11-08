@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Calendar, Clock, User, CheckCircle, XCircle } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Calendar, Clock, User, CheckCircle, XCircle, Video } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
 import Alert from '@/components/ui/Alert'
@@ -28,6 +29,7 @@ interface Session {
 }
 
 export default function SessionsTab({ isActive }: { isActive: boolean }) {
+  const router = useRouter()
   const [sessions, setSessions] = useState<Session[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -134,11 +136,14 @@ export default function SessionsTab({ isActive }: { isActive: boolean }) {
                       </div>
                     </div>
                   </div>
-                  {session.session.roomId && new Date(session.session.startTime) <= new Date() && (
-                    <Button variant="primary" size="sm">
-                      Join Session / انضم للحصة
-                    </Button>
-                  )}
+                  <Button 
+                    variant="primary" 
+                    size="sm"
+                    onClick={() => router.push(`/session/${session.session.id}`)}
+                  >
+                    <Video className="h-4 w-4 mr-2" />
+                    Join Session / انضم للحصة
+                  </Button>
                 </div>
               </Card>
             ))}
