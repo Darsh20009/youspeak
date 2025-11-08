@@ -49,6 +49,8 @@ model User {
   sentMessages   Chat[]        @relation("SentMessages")
   receivedMessages Chat[]      @relation("ReceivedMessages")
   sessions       SessionStudent[]
+  
+  
 }
 
 model StudentProfile {
@@ -64,6 +66,8 @@ model StudentProfile {
   isVerified    Boolean       @default(false)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+
+  
 }
 
 model TeacherProfile {
@@ -71,10 +75,12 @@ model TeacherProfile {
   userId          String    @unique
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   bio             String?
-  subjects        String?
+  subjects        String[]
   sessionsCreated Session[] @relation("TeacherSessions")
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+
+  
 }
 
 model Package {
@@ -90,6 +96,8 @@ model Package {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   subscriptions Subscription[]
+
+  
 }
 
 model Subscription {
@@ -104,6 +112,8 @@ model Subscription {
   endDate    DateTime?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+
+  
 }
 
 model Session {
@@ -120,6 +130,8 @@ model Session {
   updatedAt   DateTime        @updatedAt
   students    SessionStudent[]
   assignments Assignment[]
+
+  
 }
 
 model SessionStudent {
@@ -132,6 +144,7 @@ model SessionStudent {
   createdAt DateTime @default(now())
 
   @@unique([sessionId, studentId])
+  
 }
 
 model Word {
@@ -146,6 +159,8 @@ model Word {
   reviewCount       Int      @default(0)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  
 }
 
 model Assignment {
@@ -154,11 +169,13 @@ model Assignment {
   session       Session?     @relation(fields: [sessionId], references: [id])
   title         String
   description   String?
-  attachmentUrls String?
+  attachmentUrls String[]
   dueDate       DateTime?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   submissions   Submission[]
+
+  
 }
 
 model Submission {
@@ -168,12 +185,14 @@ model Submission {
   studentId      String
   student        User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
   textAnswer     String?
-  attachedFiles  String?
+  attachedFiles  String[]
   grade          Float?
   feedback       String?
-  grammarErrors  String?
+  grammarErrors  Json?
   submittedAt    DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  
 }
 
 model Chat {
@@ -183,15 +202,19 @@ model Chat {
   toUserId    String
   toUser      User     @relation("ReceivedMessages", fields: [toUserId], references: [id], onDelete: Cascade)
   content     String
-  attachments String?
+  attachments String[]
   isSaved     Boolean  @default(false)
   createdAt   DateTime @default(now())
+
+  
 }
 
 model AuditLog {
   id        String   @id @default(uuid())
   action    String
   userId    String?
-  details   String?
+  details   Json?
   createdAt DateTime @default(now())
+
+  
 }
