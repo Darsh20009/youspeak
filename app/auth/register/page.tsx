@@ -18,6 +18,10 @@ export default function RegisterPage() {
     password: '',
     confirmPassword: '',
     phone: '',
+    age: '',
+    levelInitial: '',
+    goal: '',
+    preferredTime: '',
   })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -26,6 +30,7 @@ export default function RegisterPage() {
     e.preventDefault()
     setError('')
 
+    // Validation
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match / كلمات المرور غير متطابقة')
       return
@@ -36,18 +41,36 @@ export default function RegisterPage() {
       return
     }
 
+    const phoneRegex = /^\+?[0-9]{10,15}$/
+    if (!phoneRegex.test(formData.phone.replace(/\s/g, ''))) {
+      setError('Please enter a valid phone number / يرجى إدخال رقم هاتف صحيح')
+      return
+    }
+
+    const age = parseInt(formData.age)
+    if (isNaN(age) || age < 5 || age > 100) {
+      setError('Please enter a valid age (5-100) / يرجى إدخال عمر صحيح (5-100)')
+      return
+    }
+
     setLoading(true)
 
     try {
+      const payload = {
+        name: formData.name.trim(),
+        email: formData.email.trim().toLowerCase(),
+        password: formData.password,
+        phone: formData.phone.replace(/\s/g, ''),
+        age: parseInt(formData.age),
+        levelInitial: formData.levelInitial,
+        goal: formData.goal.trim(),
+        preferredTime: formData.preferredTime,
+      }
+
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-          phone: formData.phone,
-        }),
+        body: JSON.stringify(payload),
       })
 
       const data = await response.json()
@@ -117,14 +140,82 @@ export default function RegisterPage() {
 
             <Input
               type="tel"
-              label="WhatsApp Number / رقم الواتساب"
-              placeholder="+966..."
+              label="WhatsApp Number / رقم الواتساب *"
+              placeholder="+966... or +20..."
+              required
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               leftIcon={<Phone className="h-5 w-5" />}
               inputSize="lg"
-              hint="Optional: For account activation / اختياري: لتفعيل الحساب"
+              hint="Required for account activation / مطلوب لتفعيل الحساب"
             />
+
+            <Input
+              type="number"
+              label="Age / العمر *"
+              placeholder="18"
+              required
+              value={formData.age}
+              onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+              leftIcon={<Calendar className="h-5 w-5" />}
+              inputSize="lg"
+              min="5"
+              max="100"
+            />
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Current English Level / مستواك الحالي *
+              </label>
+              <select
+                required
+                value={formData.levelInitial}
+                onChange={(e) => setFormData({ ...formData, levelInitial: e.target.value })}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-base"
+              >
+                <option value="">Select your level / اختر مستواك</option>
+                <option value="A1">A1 - Beginner / مبتدئ</option>
+                <option value="A2">A2 - Elementary / ابتدائي</option>
+                <option value="B1">B1 - Intermediate / متوسط</option>
+                <option value="B2">B2 - Upper Intermediate / فوق المتوسط</option>
+              </select>
+              <p className="mt-1 text-xs text-gray-500">
+                Don't know your level? You'll take a 20-minute assessment / لا تعرف مستواك؟ ستأخذ اختبار 20 دقيقة
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="goal">
+                Learning Goal / الهدف من التعلم *
+              </label>
+              <textarea
+                id="goal"
+                required
+                value={formData.goal}
+                onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
+                placeholder="e.g., Travel, Work, Study abroad / مثال: السفر، العمل، الدراسة في الخارج"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-base resize-none"
+                rows={3}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Preferred Class Time / الوقت المفضل للحصص *
+              </label>
+              <select
+                required
+                value={formData.preferredTime}
+                onChange={(e) => setFormData({ ...formData, preferredTime: e.target.value })}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-base"
+              >
+                <option value="">Select preferred time / اختر الوقت المفضل</option>
+                <option value="morning">Morning (8 AM - 12 PM) / صباحاً (8 - 12 ظهراً)</option>
+                <option value="afternoon">Afternoon (12 PM - 5 PM) / بعد الظهر (12 - 5 مساءً)</option>
+                <option value="evening">Evening (5 PM - 10 PM) / مساءً (5 - 10 مساءً)</option>
+                <option value="flexible">Flexible / مرن</option>
+              </select>
+            </div>
 
             <Input
               type="password"

@@ -7,11 +7,11 @@ const registerSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   password: z.string().min(6),
-  phone: z.string().optional(),
-  age: z.number().min(5).max(100).optional(),
-  levelInitial: z.enum(['A1', 'A2', 'B1', 'B2']).optional(),
-  goal: z.string().optional(),
-  preferredTime: z.string().optional(),
+  phone: z.string().min(10),
+  age: z.number().min(5).max(100),
+  levelInitial: z.enum(['A1', 'A2', 'B1', 'B2']),
+  goal: z.string().min(1),
+  preferredTime: z.string().min(1),
 })
 
 export async function POST(request: Request) {
