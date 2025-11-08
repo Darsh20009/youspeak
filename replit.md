@@ -102,21 +102,22 @@ Youspeak is a bilingual (Arabic/English) online English learning platform built 
 - Configured for Replit proxy with `allowedDevOrigins`
 
 ## Database Configuration
-**External PostgreSQL Setup**: The project uses an external PostgreSQL database hosted on filess.io. Due to restricted default schema permissions, we created a custom schema `bustan` that the application user owns and controls.
+**External PostgreSQL Setup**: The project uses an external PostgreSQL database hosted on filess.io at pdk8zc.h.filess.io.
 
 ### Database Schema Handling
-- Custom schema: `bustan`
+- Custom schema: `youspeak_exercisein`
 - Prisma uses String types instead of PostgreSQL ENUMs (due to permission restrictions)
-- The lib/prisma.ts automatically appends `?schema=bustan` to the connection URL
+- The lib/prisma.ts uses DATABASE_URL environment variable directly
 - All 12 tables successfully created and seeded with initial data
+- Run `npx tsx prisma/seed.ts` to seed/reseed the database
 
-### Initial Data
-- Admin user: admin@youspeak.com / admin123
-- 4 subscription packages:
-  1. Single Level (200 SAR - 8 lessons - 2 months)
-  2. Monthly (360 SAR - 12 lessons - 1 month)
-  3. Quarterly (1000 SAR - 36 lessons - 3 months)
-  4. Trial (Free - 20-minute level assessment)
+### Initial Data (via seed.ts)
+- Admin user: admin@youspeak.com / admin123 (ACTIVE)
+- 4 subscription packages (re-created on every seed run):
+  1. Trial (0 SAR - 1 lesson - 20-minute assessment - 7 days)
+  2. Starter (200 SAR - 8 lessons - 2 months)
+  3. Monthly (360 SAR - 12 lessons - 1 month)
+  4. Quarterly (1000 SAR - 36 lessons - 3 months)
 
 ## Known Issues
 - Next.js middleware deprecation warning (cosmetic, not blocking)
@@ -137,12 +138,27 @@ Youspeak is a bilingual (Arabic/English) online English learning platform built 
 
 ## Recent Changes
 
+### 2024-11-08 (Final Update)
+**Database Connection Fix + Seed Script Improvement**
+- ✅ Fixed lib/prisma.ts to use DATABASE_URL directly (removed incorrect schema parameter)
+- ✅ Updated prisma/seed.ts to ensure consistent package catalog:
+  - Now deletes and recreates packages on every run
+  - Guarantees Trial, Starter, Monthly, Quarterly lineup
+  - Idempotent admin account creation
+- ✅ All packages correctly named and priced:
+  - Trial: 0 SAR - 1 lesson (20-minute assessment)
+  - Starter: 200 SAR - 8 lessons (2 months)
+  - Monthly: 360 SAR - 12 lessons (1 month)
+  - Quarterly: 1000 SAR - 36 lessons (3 months)
+- ✅ Environment setup complete with DATABASE_URL secret
+- ✅ Project ready for development and testing
+
 ### 2024-11-08 (Late Evening)
 **Major Improvements - Admin Login Fix + Dashboards + MyLearn**
 - ✅ Fixed admin login by creating `.env.local` with NEXTAUTH_SECRET
 - ✅ Created admin user in database (admin@youspeak.com / admin123)
 - ✅ Verified all database tables exist (12 tables confirmed)
-- ✅ Seeded 4 subscription packages (Trial, Single Level, Monthly, Quarterly)
+- ✅ Seeded 4 subscription packages
 - ✅ Enhanced registration page with all required fields:
   - Age (required)
   - English level (A1, A2, B1, B2)
