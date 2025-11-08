@@ -52,7 +52,7 @@ export default function PackagesTab({ isActive }: { isActive: boolean }) {
       }
 
       if (subsRes.ok) {
-        const subsData = await packagesRes.json()
+        const subsData = await subsRes.json()
         setSubscriptions(subsData)
       }
     } catch (error) {
