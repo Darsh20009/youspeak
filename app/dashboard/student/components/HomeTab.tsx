@@ -17,7 +17,12 @@ interface Stats {
   pendingAssignments: number
   activeSubscription: {
     packageTitle: string
+    packageTitleAr: string
+    startDate: Date
     endDate: Date
+    lessonsTotal: number
+    lessonsRemaining: number
+    daysRemaining: number
   } | null
   nextSession: {
     id: string
@@ -118,17 +123,44 @@ export default function HomeTab({ isActive }: HomeTabProps) {
       </div>
 
       {stats?.activeSubscription && (
-        <Card variant="elevated">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-              <Clock className="h-6 w-6 text-green-600" />
+        <Card variant="elevated" className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+          <h3 className="text-xl font-bold text-[#004E89] mb-4 flex items-center gap-2">
+            <Clock className="h-6 w-6 text-green-600" />
+            Active Package / باقة نشطة
+          </h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-3">
+              <div>
+                <p className="text-sm text-gray-600">Package Name / اسم الباقة</p>
+                <p className="text-lg font-semibold text-gray-900">
+                  {stats.activeSubscription.packageTitle} / {stats.activeSubscription.packageTitleAr}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Subscription Period / فترة الاشتراك</p>
+                <p className="text-sm font-medium text-gray-900">
+                  {new Date(stats.activeSubscription.startDate).toLocaleDateString('ar-EG')} -{' '}
+                  {new Date(stats.activeSubscription.endDate).toLocaleDateString('ar-EG')}
+                </p>
+              </div>
             </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-gray-900">Active Package / باقة نشطة</h3>
-              <p className="text-sm text-gray-600">
-                {stats.activeSubscription.packageTitle} - Valid until{' '}
-                {new Date(stats.activeSubscription.endDate).toLocaleDateString('ar-EG')}
-              </p>
+            <div className="space-y-3">
+              <div className="bg-white rounded-lg p-4 text-center">
+                <p className="text-sm text-gray-600 mb-1">Remaining Lessons / حصص متبقية</p>
+                <p className="text-3xl font-bold text-[#004E89]">
+                  {stats.activeSubscription.lessonsRemaining}
+                </p>
+                <p className="text-sm text-gray-600">
+                  of {stats.activeSubscription.lessonsTotal} / من {stats.activeSubscription.lessonsTotal}
+                </p>
+              </div>
+              <div className="bg-white rounded-lg p-4 text-center">
+                <p className="text-sm text-gray-600 mb-1">Days Remaining / أيام متبقية</p>
+                <p className="text-3xl font-bold text-green-600">
+                  {stats.activeSubscription.daysRemaining}
+                </p>
+                <p className="text-sm text-gray-600">days / يوم</p>
+              </div>
             </div>
           </div>
         </Card>

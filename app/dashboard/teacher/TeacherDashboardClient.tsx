@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
+import FloatingContactButtons from '@/components/FloatingContactButtons'
 import HomeTab from './components/HomeTab'
 import StudentsTab from './components/StudentsTab'
 import SessionsTab from './components/SessionsTab'
@@ -106,6 +107,7 @@ export default function TeacherDashboardClient({ user }: TeacherDashboardClientP
           </div>
         </div>
       </div>
+      <FloatingContactButtons />
     </div>
   )
 }

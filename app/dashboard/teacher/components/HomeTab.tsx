@@ -128,22 +128,38 @@ export default function HomeTab({ teacherProfileId }: { teacherProfileId: string
         </Card>
       )}
 
-      <Card variant="elevated">
+      <Card variant="elevated" className="bg-gradient-to-r from-blue-50 to-purple-50">
         <h3 className="text-xl font-bold text-[#004E89] mb-4">
           Quick Actions / إجراءات سريعة
         </h3>
-        <div className="space-y-2 text-gray-700">
-          <div className="flex items-center gap-2">
-            <CheckCircle className="h-5 w-5 text-green-600" />
-            <span>Create new sessions in the Sessions tab</span>
+        <div className="grid md:grid-cols-2 gap-3">
+          <div className="bg-white rounded-lg p-3 flex items-start gap-2 shadow-sm">
+            <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-medium text-gray-900">Create Sessions</p>
+              <p className="text-sm text-gray-600">Schedule new classes in Sessions tab / جدولة حصص جديدة</p>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <CheckCircle className="h-5 w-5 text-green-600" />
-            <span>Grade pending assignments in the Assignments tab</span>
+          <div className="bg-white rounded-lg p-3 flex items-start gap-2 shadow-sm">
+            <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-medium text-gray-900">Grade Assignments</p>
+              <p className="text-sm text-gray-600">Review homework in Assignments tab / مراجعة الواجبات</p>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <CheckCircle className="h-5 w-5 text-green-600" />
-            <span>View and manage your students in the Students tab</span>
+          <div className="bg-white rounded-lg p-3 flex items-start gap-2 shadow-sm">
+            <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-medium text-gray-900">Manage Students</p>
+              <p className="text-sm text-gray-600">View student progress / عرض تقدم الطلاب</p>
+            </div>
+          </div>
+          <div className="bg-white rounded-lg p-3 flex items-start gap-2 shadow-sm">
+            <CheckCircle className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-medium text-gray-900">Track Progress</p>
+              <p className="text-sm text-gray-600">Monitor attendance and performance / متابعة الحضور والأداء</p>
+            </div>
           </div>
         </div>
       </Card>

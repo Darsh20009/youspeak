@@ -70,14 +70,40 @@ export async function GET(request: NextRequest) {
       }
     })
 
+    let activeSubDetails = null
+    if (activeSubscription) {
+      const attendedSessions = await prisma.sessionStudent.count({
+        where: {
+          studentId: userId,
+          attended: true,
+          session: {
+            createdAt: {
+              gte: activeSubscription.startDate || new Date()
+            }
+          }
+        }
+      })
+      
+      const daysRemaining = activeSubscription.endDate 
+        ? Math.ceil((new Date(activeSubscription.endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+        : 0
+      
+      activeSubDetails = {
+        packageTitle: activeSubscription.package.title,
+        packageTitleAr: activeSubscription.package.titleAr,
+        startDate: activeSubscription.startDate,
+        endDate: activeSubscription.endDate,
+        lessonsTotal: activeSubscription.package.lessonsCount,
+        lessonsRemaining: Math.max(0, activeSubscription.package.lessonsCount - attendedSessions),
+        daysRemaining: Math.max(0, daysRemaining)
+      }
+    }
+
     return NextResponse.json({
       wordsLearned: wordsCount,
       sessionsAttended: sessionsCount,
       pendingAssignments,
-      activeSubscription: activeSubscription ? {
-        packageTitle: activeSubscription.package.title,
-        endDate: activeSubscription.endDate
-      } : null,
+      activeSubscription: activeSubDetails,
       nextSession: nextSession ? {
         id: nextSession.session.id,
         title: nextSession.session.title,

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Users, UserCheck, Calendar, TrendingUp, Clock, AlertCircle } from 'lucide-react'
+import { Users, UserCheck, Calendar, TrendingUp, Clock, AlertCircle, CreditCard, Activity } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import Badge from '@/components/ui/Badge'
@@ -138,17 +138,32 @@ export default function HomeTab() {
           </div>
         </Card>
 
-        <Card variant="elevated">
+        <Card variant="elevated" className="bg-gradient-to-r from-purple-50 to-pink-50">
           <h3 className="text-xl font-bold text-[#004E89] mb-4">
             Quick Actions / إجراءات سريعة
           </h3>
-          <div className="space-y-2 text-gray-700">
-            <p>• Manage users in the Users tab</p>
-            <p>• Review and approve subscriptions in the Subscriptions tab</p>
-            <p>• Monitor system activity in the System tab</p>
-            <p className="text-sm text-gray-600 mt-4">
-              إدارة المستخدمين، مراجعة الاشتراكات، ومراقبة النظام من خلال القوائم المختلفة
-            </p>
+          <div className="grid gap-3">
+            <div className="bg-white rounded-lg p-3 flex items-start gap-2 shadow-sm">
+              <Users className="h-5 w-5 text-[#004E89] flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-medium text-gray-900">Manage Users</p>
+                <p className="text-sm text-gray-600">Activate/deactivate accounts in Users tab / إدارة المستخدمين</p>
+              </div>
+            </div>
+            <div className="bg-white rounded-lg p-3 flex items-start gap-2 shadow-sm">
+              <CreditCard className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-medium text-gray-900">Approve Subscriptions</p>
+                <p className="text-sm text-gray-600">Review payments in Subscriptions tab / مراجعة الدفعات</p>
+              </div>
+            </div>
+            <div className="bg-white rounded-lg p-3 flex items-start gap-2 shadow-sm">
+              <Activity className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-medium text-gray-900">Monitor System</p>
+                <p className="text-sm text-gray-600">Track activity logs in System tab / مراقبة نشاط النظام</p>
+              </div>
+            </div>
           </div>
         </Card>
       </div>

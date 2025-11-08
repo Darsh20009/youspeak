@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import FloatingContactButtons from "@/components/FloatingContactButtons";
 
 export default function Home() {
   return (
@@ -77,22 +78,35 @@ export default function Home() {
 
         <section className="py-16 bg-white rounded-lg shadow-lg p-8 mb-16">
           <h2 className="text-3xl font-bold text-center text-[#004E89] mb-8">Our Packages / باقاتنا</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="border-2 border-[#004E89] rounded-lg p-6 text-center">
+          <div className="grid md:grid-cols-4 gap-6 mb-8">
+            <div className="border-2 border-[#004E89] rounded-lg p-6 text-center hover:shadow-xl transition-shadow">
               <h3 className="text-xl font-bold mb-4">Single Level</h3>
               <p className="text-3xl font-bold text-[#004E89] mb-4">200 SAR</p>
               <p className="text-gray-600">8 lessons • 2 months</p>
             </div>
-            <div className="border-2 border-[#004E89] rounded-lg p-6 text-center bg-[#004E89] text-white">
+            <div className="border-2 border-[#004E89] rounded-lg p-6 text-center bg-[#004E89] text-white hover:shadow-xl transition-shadow">
               <h3 className="text-xl font-bold mb-4">Monthly</h3>
               <p className="text-3xl font-bold mb-4">360 SAR</p>
               <p className="text-white/90">12 lessons • Best Value</p>
             </div>
-            <div className="border-2 border-[#004E89] rounded-lg p-6 text-center">
+            <div className="border-2 border-[#004E89] rounded-lg p-6 text-center hover:shadow-xl transition-shadow">
               <h3 className="text-xl font-bold mb-4">Quarterly</h3>
               <p className="text-3xl font-bold text-[#004E89] mb-4">1000 SAR</p>
               <p className="text-gray-600">36 lessons • 3 months</p>
             </div>
+            <div className="border-2 border-green-600 rounded-lg p-6 text-center bg-green-50 hover:shadow-xl transition-shadow">
+              <h3 className="text-xl font-bold mb-4">Premium</h3>
+              <p className="text-3xl font-bold text-green-600 mb-4">1800 SAR</p>
+              <p className="text-gray-600">48 lessons • 6 months</p>
+            </div>
+          </div>
+          <div className="text-center">
+            <Link
+              href="/packages"
+              className="inline-block px-8 py-3 bg-[#004E89] text-white rounded-lg font-semibold hover:bg-[#003A6A] transition-colors"
+            >
+              View All Packages / عرض جميع الباقات
+            </Link>
           </div>
         </section>
       </main>
@@ -105,24 +119,7 @@ export default function Home() {
         </div>
       </footer>
 
-      <div className="fixed bottom-8 right-8 flex flex-col gap-4">
-        <a
-          href="https://wa.me/201091515594"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-14 h-14 bg-green-600 rounded-full flex items-center justify-center text-white text-2xl shadow-lg hover:bg-green-700 transition-colors"
-          title="WhatsApp"
-        >
-          💬
-        </a>
-        <a
-          href="mailto:youspeak.help@gmail.com"
-          className="w-14 h-14 bg-[#004E89] rounded-full flex items-center justify-center text-white text-2xl shadow-lg hover:bg-[#003A6A] transition-colors"
-          title="Email"
-        >
-          ✉️
-        </a>
-      </div>
+      <FloatingContactButtons />
     </div>
   );
 }

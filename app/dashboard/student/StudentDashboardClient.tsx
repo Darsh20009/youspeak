@@ -10,6 +10,7 @@ import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import Alert from '@/components/ui/Alert'
 import Badge from '@/components/ui/Badge'
+import FloatingContactButtons from '@/components/FloatingContactButtons'
 import HomeTab from './components/HomeTab'
 import MyLearnTab from './components/MyLearnTab'
 import SessionsTab from './components/SessionsTab'
@@ -148,6 +149,7 @@ export default function StudentDashboardClient({ user }: StudentDashboardClientP
           </div>
         </div>
       </div>
+      <FloatingContactButtons />
     </div>
   )
 }

@@ -6,6 +6,7 @@ import { Home, Users, CreditCard, Activity, LogOut, Shield } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
+import FloatingContactButtons from '@/components/FloatingContactButtons'
 import HomeTab from './components/HomeTab'
 import UsersTab from './components/UsersTab'
 import SubscriptionsTab from './components/SubscriptionsTab'
@@ -100,6 +101,7 @@ export default function AdminDashboardClient({ user }: AdminDashboardClientProps
           </div>
         </div>
       </div>
+      <FloatingContactButtons />
     </div>
   )
 }
