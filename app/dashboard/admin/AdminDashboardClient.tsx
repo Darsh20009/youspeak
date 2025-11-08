@@ -1,11 +1,15 @@
 'use client'
 
+import { useState } from 'react'
 import { signOut } from 'next-auth/react'
-import { Users, UserCheck, Calendar, TrendingUp, LogOut, Shield } from 'lucide-react'
+import { Home, Users, CreditCard, Activity, LogOut, Shield } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
-import Alert from '@/components/ui/Alert'
 import Badge from '@/components/ui/Badge'
+import HomeTab from './components/HomeTab'
+import UsersTab from './components/UsersTab'
+import SubscriptionsTab from './components/SubscriptionsTab'
+import SystemTab from './components/SystemTab'
 
 interface AdminDashboardClientProps {
   user: {
@@ -16,6 +20,15 @@ interface AdminDashboardClientProps {
 }
 
 export default function AdminDashboardClient({ user }: AdminDashboardClientProps) {
+  const [activeTab, setActiveTab] = useState('home')
+
+  const menuItems = [
+    { id: 'home', label: 'Home / الرئيسية', icon: Home },
+    { id: 'users', label: 'Users / المستخدمين', icon: Users },
+    { id: 'subscriptions', label: 'Subscriptions / الاشتراكات', icon: CreditCard },
+    { id: 'system', label: 'System / النظام', icon: Activity },
+  ]
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F5F5DC] to-white">
       <header className="bg-[#004E89] text-white shadow-lg">
@@ -23,10 +36,8 @@ export default function AdminDashboardClient({ user }: AdminDashboardClientProps
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Shield className="h-8 w-8" />
-              <h1 className="text-2xl font-bold">Youspeak - Admin Portal</h1>
-              <Badge variant="success">
-                {user.role}
-              </Badge>
+              <h1 className="text-2xl font-bold">Youspeak</h1>
+              <Badge variant="success">{user.role}</Badge>
             </div>
             <div className="flex items-center gap-4">
               <span className="text-sm">{user.name}</span>
@@ -44,71 +55,50 @@ export default function AdminDashboardClient({ user }: AdminDashboardClientProps
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        <h2 className="text-3xl font-bold text-[#004E89] mb-6">
-          Admin Dashboard / لوحة تحكم المدير
-        </h2>
+      <div className="container mx-auto px-4 py-6">
+        <div className="grid lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-3">
+            <Card variant="elevated" padding="none">
+              <div className="p-4 border-b border-gray-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-[#004E89] rounded-full flex items-center justify-center">
+                    <Shield className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">{user.name}</p>
+                    <p className="text-sm text-gray-600">{user.role}</p>
+                  </div>
+                </div>
+              </div>
+              <nav className="p-2">
+                {menuItems.map((item) => {
+                  const Icon = item.icon
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveTab(item.id)}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors mb-1 ${
+                        activeTab === item.id
+                          ? 'bg-[#004E89] text-white'
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span className="text-sm font-medium">{item.label}</span>
+                    </button>
+                  )
+                })}
+              </nav>
+            </Card>
+          </div>
 
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <Card variant="elevated">
-            <div className="text-center">
-              <Users className="h-12 w-12 text-[#004E89] mx-auto mb-3" />
-              <p className="text-2xl font-bold text-[#004E89]">0</p>
-              <p className="text-sm text-gray-600">Total Users / إجمالي المستخدمين</p>
-            </div>
-          </Card>
-
-          <Card variant="elevated">
-            <div className="text-center">
-              <UserCheck className="h-12 w-12 text-green-600 mx-auto mb-3" />
-              <p className="text-2xl font-bold text-[#004E89]">0</p>
-              <p className="text-sm text-gray-600">Active Students / الطلاب النشطين</p>
-            </div>
-          </Card>
-
-          <Card variant="elevated">
-            <div className="text-center">
-              <Calendar className="h-12 w-12 text-purple-600 mx-auto mb-3" />
-              <p className="text-2xl font-bold text-[#004E89]">0</p>
-              <p className="text-sm text-gray-600">Sessions This Week / حصص هذا الأسبوع</p>
-            </div>
-          </Card>
-
-          <Card variant="elevated">
-            <div className="text-center">
-              <TrendingUp className="h-12 w-12 text-blue-600 mx-auto mb-3" />
-              <p className="text-2xl font-bold text-[#004E89]">0 SAR</p>
-              <p className="text-sm text-gray-600">Revenue This Month / الإيرادات هذا الشهر</p>
-            </div>
-          </Card>
+          <div className="lg:col-span-9">
+            {activeTab === 'home' && <HomeTab />}
+            {activeTab === 'users' && <UsersTab />}
+            {activeTab === 'subscriptions' && <SubscriptionsTab />}
+            {activeTab === 'system' && <SystemTab />}
+          </div>
         </div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          <Card variant="elevated">
-            <h3 className="text-xl font-bold text-[#004E89] mb-4">
-              Pending Activations / تفعيلات معلقة
-            </h3>
-            <Alert variant="info">
-              <p>No pending activations</p>
-              <p>لا توجد تفعيلات معلقة</p>
-            </Alert>
-          </Card>
-
-          <Card variant="elevated">
-            <h3 className="text-xl font-bold text-[#004E89] mb-4">
-              Recent Activities / النشاطات الأخيرة
-            </h3>
-            <Alert variant="info">
-              <p>No recent activities</p>
-              <p>لا توجد نشاطات حديثة</p>
-            </Alert>
-          </Card>
-        </div>
-
-        <Alert variant="info" className="mt-6">
-          <p>Admin panel features are being developed.</p>
-          <p>ميزات لوحة تحكم المدير قيد التطوير.</p>
-        </Alert>
       </div>
     </div>
   )
