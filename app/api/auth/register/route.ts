@@ -58,11 +58,11 @@ export async function POST(request: Request) {
       data: {
         action: 'USER_REGISTERED',
         userId: user.id,
-        details: {
+        details: JSON.stringify({
           name: user.name,
           email: user.email,
           phone: user.phone,
-        },
+        }),
       },
     })
 
