@@ -14,18 +14,31 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const teacherProfile = await prisma.teacherProfile.findUnique({
+      where: { userId: session.user.id }
+    })
+
+    if (!teacherProfile) {
+      return NextResponse.json({ error: 'Teacher profile not found' }, { status: 404 })
+    }
+
     const sessionData = await prisma.session.findFirst({
       where: {
         id: params.id,
-        teacherId: session.user.id
+        teacherId: teacherProfile.id
       },
       include: {
         teacher: {
-          select: {
-            name: true
+          include: {
+            user: {
+              select: {
+                name: true,
+                email: true
+              }
+            }
           }
         },
-        enrollments: {
+        students: {
           include: {
             student: {
               select: {
@@ -42,7 +55,12 @@ export async function GET(
       return NextResponse.json({ error: 'Session not found' }, { status: 404 })
     }
 
-    return NextResponse.json(sessionData)
+    return NextResponse.json({
+      ...sessionData,
+      teacher: {
+        name: sessionData.teacher.user.name
+      }
+    })
   } catch (error) {
     console.error('Error fetching session:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

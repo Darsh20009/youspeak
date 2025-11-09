@@ -17,7 +17,7 @@ export async function GET(
     const sessionData = await prisma.session.findFirst({
       where: {
         id: params.id,
-        enrollments: {
+        students: {
           some: {
             studentId: session.user.id
           }
@@ -25,8 +25,13 @@ export async function GET(
       },
       include: {
         teacher: {
-          select: {
-            name: true
+          include: {
+            user: {
+              select: {
+                name: true,
+                email: true
+              }
+            }
           }
         }
       }
@@ -36,7 +41,12 @@ export async function GET(
       return NextResponse.json({ error: 'Session not found or not enrolled' }, { status: 404 })
     }
 
-    return NextResponse.json(sessionData)
+    return NextResponse.json({
+      ...sessionData,
+      teacher: {
+        name: sessionData.teacher.user.name
+      }
+    })
   } catch (error) {
     console.error('Error fetching session:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
