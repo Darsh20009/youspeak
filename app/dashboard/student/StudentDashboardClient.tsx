@@ -11,6 +11,8 @@ import Card from '@/components/ui/Card'
 import Alert from '@/components/ui/Alert'
 import Badge from '@/components/ui/Badge'
 import FloatingContactButtons from '@/components/FloatingContactButtons'
+import ChatBox from '@/components/ChatBox'
+import ConversationsList from '@/components/ConversationsList'
 import HomeTab from './components/HomeTab'
 import MyLearnTab from './components/MyLearnTab'
 import SessionsTab from './components/SessionsTab'
@@ -155,32 +157,42 @@ export default function StudentDashboardClient({ user }: StudentDashboardClientP
 }
 
 function ChatTab() {
+  const [selectedUser, setSelectedUser] = useState<any>(null)
+
   return (
     <div>
       <h2 className="text-3xl font-bold text-[#004E89] mb-6">
         Chat / الدردشة
       </h2>
-      <Card variant="elevated" className="h-[600px] flex flex-col">
-        <div className="flex-1 p-4 bg-gray-50 overflow-y-auto">
-          <Alert variant="info">
-            <p>Real-time chat feature coming soon!</p>
-            <p>ميزة الدردشة المباشرة قريباً!</p>
-          </Alert>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[calc(100vh-300px)]">
+        <div className="lg:col-span-1">
+          <Card variant="elevated" padding="none" className="h-full overflow-hidden">
+            <div className="bg-gradient-to-r from-[#004E89] to-[#1A5F7A] p-4 text-white">
+              <h3 className="font-bold text-lg">المحادثات</h3>
+            </div>
+            <div className="overflow-y-auto h-[calc(100%-60px)]">
+              <ConversationsList 
+                onSelectConversation={setSelectedUser}
+                selectedUserId={selectedUser?.id}
+              />
+            </div>
+          </Card>
         </div>
-        <div className="p-4 border-t border-gray-200">
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder="Type a message... / اكتب رسالة"
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89]"
-              disabled
+        <div className="lg:col-span-2 h-full">
+          {selectedUser ? (
+            <ChatBox 
+              otherUser={selectedUser}
+              onClose={() => setSelectedUser(null)}
             />
-            <Button variant="primary" disabled>
-              Send / إرسال
-            </Button>
-          </div>
+          ) : (
+            <Card variant="elevated" className="h-full flex flex-col items-center justify-center text-gray-400">
+              <MessageCircle className="w-24 h-24 mb-4" />
+              <p className="text-xl font-medium">اختر محادثة للبدء</p>
+              <p className="text-sm mt-2">حدد محادثة من القائمة لبدء الدردشة</p>
+            </Card>
+          )}
         </div>
-      </Card>
+      </div>
     </div>
   )
 }
