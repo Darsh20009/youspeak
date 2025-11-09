@@ -19,17 +19,19 @@ Youspeak is a bilingual (Arabic/English) online English learning platform built 
 - ✅ Admin Dashboard with users, subscriptions, and system management
 - ✅ MyLearn vocabulary system (add/view/update/delete words)
 - ✅ Package subscription flow APIs ready
+- ✅ Real-time chat system with Socket.IO (student-teacher messaging)
+- ✅ Advanced support button with WhatsApp and Email integration
 - ⏳ Live class integration with Jitsi (pending)
-- ⏳ Real-time chat with Socket.IO (pending)
 
 ## Tech Stack
 - **Frontend**: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4
-- **Backend**: Next.js API Routes, NextAuth.js
+- **Backend**: Next.js API Routes, NextAuth.js, Custom Node.js Server
 - **Database**: PostgreSQL (External via filess.io at pdk8zc.h.filess.io)
 - **Database Schema**: bustan (custom schema)
 - **ORM**: Prisma
 - **Authentication**: NextAuth.js with JWT strategy
-- **Real-time**: Socket.IO (for chat)
+- **Real-time**: Socket.IO v4.8.1 (for live chat messaging)
+- **Server**: Custom Node.js server (server.js) for Socket.IO integration
 - **Video**: Jitsi Meet SDK (planned)
 
 ## Database Schema
@@ -98,8 +100,10 @@ Youspeak is a bilingual (Arabic/English) online English learning platform built 
 4. **Trial**: Free - 20-minute level assessment
 
 ## Workflow
-- **dev-server**: Runs on port 5000 with `npm run dev`
+- **dev-server**: Runs on port 5000 with `node server.js` (custom server)
+- Uses custom Node.js server for Socket.IO integration
 - Configured for Replit proxy with `allowedDevOrigins`
+- Socket.IO server path: `/api/socket/io`
 
 ## Database Configuration
 **External PostgreSQL Setup**: The project uses an external PostgreSQL database hosted on filess.io at pdk8zc.h.filess.io.
