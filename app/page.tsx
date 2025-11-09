@@ -14,7 +14,8 @@ export default function Home() {
               width={40}
               height={40}
               priority
-              className="sm:w-[50px] sm:h-[50px]"
+              className="w-10 h-10 sm:w-12 sm:h-12"
+              style={{ width: 'auto', height: 'auto' }}
             />
             <span className="text-xl sm:text-2xl font-bold text-[#004E89]">Youspeak</span>
           </div>
