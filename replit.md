@@ -7,10 +7,10 @@ Youspeak is a bilingual (Arabic/English) online English learning platform built 
 - ✅ Next.js 16 frontend setup with TypeScript and Tailwind CSS v4
 - ✅ Prisma ORM configured with PostgreSQL (External filess.io)
 - ✅ Database schema created (12 tables: users, sessions, packages, words, assignments, chat, etc.)
-- ✅ External PostgreSQL database connected (schema: bustan)
+- ✅ External PostgreSQL database connected (schema: youspeak_exercisein)
 - ✅ Database seeded with admin user and 4 packages
 - ✅ Authentication system with NextAuth.js and bcrypt (NEXTAUTH_SECRET configured)
-- ✅ Landing page with bilingual support (Arabic/English) with floating action buttons
+- ✅ Landing page with bilingual support (Arabic/English) - **100% Mobile Responsive**
 - ✅ Registration page with all required fields (age, level, goals, preferred time, phone)
 - ✅ Login page with proper authentication flow
 - ✅ Admin user created and login working (admin@youspeak.com / admin123)
@@ -21,7 +21,12 @@ Youspeak is a bilingual (Arabic/English) online English learning platform built 
 - ✅ Package subscription flow APIs ready
 - ✅ Real-time chat system with Socket.IO (student-teacher messaging)
 - ✅ Advanced support button with WhatsApp and Email integration
-- ⏳ Live class integration with Jitsi (pending)
+- ✅ Live class integration with Jitsi Meet (Session APIs working)
+- ✅ Student activation system (admin can activate/deactivate users)
+- ⏳ Receipt upload for package subscriptions (pending UI)
+- ⏳ Level assessment test 20-minute (pending implementation)
+- ⏳ Homework/Assignments UI (APIs ready, UI needs enhancement)
+- ⏳ Dashboard mobile responsiveness (in progress)
 
 ## Tech Stack
 - **Frontend**: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4
@@ -85,8 +90,11 @@ Youspeak is a bilingual (Arabic/English) online English learning platform built 
 ## Environment Setup
 
 ### Required Secrets
-- `EXTERNAL_DATABASE_URL`: External PostgreSQL connection string (filess.io)
+- `EXTERNAL_DATABASE_URL`: Primary - External PostgreSQL connection string (filess.io)
+- `DATABASE_URL`: Fallback - Alternative database connection (if EXTERNAL_DATABASE_URL not available)
 - `NEXTAUTH_SECRET`: JWT signing secret (auto-configured)
+
+**Note**: The system prioritizes EXTERNAL_DATABASE_URL over DATABASE_URL. Both are supported for flexibility.
 
 ### Admin Credentials (After Seed)
 - **Email**: admin@youspeak.com
@@ -111,7 +119,7 @@ Youspeak is a bilingual (Arabic/English) online English learning platform built 
 ### Database Schema Handling
 - Custom schema: `youspeak_exercisein`
 - Prisma uses String types instead of PostgreSQL ENUMs (due to permission restrictions)
-- The lib/prisma.ts uses DATABASE_URL environment variable directly
+- The lib/prisma.ts uses EXTERNAL_DATABASE_URL (with DATABASE_URL fallback)
 - All 12 tables successfully created and seeded with initial data
 - Run `npx tsx prisma/seed.ts` to seed/reseed the database
 
@@ -141,6 +149,27 @@ Youspeak is a bilingual (Arabic/English) online English learning platform built 
 11. Add profile photo upload functionality
 
 ## Recent Changes
+
+### 2024-11-09 (Latest Update)
+**Database Connection + Session APIs + Mobile Responsiveness**
+- ✅ Updated Prisma configuration to support EXTERNAL_DATABASE_URL with DATABASE_URL fallback
+- ✅ Fixed critical Session API bugs:
+  - Teacher sessions now correctly use `teacherProfile.id` instead of `user.id`
+  - Student sessions now use correct `students` relation instead of non-existent `enrollments`
+- ✅ Made landing page 100% mobile responsive:
+  - Responsive header with adaptive logo sizing
+  - Hero section buttons stack vertically on mobile
+  - Features grid: 1 column (mobile) → 2 columns (tablet) → 3 columns (desktop)
+  - Packages grid: 1 column (mobile) → 2 columns (tablet) → 4 columns (desktop)
+  - Responsive typography and spacing throughout
+- ✅ Fixed Next.js Image component warnings for logo
+- ✅ Verified all core systems working:
+  - Authentication ✓
+  - Student/Teacher/Admin dashboards ✓
+  - MyLearn vocabulary system ✓
+  - Chat system with Socket.IO ✓
+  - Jitsi Meet integration ✓
+  - Student activation (admin feature) ✓
 
 ### 2024-11-08 (Final Update)
 **Database Connection Fix + Seed Script Improvement**
