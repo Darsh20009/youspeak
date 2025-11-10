@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -13,6 +13,8 @@ export async function GET(
     if (!session || session.user.role !== 'TEACHER') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    const { id } = await params
 
     const teacherProfile = await prisma.teacherProfile.findUnique({
       where: { userId: session.user.id }
@@ -24,7 +26,7 @@ export async function GET(
 
     const sessionData = await prisma.session.findFirst({
       where: {
-        id: params.id,
+        id,
         teacherId: teacherProfile.id
       },
       include: {
