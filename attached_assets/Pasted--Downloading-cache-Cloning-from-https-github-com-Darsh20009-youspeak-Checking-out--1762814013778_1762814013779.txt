@@ -1,0 +1,53 @@
+==> Downloading cache...
+==> Cloning from https://github.com/Darsh20009/youspeak
+==> Checking out commit 10965c6f78a09cbf3a71c4ce0732e165c31ce130 in branch main
+==> Downloaded 592MB in 5s. Extraction took 10s.
+==> Using Node.js version 22.16.0 (default)
+==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+==> Running build command 'npm install; npm run build'...
+> youspeak@0.1.0 postinstall
+> prisma generate
+Prisma schema loaded from prisma/schema.prisma
+✔ Generated Prisma Client (v6.19.0) to ./node_modules/@prisma/client in 145ms
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+up to date, audited 499 packages in 3s
+164 packages are looking for funding
+  run `npm fund` for details
+4 vulnerabilities (3 low, 1 high)
+To address all issues possible (including breaking changes), run:
+  npm audit fix --force
+Some issues need review, and may require choosing
+a different dependency.
+Run `npm audit` for details.
+> youspeak@0.1.0 build
+> next build
+   ▲ Next.js 16.0.1 (Turbopack)
+ ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 12.1s
+   Running TypeScript ...
+   Collecting page data ...
+   Generating static pages (0/33) ...
+   Generating static pages (8/33) 
+   Generating static pages (16/33) 
+   Generating static pages (24/33) 
+prisma:error 
+Invalid `prisma.package.findMany()` invocation:
+Can't reach database server at `pdk8zc.h.filess.io:5432`
+Please make sure your database server is running at `pdk8zc.h.filess.io:5432`.
+Error occurred prerendering page "/packages". Read more: https://nextjs.org/docs/messages/prerender-error
+Error [PrismaClientInitializationError]: 
+Invalid `prisma.package.findMany()` invocation:
+Can't reach database server at `pdk8zc.h.filess.io:5432`
+Please make sure your database server is running at `pdk8zc.h.filess.io:5432`.
+    at async n (.next/server/chunks/ssr/[root-of-the-server]__6da56e66._.js:1:4626) {
+  clientVersion: '6.19.0',
+  errorCode: undefined,
+  retryable: undefined,
+  digest: '3012299404'
+}
+Export encountered an error on /packages/page: /packages, exiting the build.
+ ⨯ Next.js build worker exited with code: 1 and signal: null
+==> Build failed 😞
+==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
