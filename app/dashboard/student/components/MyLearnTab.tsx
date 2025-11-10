@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Plus, Trash2, Check, X, FileDown } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Plus, Trash2, Check, X, FileDown, Upload, Languages } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
@@ -24,12 +24,16 @@ export default function MyLearnTab({ isActive }: { isActive: boolean }) {
   const [words, setWords] = useState<Word[]>([])
   const [loading, setLoading] = useState(true)
   const [showAddForm, setShowAddForm] = useState(false)
+  const [showImportForm, setShowImportForm] = useState(false)
   const [newWord, setNewWord] = useState({
     englishWord: '',
     arabicMeaning: '',
     exampleSentence: ''
   })
   const [submitting, setSubmitting] = useState(false)
+  const [translating, setTranslating] = useState(false)
+  const [importing, setImporting] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (isActive) {
@@ -113,6 +117,67 @@ export default function MyLearnTab({ isActive }: { isActive: boolean }) {
     }
   }
 
+  async function handleTranslate() {
+    if (!newWord.englishWord) return
+    
+    setTranslating(true)
+    try {
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: newWord.englishWord, sourceLang: 'en', targetLang: 'ar' })
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setNewWord({ ...newWord, arabicMeaning: data.translation })
+      }
+    } catch (error) {
+      console.error('Translation error:', error)
+      alert('Translation failed')
+    } finally {
+      setTranslating(false)
+    }
+  }
+
+  async function handleFileImport(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    setImporting(true)
+    try {
+      const text = await file.text()
+      const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0)
+      
+      const wordsToImport = lines.slice(0, 100).map(line => ({
+        englishWord: line,
+        arabicMeaning: '',
+        exampleSentence: ''
+      }))
+
+      const response = await fetch('/api/words/import', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ words: wordsToImport })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        alert(`Successfully imported ${data.count} words!`)
+        fetchWords()
+        setShowImportForm(false)
+      }
+    } catch (error) {
+      console.error('Import error:', error)
+      alert('Failed to import words')
+    } finally {
+      setImporting(false)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }
+
   if (!isActive) {
     return (
       <div>
@@ -133,6 +198,13 @@ export default function MyLearnTab({ isActive }: { isActive: boolean }) {
           MyLearn - My Words / كلماتي
         </h2>
         <div className="flex gap-2 flex-wrap">
+          <Button
+            variant="outline"
+            onClick={() => setShowImportForm(!showImportForm)}
+          >
+            <Upload className="h-4 w-4 mr-2" />
+            Import / استيراد
+          </Button>
           <Button
             variant="outline"
             onClick={() => exportWordsToExcel(words.filter(w => !w.known), 'unknown-words.xlsx', true)}
@@ -159,9 +231,39 @@ export default function MyLearnTab({ isActive }: { isActive: boolean }) {
         </div>
       </div>
 
+      {showImportForm && (
+        <Card variant="elevated">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            Import Words / استيراد الكلمات
+          </h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            Upload a text file with one English word per line (max 100 words). Words will be automatically translated to Arabic.
+          </p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4" dir="rtl">
+            قم برفع ملف نصي يحتوي على كلمة إنجليزية واحدة في كل سطر (حد أقصى 100 كلمة). سيتم ترجمة الكلمات تلقائيًا إلى العربية.
+          </p>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".txt"
+            onChange={handleFileImport}
+            disabled={importing}
+            className="block w-full text-sm text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-800 focus:outline-none p-2"
+          />
+          {importing && (
+            <div className="mt-4 text-center">
+              <LoadingSpinner size="md" />
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                Importing and translating words...
+              </p>
+            </div>
+          )}
+        </Card>
+      )}
+
       {showAddForm && (
         <Card variant="elevated">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Add New Word / أضف كلمة جديدة</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Add New Word / أضف كلمة جديدة</h3>
           <div className="space-y-4">
             <Input
               label="English Word / الكلمة بالإنجليزية"
@@ -169,12 +271,24 @@ export default function MyLearnTab({ isActive }: { isActive: boolean }) {
               onChange={(e) => setNewWord({ ...newWord, englishWord: e.target.value })}
               placeholder="e.g., Hello"
             />
-            <Input
-              label="Arabic Meaning / المعنى بالعربية"
-              value={newWord.arabicMeaning}
-              onChange={(e) => setNewWord({ ...newWord, arabicMeaning: e.target.value })}
-              placeholder="مثال: مرحباً"
-            />
+            <div>
+              <Input
+                label="Arabic Meaning / المعنى بالعربية"
+                value={newWord.arabicMeaning}
+                onChange={(e) => setNewWord({ ...newWord, arabicMeaning: e.target.value })}
+                placeholder="مثال: مرحباً"
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleTranslate}
+                disabled={!newWord.englishWord || translating}
+                className="mt-2"
+              >
+                <Languages className="h-4 w-4 mr-2" />
+                {translating ? 'Translating...' : 'Auto Translate / ترجمة تلقائية'}
+              </Button>
+            </div>
             <Input
               label="Example Sentence (Optional) / جملة توضيحية (اختياري)"
               value={newWord.exampleSentence}
