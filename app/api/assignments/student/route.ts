@@ -13,15 +13,15 @@ export async function GET(request: NextRequest) {
 
     const assignments = await prisma.assignment.findMany({
       where: {
-        session: {
-          students: {
+        Session: {
+          SessionStudent: {
             some: { studentId: session.user.id }
           }
         }
       },
       include: {
-        session: true,
-        submissions: {
+        Session: true,
+        Submission: {
           where: { studentId: session.user.id }
         }
       },
@@ -54,9 +54,9 @@ export async function POST(request: NextRequest) {
     const assignment = await prisma.assignment.findUnique({
       where: { id: assignmentId },
       include: {
-        session: {
+        Session: {
           include: {
-            students: {
+            SessionStudent: {
               where: { studentId: session.user.id }
             }
           }
@@ -64,11 +64,11 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    if (!assignment || !assignment.session) {
+    if (!assignment || !assignment.Session) {
       return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
     }
 
-    if (assignment.session.students.length === 0) {
+    if (assignment.Session.SessionStudent.length === 0) {
       return NextResponse.json({ error: 'You are not enrolled in this session' }, { status: 403 })
     }
 
@@ -86,6 +86,7 @@ export async function POST(request: NextRequest) {
 
     const submission = await prisma.submission.create({
       data: {
+        id: `submission_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         assignmentId,
         studentId: session.user.id,
         textAnswer,

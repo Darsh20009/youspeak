@@ -19,16 +19,16 @@ export async function GET(
     const sessionData = await prisma.session.findFirst({
       where: {
         id,
-        students: {
+        SessionStudent: {
           some: {
             studentId: session.user.id
           }
         }
       },
       include: {
-        teacher: {
+        TeacherProfile: {
           include: {
-            user: {
+            User: {
               select: {
                 name: true,
                 email: true
@@ -46,7 +46,7 @@ export async function GET(
     return NextResponse.json({
       ...sessionData,
       teacher: {
-        name: sessionData.teacher.user.name
+        name: sessionData.TeacherProfile.User.name
       }
     })
   } catch (error) {

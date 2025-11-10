@@ -21,14 +21,14 @@ export async function GET(request: NextRequest) {
 
     const studentEnrollments = await prisma.sessionStudent.findMany({
       where: {
-        session: {
+        Session: {
           teacherId: teacherProfile.id
         }
       },
       include: {
-        student: {
+        User: {
           include: {
-            studentProfile: true
+            StudentProfile: true
           }
         }
       }
@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
           prisma.sessionStudent.count({
             where: {
               studentId: enrollment.studentId,
-              session: { teacherId: teacherProfile.id }
+              Session: { teacherId: teacherProfile.id }
             }
           }),
           prisma.word.count({
@@ -50,13 +50,13 @@ export async function GET(request: NextRequest) {
         ])
 
         uniqueStudents.set(enrollment.studentId, {
-          id: enrollment.student.id,
-          name: enrollment.student.name,
-          email: enrollment.student.email,
-          phone: enrollment.student.phone,
-          isActive: enrollment.student.isActive,
+          id: enrollment.User.id,
+          name: enrollment.User.name,
+          email: enrollment.User.email,
+          phone: enrollment.User.phone,
+          isActive: enrollment.User.isActive,
           studentProfile: {
-            levelCurrent: enrollment.student.studentProfile?.levelCurrent,
+            levelCurrent: enrollment.User.StudentProfile?.levelCurrent,
             sessionsAttended: 0
           },
           sessionsCount,

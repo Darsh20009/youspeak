@@ -40,10 +40,10 @@ export async function GET(req: NextRequest) {
           },
           orderBy: { createdAt: 'desc' },
           include: {
-            fromUser: {
+            User_Chat_fromUserIdToUser: {
               select: { id: true, name: true, profilePhoto: true }
             },
-            toUser: {
+            User_Chat_toUserIdToUser: {
               select: { id: true, name: true, profilePhoto: true }
             }
           }

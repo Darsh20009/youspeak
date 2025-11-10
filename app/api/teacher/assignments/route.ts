@@ -21,15 +21,15 @@ export async function GET(request: NextRequest) {
 
     const assignments = await prisma.assignment.findMany({
       where: {
-        session: {
+        Session: {
           teacherId: teacherProfile.id
         }
       },
       include: {
-        session: true,
-        submissions: {
+        Session: true,
+        Submission: {
           include: {
-            student: true
+            User: true
           }
         }
       },
@@ -79,6 +79,7 @@ export async function POST(request: NextRequest) {
 
     const assignment = await prisma.assignment.create({
       data: {
+        id: `assignment_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         title,
         description: description || null,
         sessionId: sessionId || null,

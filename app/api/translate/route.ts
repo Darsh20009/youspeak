@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Translation error:', error)
     return NextResponse.json(
-      { error: 'Translation service unavailable', translation: text },
+      { error: 'Translation service unavailable' },
       { status: 500 }
     )
   }

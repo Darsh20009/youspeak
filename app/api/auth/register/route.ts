@@ -34,14 +34,16 @@ export async function POST(request: Request) {
 
     const user = await prisma.user.create({
       data: {
+        id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         name: validatedData.name,
         email: validatedData.email,
         passwordHash: hashedPassword,
         phone: validatedData.phone,
         role: 'STUDENT',
         isActive: false,
-        studentProfile: {
+        StudentProfile: {
           create: {
+            id: `profile_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
             age: validatedData.age,
             levelInitial: validatedData.levelInitial,
             goal: validatedData.goal,
@@ -50,12 +52,13 @@ export async function POST(request: Request) {
         },
       },
       include: {
-        studentProfile: true,
+        StudentProfile: true,
       },
     })
 
     await prisma.auditLog.create({
       data: {
+        id: `audit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         action: 'USER_REGISTERED',
         userId: user.id,
         details: JSON.stringify({

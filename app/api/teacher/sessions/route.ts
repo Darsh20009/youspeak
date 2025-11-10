@@ -24,9 +24,9 @@ export async function GET(request: NextRequest) {
         teacherId: teacherProfile.id
       },
       include: {
-        students: {
+        SessionStudent: {
           include: {
-            student: true
+            User: true
           }
         }
       },
@@ -66,6 +66,7 @@ export async function POST(request: NextRequest) {
 
     const newSession = await prisma.session.create({
       data: {
+        id: `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         teacherId: teacherProfile.id,
         title,
         startTime: new Date(startTime),

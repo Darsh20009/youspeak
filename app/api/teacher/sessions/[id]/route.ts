@@ -30,9 +30,9 @@ export async function GET(
         teacherId: teacherProfile.id
       },
       include: {
-        teacher: {
+        TeacherProfile: {
           include: {
-            user: {
+            User: {
               select: {
                 name: true,
                 email: true
@@ -40,9 +40,9 @@ export async function GET(
             }
           }
         },
-        students: {
+        SessionStudent: {
           include: {
-            student: {
+            User: {
               select: {
                 name: true,
                 email: true
@@ -60,7 +60,7 @@ export async function GET(
     return NextResponse.json({
       ...sessionData,
       teacher: {
-        name: sessionData.teacher.user.name
+        name: sessionData.TeacherProfile.User.name
       }
     })
   } catch (error) {

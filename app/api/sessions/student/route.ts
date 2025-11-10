@@ -14,16 +14,16 @@ export async function GET(request: NextRequest) {
     const sessions = await prisma.sessionStudent.findMany({
       where: { studentId: session.user.id },
       include: {
-        session: {
+        Session: {
           include: {
-            teacher: {
-              include: { user: true }
+            TeacherProfile: {
+              include: { User: true }
             }
           }
         }
       },
       orderBy: {
-        session: { startTime: 'desc' }
+        Session: { startTime: 'desc' }
       }
     })
 

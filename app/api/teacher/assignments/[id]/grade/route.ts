@@ -33,9 +33,9 @@ export async function PATCH(
     const submission = await prisma.submission.findUnique({
       where: { id: submissionId },
       include: {
-        assignment: {
+        Assignment: {
           include: {
-            session: true
+            Session: true
           }
         }
       }
@@ -45,7 +45,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'Submission not found' }, { status: 404 })
     }
 
-    if (submission.assignment.session && submission.assignment.session.teacherId !== teacherProfile.id) {
+    if (submission.Assignment && submission.Assignment.Session && submission.Assignment.Session.teacherId !== teacherProfile.id) {
       return NextResponse.json({ error: 'Not authorized to grade this submission' }, { status: 403 })
     }
 

@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
 
     const newUser = await prisma.user.create({
       data: {
+        id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         name,
         email,
         passwordHash,
@@ -69,6 +70,7 @@ export async function POST(request: NextRequest) {
 
     const teacherProfile = await prisma.teacherProfile.create({
       data: {
+        id: `teacher_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         userId: newUser.id,
         bio: bio || null
       }
@@ -76,6 +78,7 @@ export async function POST(request: NextRequest) {
 
     await prisma.auditLog.create({
       data: {
+        id: `audit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         action: 'Teacher account created',
         userId: session.user.id,
         details: `Created teacher account for ${name} (${email})`

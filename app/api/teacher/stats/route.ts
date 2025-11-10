@@ -33,15 +33,15 @@ export async function GET(request: NextRequest) {
       prisma.sessionStudent.groupBy({
         by: ['studentId'],
         where: {
-          session: {
+          Session: {
             teacherId: teacherProfile.id
           }
         }
       }),
       prisma.submission.count({
         where: {
-          assignment: {
-            session: {
+          Assignment: {
+            Session: {
               teacherId: teacherProfile.id
             }
           },
@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
         status: 'SCHEDULED'
       },
       include: {
-        students: true
+        SessionStudent: true
       },
       orderBy: {
         startTime: 'asc'
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
         title: nextSession.title,
         startTime: nextSession.startTime,
         endTime: nextSession.endTime,
-        studentsCount: nextSession.students.length
+        studentsCount: nextSession.SessionStudent.length
       } : null
     })
   } catch (error) {

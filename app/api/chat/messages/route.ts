@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
       },
       orderBy: { createdAt: 'asc' },
       include: {
-        fromUser: {
+        User_Chat_fromUserIdToUser: {
           select: {
             id: true,
             name: true,
@@ -58,13 +58,14 @@ export async function POST(req: NextRequest) {
 
     const message = await prisma.chat.create({
       data: {
+        id: `chat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         fromUserId: session.user.id,
         toUserId,
         content,
         attachments: attachments || null
       },
       include: {
-        fromUser: {
+        User_Chat_fromUserIdToUser: {
           select: {
             id: true,
             name: true,
