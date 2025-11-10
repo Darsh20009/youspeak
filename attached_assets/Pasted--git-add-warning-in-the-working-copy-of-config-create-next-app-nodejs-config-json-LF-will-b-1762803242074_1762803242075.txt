@@ -1,0 +1,151 @@
+$ git add .
+warning: in the working copy of '.config/create-next-app-nodejs/config.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.replit', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/admin/logs/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/admin/stats/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/admin/subscriptions/[id]/approve/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/admin/subscriptions/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/admin/users/[id]/toggle/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/admin/users/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/assignments/student/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/auth/[...nextauth]/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/auth/register/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/chat/conversations/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/chat/mark-read/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/chat/messages/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/packages/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/sessions/student/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/student/sessions/[id]/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/student/stats/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/subscriptions/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/teacher/assignments/[id]/grade/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/teacher/assignments/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/teacher/sessions/[id]/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/teacher/sessions/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/teacher/stats/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/teacher/students/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/translate/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/words/[id]/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/words/import/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/api/words/route.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/auth/login/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/auth/register/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/chat/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/admin/AdminDashboardClient.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/admin/components/HomeTab.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/admin/components/SubscriptionsTab.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/admin/components/SystemTab.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/admin/components/UsersTab.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/admin/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/student/StudentDashboardClient.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/student/components/HomeTab.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/student/components/HomeworkTab.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/student/components/MyLearnTab.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/student/components/PackagesTab.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/student/components/SessionsTab.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/student/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/teacher/TeacherDashboardClient.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/teacher/components/AssignmentsTab.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/teacher/components/HomeTab.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/teacher/components/SessionsTab.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/teacher/components/StudentsTab.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/dashboard/teacher/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/globals.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/layout.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/packages/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/session/[id]/SessionClient.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/session/[id]/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ui-showcase/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'attached_assets/Pasted-Youspeak-Functional-Analysis--1762527654742_1762527654743.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'attached_assets/Pasted-Youspeak-Functional-Analysis--1762613266225_1762613266227.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'attached_assets/Pasted-Youspeak-Functional-Analysis--1762636646787_1762636646790.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'check_admin.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ChatBox.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ConversationsList.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/FloatingContactButtons.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/LanguageToggle.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/Navigation.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ThemeToggle.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/layout/Container.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/layout/Footer.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/layout/Navbar.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/layout/Sidebar.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/layout/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ui/Alert.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ui/Badge.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ui/Button.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ui/Card.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ui/Input.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ui/LoadingSpinner.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ui/Modal.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ui/Table.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ui/Tabs.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ui/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'contexts/ThemeContext.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'eslint.config.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/auth.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/contexts/ThemeContext.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/hooks/useTranslation.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/prisma.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/providers/SessionProvider.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/socket.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/theme.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/translations.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/utils.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/utils/exportToExcel.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'middleware.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'next.config.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'package-lock.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'postcss.config.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/create-schema.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/create-tables.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/schema-postgres.prisma', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/schema.prisma', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/seed.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/setup-db.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/test-connection.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'replit.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/check-users.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/reset-password.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/seed-data.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/seed-database.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/seed-dummy-data.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tailwind.config.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tsconfig.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'types/next-auth.d.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.local/state/replit/agent/progress_tracker.md', LF will be replaced by CRLF the next time Git touches it
+
+youss@YOUSEF_TOTY MINGW32 /d/youspeak-18/youspeak (main)
+$ git commit -m "Fix: Update Prisma schema relations to camelCase"
+[main f18139e] Fix: Update Prisma schema relations to camelCase
+ 11 files changed, 5 insertions(+)
+ create mode 100644 .local/state/replit/agent/.agent_state_21ab7dfc94f1a20ae27ee7150ae5a3e36d407d86.bin
+ create mode 100644 .local/state/replit/agent/.agent_state_3533fbf7d2f40c6f9f4fbbd0d4876e166ea41765.bin
+ create mode 100644 .local/state/replit/agent/.agent_state_6321c5a4dbc795ef904b4476b298676619eada34.bin
+ create mode 100644 .local/state/replit/agent/.agent_state_84e7a2aa6f0e7773599cf387622a436ca84e28d9.bin
+ create mode 100644 .local/state/replit/agent/.agent_state_b6a92a4a0b2221d21f27b474d30ee288ed3f5e4c.bin
+ create mode 100644 .local/state/replit/agent/.agent_state_bb69bd2e5230f0054a62c6df9555848edd8e5563.bin
+ create mode 100644 .local/state/replit/agent/.agent_state_f83505282070dd1750616e283bb0f3aee3099a1c.bin
+ create mode 100644 .local/state/replit/agent/filesystem/filesystem_state.json
+ create mode 100644 .local/state/replit/agent/progress_tracker.md
+
+youss@YOUSEF_TOTY MINGW32 /d/youspeak-18/youspeak (main)
+$ git push\
+>
+To https://github.com/Darsh20009/youspeak
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'https://github.com/Darsh20009/youspeak'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+youss@YOUSEF_TOTY MINGW32 /d/youspeak-18/youspeak (main)
+$
