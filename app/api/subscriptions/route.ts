@@ -41,6 +41,7 @@ export async function POST(request: NextRequest) {
 
     const subscription = await prisma.subscription.create({
       data: {
+        id: `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         studentId: session.user.id,
         packageId,
         receiptUrl: receiptUrl || null,
