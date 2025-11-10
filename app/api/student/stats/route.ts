@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
           paid: true,
           endDate: { gte: new Date() }
         },
-        include: { Package: true }
+        include: { package: true }
       })
     ])
 
@@ -89,12 +89,12 @@ export async function GET(request: NextRequest) {
         : 0
       
       activeSubDetails = {
-        packageTitle: activeSubscription.Package.title,
-        packageTitleAr: activeSubscription.Package.titleAr,
+        packageTitle: activeSubscription.package.title,
+        packageTitleAr: activeSubscription.package.titleAr,
         startDate: activeSubscription.startDate,
         endDate: activeSubscription.endDate,
-        lessonsTotal: activeSubscription.Package.lessonsCount,
-        lessonsRemaining: Math.max(0, activeSubscription.Package.lessonsCount - attendedSessions),
+        lessonsTotal: activeSubscription.package.lessonsCount,
+        lessonsRemaining: Math.max(0, activeSubscription.package.lessonsCount - attendedSessions),
         daysRemaining: Math.max(0, daysRemaining)
       }
     }

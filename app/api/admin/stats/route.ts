@@ -37,11 +37,11 @@ export async function GET(request: NextRequest) {
       prisma.subscription.count({ where: { paid: false } }),
       prisma.subscription.findMany({
         where: { paid: true },
-        include: { Package: true }
+        include: { package: true }
       })
     ])
 
-    const totalRevenue = paidSubscriptions.reduce((sum, sub) => sum + sub.Package.price, 0)
+    const totalRevenue = paidSubscriptions.reduce((sum, sub) => sum + sub.package.price, 0)
 
     return NextResponse.json({
       totalUsers,

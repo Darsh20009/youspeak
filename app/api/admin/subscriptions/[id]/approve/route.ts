@@ -19,8 +19,8 @@ export async function PATCH(
     const subscription = await prisma.subscription.findUnique({
       where: { id: subscriptionId },
       include: {
-        Package: true,
-        User: true
+        package: true,
+        user: true
       }
     })
 
@@ -34,7 +34,7 @@ export async function PATCH(
 
     const now = new Date()
     const endDate = new Date(now)
-    endDate.setDate(endDate.getDate() + subscription.Package.durationDays)
+    endDate.setDate(endDate.getDate() + subscription.package.durationDays)
 
     const updatedSubscription = await prisma.subscription.update({
       where: { id: subscriptionId },
@@ -55,7 +55,7 @@ export async function PATCH(
         id: `audit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         action: 'Subscription approved',
         userId: session.user.id,
-        details: `Approved subscription for ${subscription.User.name} - ${subscription.Package.title} (${subscription.Package.price} SAR)`
+        details: `Approved subscription for ${subscription.user.name} - ${subscription.package.title} (${subscription.package.price} SAR)`
       }
     })
 
