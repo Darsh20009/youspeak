@@ -3,6 +3,8 @@ import { Check, ArrowLeft } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import FloatingContactButtons from '@/components/FloatingContactButtons'
 
+export const dynamic = 'force-dynamic'
+
 export default async function PackagesPage() {
   const packages = await prisma.package.findMany({
     where: { isActive: true },
