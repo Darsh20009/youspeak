@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { signOut } from 'next-auth/react'
 import { 
   Home, BookOpen, Calendar, MessageCircle, Trophy, 
-  CreditCard, LogOut, CheckCircle, XCircle, Bell 
+  CreditCard, LogOut, CheckCircle, XCircle, Bell, Sparkles 
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
@@ -35,6 +35,7 @@ export default function StudentDashboardClient({ user }: StudentDashboardClientP
   const menuItems = [
     { id: 'home', label: 'Home / الرئيسية', icon: Home },
     { id: 'mylearn', label: 'MyLearn / كلماتي', icon: BookOpen },
+    { id: 'discover', label: 'Discover Words / اكتشف الكلمات', icon: Sparkles, badge: 'جديد', disabled: !isActive },
     { id: 'sessions', label: 'Sessions / الحصص', icon: Calendar },
     { id: 'homework', label: 'Homework / الواجبات', icon: Trophy },
     { id: 'packages', label: 'Packages / الباقات', icon: CreditCard },
@@ -181,6 +182,7 @@ export default function StudentDashboardClient({ user }: StudentDashboardClientP
           <div className="flex-1 min-w-0">
             {activeTab === 'home' && <HomeTab isActive={isActive} />}
             {activeTab === 'mylearn' && <MyLearnTab isActive={isActive} />}
+            {activeTab === 'discover' && <DiscoverTab isActive={isActive} />}
             {activeTab === 'sessions' && <SessionsTab isActive={isActive} />}
             {activeTab === 'homework' && <HomeworkTab isActive={isActive} />}
             {activeTab === 'packages' && <PackagesTab isActive={isActive} />}
@@ -189,6 +191,31 @@ export default function StudentDashboardClient({ user }: StudentDashboardClientP
         </div>
       </div>
       <FloatingContactButtons />
+    </div>
+  )
+}
+
+function DiscoverTab({ isActive }: { isActive: boolean }) {
+  if (!isActive) {
+    return (
+      <div>
+        <h2 className="text-2xl sm:text-3xl font-bold text-[#004E89] mb-4">
+          Discover Words / اكتشف الكلمات الجديدة
+        </h2>
+        <Alert variant="warning">
+          <p>قم بتفعيل حسابك للوصول لهذه الميزة / Activate your account to access this feature</p>
+        </Alert>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      <iframe 
+        src="/dashboard/student/discover-words" 
+        className="w-full h-[calc(100vh-200px)] border-0 rounded-lg shadow-lg"
+        title="Discover New Words"
+      />
     </div>
   )
 }

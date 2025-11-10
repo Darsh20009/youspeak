@@ -30,14 +30,22 @@
   --background: #0f172a;
   --foreground: #f1f5f9;
   --border: #334155;
-  --primary: #3b82f6;
+  --primary: #60a5fa;
+  --primary-foreground: #0f172a;
   --card-bg: #1e293b;
   --input-bg: #0f172a;
+  --accent: #fbbf24;
+  --success: #10b981;
+  --error: #f87171;
+  --warning: #fbbf24;
+  --info: #60a5fa;
 }
 
 :root.dark {
   color-scheme: dark;
 }
+
+/* Dark mode overrides */
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -77,4 +85,55 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Mobile responsive improvements */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+  }
+  
+  h3 {
+    font-size: 1.125rem;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
 }

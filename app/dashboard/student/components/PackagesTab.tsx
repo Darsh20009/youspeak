@@ -65,6 +65,7 @@ export default function PackagesTab({ isActive }: { isActive: boolean }) {
   async function handleSelectPackage(packageId: string) {
     setSelecting(true)
     try {
+      const pkg = packages.find(p => p.id === packageId)
       const response = await fetch('/api/subscriptions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -72,12 +73,19 @@ export default function PackagesTab({ isActive }: { isActive: boolean }) {
       })
 
       if (response.ok) {
-        alert('Package selected! You will be contacted via WhatsApp for payment instructions.')
-        window.open('https://wa.me/201091515594', '_blank')
+        const subscriptionData = await response.json()
+        const message = `مرحباً! 👋\n\nأرغب في الاشتراك في باقة:\n📦 *${pkg?.titleAr}* (${pkg?.title})\n💰 السعر: ${pkg?.price} SAR\n📚 عدد الحصص: ${pkg?.lessonsCount}\n⏱️ المدة: ${Math.ceil((pkg?.durationDays || 0) / 30)} شهر\n\nرقم الاشتراك: ${subscriptionData.id}\n\nالرجاء تزويدي بتفاصيل الدفع. شكراً! 🙏`
+        
+        const phoneNumber = '201091515594'
+        const encodedMessage = encodeURIComponent(message)
+        window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank')
+        
+        alert('تم اختيار الباقة بنجاح! سيتم التواصل معك عبر واتساب لإكمال الدفع.\n\nPackage selected successfully! We will contact you via WhatsApp to complete payment.')
         await fetchData()
       }
     } catch (error) {
       console.error('Error selecting package:', error)
+      alert('حدث خطأ. الرجاء المحاولة مرة أخرى.\n\nAn error occurred. Please try again.')
     } finally {
       setSelecting(false)
     }

@@ -59,6 +59,16 @@ export async function PATCH(
       }
     })
 
+    const approvalMessage = `🎉 *مبروك! تم تفعيل اشتراكك!*\n\nعزيزي ${subscription.user.name},\n\nتم تفعيل اشتراكك بنجاح في:\n📦 ${subscription.package.titleAr}\n💰 ${subscription.package.price} SAR\n📚 ${subscription.package.lessonsCount} حصة\n📅 صالح حتى: ${endDate.toLocaleDateString('ar-EG')}\n\nيمكنك الآن:\n✅ الدخول إلى لوحة التحكم\n✅ حجز الحصص\n✅ التواصل مع المعلمين\n\nنتمنى لك تجربة تعليمية ممتعة! 🎓\n\nفريق Youspeak 🌟`
+    
+    const phoneNumber = '201091515594'
+    const studentPhone = subscription.user.phone
+    
+    if (studentPhone) {
+      console.log('Send WhatsApp message to:', studentPhone)
+      console.log('Message:', approvalMessage)
+    }
+
     return NextResponse.json(updatedSubscription)
   } catch (error) {
     console.error('Error approving subscription:', error)
