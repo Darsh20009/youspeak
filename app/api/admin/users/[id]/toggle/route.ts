@@ -35,6 +35,7 @@ export async function PATCH(
 
     await prisma.auditLog.create({
       data: {
+        id: `audit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         action: `User ${updatedUser.isActive ? 'activated' : 'deactivated'}`,
         userId: session.user.id,
         details: `${user.name} (${user.email}) was ${updatedUser.isActive ? 'activated' : 'deactivated'}`
