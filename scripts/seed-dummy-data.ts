@@ -53,7 +53,7 @@ async function main() {
   }
 
   const students = []
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 6; i++) {
     const email = `student${i}@test.com`
     const existing = await prisma.user.findFirst({ where: { email } })
     
@@ -84,77 +84,60 @@ async function main() {
     }
   }
 
-  const wordsCount = await prisma.word.count()
-  if (wordsCount < 50) {
-    const firstStudent = await prisma.user.findFirst({ 
-      where: { role: 'STUDENT' } 
-    })
-    
-    if (firstStudent) {
-      const words = [
-        { englishWord: 'hello', arabicMeaning: 'مرحبا', exampleSentence: 'Hello, how are you?' },
-        { englishWord: 'goodbye', arabicMeaning: 'وداعا', exampleSentence: 'Goodbye, see you later!' },
-        { englishWord: 'thank you', arabicMeaning: 'شكرا لك', exampleSentence: 'Thank you for your help.' },
-        { englishWord: 'please', arabicMeaning: 'من فضلك', exampleSentence: 'Please pass the salt.' },
-        { englishWord: 'sorry', arabicMeaning: 'آسف', exampleSentence: 'I am sorry for being late.' },
-        { englishWord: 'friend', arabicMeaning: 'صديق', exampleSentence: 'He is my best friend.' },
-        { englishWord: 'family', arabicMeaning: 'عائلة', exampleSentence: 'I love my family.' },
-        { englishWord: 'mother', arabicMeaning: 'أم', exampleSentence: 'My mother cooks delicious food.' },
-        { englishWord: 'father', arabicMeaning: 'أب', exampleSentence: 'My father works hard.' },
-        { englishWord: 'brother', arabicMeaning: 'أخ', exampleSentence: 'I have one brother.' },
-        { englishWord: 'sister', arabicMeaning: 'أخت', exampleSentence: 'My sister is younger than me.' },
-        { englishWord: 'teacher', arabicMeaning: 'معلم', exampleSentence: 'The teacher explained the lesson well.' },
-        { englishWord: 'student', arabicMeaning: 'طالب', exampleSentence: 'Every student needs to study.' },
-        { englishWord: 'book', arabicMeaning: 'كتاب', exampleSentence: 'I read an interesting book.' },
-        { englishWord: 'pen', arabicMeaning: 'قلم', exampleSentence: 'Can I borrow your pen?' },
-        { englishWord: 'paper', arabicMeaning: 'ورقة', exampleSentence: 'Please give me a piece of paper.' },
-        { englishWord: 'school', arabicMeaning: 'مدرسة', exampleSentence: 'I go to school every day.' },
-        { englishWord: 'house', arabicMeaning: 'منزل', exampleSentence: 'We live in a big house.' },
-        { englishWord: 'car', arabicMeaning: 'سيارة', exampleSentence: 'My father has a new car.' },
-        { englishWord: 'water', arabicMeaning: 'ماء', exampleSentence: 'Drink plenty of water daily.' },
-        { englishWord: 'food', arabicMeaning: 'طعام', exampleSentence: 'I enjoy eating healthy food.' },
-        { englishWord: 'apple', arabicMeaning: 'تفاحة', exampleSentence: 'An apple a day keeps the doctor away.' },
-        { englishWord: 'bread', arabicMeaning: 'خبز', exampleSentence: 'I eat bread for breakfast.' },
-        { englishWord: 'coffee', arabicMeaning: 'قهوة', exampleSentence: 'I drink coffee every morning.' },
-        { englishWord: 'tea', arabicMeaning: 'شاي', exampleSentence: 'Would you like some tea?' },
-        { englishWord: 'beautiful', arabicMeaning: 'جميل', exampleSentence: 'The sunset is beautiful.' },
-        { englishWord: 'happy', arabicMeaning: 'سعيد', exampleSentence: 'I am happy to see you.' },
-        { englishWord: 'sad', arabicMeaning: 'حزين', exampleSentence: 'She felt sad after the news.' },
-        { englishWord: 'big', arabicMeaning: 'كبير', exampleSentence: 'That is a big building.' },
-        { englishWord: 'small', arabicMeaning: 'صغير', exampleSentence: 'The baby has small hands.' },
-        { englishWord: 'good', arabicMeaning: 'جيد', exampleSentence: 'You did a good job!' },
-        { englishWord: 'bad', arabicMeaning: 'سيئ', exampleSentence: 'Smoking is bad for health.' },
-        { englishWord: 'run', arabicMeaning: 'يركض', exampleSentence: 'I run every morning.' },
-        { englishWord: 'walk', arabicMeaning: 'يمشي', exampleSentence: 'Let\'s walk to the park.' },
-        { englishWord: 'eat', arabicMeaning: 'يأكل', exampleSentence: 'What time do you eat dinner?' },
-        { englishWord: 'drink', arabicMeaning: 'يشرب', exampleSentence: 'Remember to drink water.' },
-        { englishWord: 'sleep', arabicMeaning: 'ينام', exampleSentence: 'I sleep for 8 hours.' },
-        { englishWord: 'study', arabicMeaning: 'يدرس', exampleSentence: 'I study English every day.' },
-        { englishWord: 'learn', arabicMeaning: 'يتعلم', exampleSentence: 'We learn something new daily.' },
-        { englishWord: 'teach', arabicMeaning: 'يعلم', exampleSentence: 'She teaches mathematics.' },
-        { englishWord: 'understand', arabicMeaning: 'يفهم', exampleSentence: 'Do you understand the question?' },
-        { englishWord: 'communicate', arabicMeaning: 'يتواصل', exampleSentence: 'We need to communicate better.' },
-        { englishWord: 'achieve', arabicMeaning: 'يحقق', exampleSentence: 'You can achieve your goals.' },
-        { englishWord: 'develop', arabicMeaning: 'يطور', exampleSentence: 'We should develop our skills.' },
-        { englishWord: 'environment', arabicMeaning: 'بيئة', exampleSentence: 'Protect the environment.' },
-        { englishWord: 'knowledge', arabicMeaning: 'معرفة', exampleSentence: 'Knowledge is power.' },
-        { englishWord: 'experience', arabicMeaning: 'خبرة', exampleSentence: 'Experience is the best teacher.' },
-        { englishWord: 'opportunity', arabicMeaning: 'فرصة', exampleSentence: 'This is a great opportunity.' },
-        { englishWord: 'challenge', arabicMeaning: 'تحدي', exampleSentence: 'Face every challenge bravely.' },
-        { englishWord: 'sophisticated', arabicMeaning: 'متطور', exampleSentence: 'This is a sophisticated system.' }
-      ]
+  const allStudents = await prisma.user.findMany({ 
+    where: { role: 'STUDENT' } 
+  })
+  
+  if (allStudents.length > 0) {
+    const words = [
+      { englishWord: 'hello', arabicMeaning: 'مرحبا', exampleSentence: 'Hello, how are you?' },
+      { englishWord: 'goodbye', arabicMeaning: 'وداعا', exampleSentence: 'Goodbye, see you later!' },
+      { englishWord: 'thank you', arabicMeaning: 'شكرا لك', exampleSentence: 'Thank you for your help.' },
+      { englishWord: 'please', arabicMeaning: 'من فضلك', exampleSentence: 'Please pass the salt.' },
+      { englishWord: 'sorry', arabicMeaning: 'آسف', exampleSentence: 'I am sorry for being late.' },
+      { englishWord: 'friend', arabicMeaning: 'صديق', exampleSentence: 'He is my best friend.' },
+      { englishWord: 'family', arabicMeaning: 'عائلة', exampleSentence: 'I love my family.' },
+      { englishWord: 'mother', arabicMeaning: 'أم', exampleSentence: 'My mother cooks delicious food.' },
+      { englishWord: 'father', arabicMeaning: 'أب', exampleSentence: 'My father works hard.' },
+      { englishWord: 'brother', arabicMeaning: 'أخ', exampleSentence: 'I have one brother.' },
+      { englishWord: 'sister', arabicMeaning: 'أخت', exampleSentence: 'My sister is younger than me.' },
+      { englishWord: 'teacher', arabicMeaning: 'معلم', exampleSentence: 'The teacher explained the lesson well.' },
+      { englishWord: 'student', arabicMeaning: 'طالب', exampleSentence: 'Every student needs to study.' },
+      { englishWord: 'book', arabicMeaning: 'كتاب', exampleSentence: 'I read an interesting book.' },
+      { englishWord: 'pen', arabicMeaning: 'قلم', exampleSentence: 'Can I borrow your pen?' },
+      { englishWord: 'paper', arabicMeaning: 'ورقة', exampleSentence: 'Please give me a piece of paper.' },
+      { englishWord: 'school', arabicMeaning: 'مدرسة', exampleSentence: 'I go to school every day.' },
+      { englishWord: 'house', arabicMeaning: 'منزل', exampleSentence: 'We live in a big house.' },
+      { englishWord: 'car', arabicMeaning: 'سيارة', exampleSentence: 'My father has a new car.' },
+      { englishWord: 'water', arabicMeaning: 'ماء', exampleSentence: 'Drink plenty of water daily.' }
+    ]
 
-      for (const wordData of words) {
-        await prisma.word.create({
-          data: {
-            id: `word_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            studentId: firstStudent.id,
-            ...wordData
-          }
-        })
+    for (const student of allStudents) {
+      const existingWordsCount = await prisma.word.count({
+        where: { studentId: student.id }
+      })
+
+      if (existingWordsCount < 20) {
+        const wordsToAdd = 20 - existingWordsCount
+        for (let i = 0; i < wordsToAdd && i < words.length; i++) {
+          const wordData = words[i]
+          await prisma.word.create({
+            data: {
+              id: `word_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+              studentId: student.id,
+              ...wordData
+            }
+          })
+        }
+        console.log(`✅ تم إضافة ${wordsToAdd} كلمة للطالب ${student.name} (الإجمالي: ${existingWordsCount + wordsToAdd})`)
+      } else {
+        console.log(`⏭️  الطالب ${student.name} يملك ${existingWordsCount} كلمة بالفعل`)
       }
-      console.log(`✅ تم إضافة ${words.length} كلمة`)
     }
+
+    const totalWords = await prisma.word.count()
+    const totalStudents = allStudents.length
+    console.log(`\n📊 الإحصائيات النهائية: ${totalStudents} طالب، ${totalWords} كلمة`)
   }
 
   const packagesCount = await prisma.package.count()
