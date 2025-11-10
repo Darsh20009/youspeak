@@ -22,7 +22,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'Teacher profile not found' }, { status: 404 })
     }
 
-    const { grade, feedback } = await request.json()
+    const { grade, feedback, grammarErrors } = await request.json()
 
     if (grade === undefined || grade === null) {
       return NextResponse.json({ error: 'Grade is required' }, { status: 400 })
@@ -53,7 +53,8 @@ export async function PATCH(
       where: { id: submissionId },
       data: {
         grade: parseFloat(grade.toString()),
-        feedback: feedback || null
+        feedback: feedback || null,
+        grammarErrors: grammarErrors || null
       }
     })
 

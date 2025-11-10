@@ -9,6 +9,7 @@ import Button from '@/components/ui/Button'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import Modal from '@/components/ui/Modal'
 import Input from '@/components/ui/Input'
+import GrammarErrorHighlighter from '@/components/GrammarErrorHighlighter'
 
 interface Assignment {
   id: string
@@ -26,6 +27,7 @@ interface Assignment {
     textAnswer: string
     grade: number | null
     feedback: string | null
+    grammarErrors: string | null
     submittedAt: string
   }>
 }
@@ -41,7 +43,7 @@ export default function AssignmentsTab({ teacherProfileId }: { teacherProfileId:
   const [loading, setLoading] = useState(true)
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [selectedSubmission, setSelectedSubmission] = useState<Assignment['submissions'][0] | null>(null)
-  const [gradeData, setGradeData] = useState({ grade: '', feedback: '' })
+  const [gradeData, setGradeData] = useState({ grade: '', feedback: '', grammarErrors: [] as Array<{text: string, correction: string, explanation: string}> })
   const [newAssignment, setNewAssignment] = useState({
     title: '',
     description: '',
@@ -120,14 +122,15 @@ export default function AssignmentsTab({ teacherProfileId }: { teacherProfileId:
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           grade: parseFloat(gradeData.grade),
-          feedback: gradeData.feedback
+          feedback: gradeData.feedback,
+          grammarErrors: JSON.stringify(gradeData.grammarErrors)
         })
       })
 
       if (response.ok) {
         await fetchData()
         setSelectedSubmission(null)
-        setGradeData({ grade: '', feedback: '' })
+        setGradeData({ grade: '', feedback: '', grammarErrors: [] })
         alert('Submission graded successfully!')
       } else {
         alert('Failed to grade submission')
@@ -238,7 +241,14 @@ export default function AssignmentsTab({ teacherProfileId }: { teacherProfileId:
                             size="sm"
                             onClick={() => {
                               setSelectedSubmission(submission)
-                              setGradeData({ grade: '', feedback: '' })
+                              const existingErrors = submission.grammarErrors 
+                                ? JSON.parse(submission.grammarErrors) 
+                                : []
+                              setGradeData({ 
+                                grade: submission.grade?.toString() || '', 
+                                feedback: submission.feedback || '', 
+                                grammarErrors: existingErrors 
+                              })
                             }}
                           >
                             <Send className="h-3 w-3 mr-1" />
@@ -338,11 +348,13 @@ export default function AssignmentsTab({ teacherProfileId }: { teacherProfileId:
           onClose={() => setSelectedSubmission(null)}
           title={`Grade: ${selectedSubmission.student.name}`}
         >
-          <div className="space-y-4">
-            <div>
-              <p className="font-medium text-gray-900 mb-1">Student Answer:</p>
-              <p className="text-gray-700 bg-gray-50 p-3 rounded">{selectedSubmission.textAnswer}</p>
-            </div>
+          <div className="space-y-4 max-h-[80vh] overflow-y-auto">
+            <GrammarErrorHighlighter
+              studentAnswer={selectedSubmission.textAnswer}
+              errors={gradeData.grammarErrors}
+              onErrorsChange={(errors) => setGradeData({ ...gradeData, grammarErrors: errors })}
+            />
+            
             <Input
               label="Grade (0-100) / الدرجة"
               type="number"
@@ -353,14 +365,14 @@ export default function AssignmentsTab({ teacherProfileId }: { teacherProfileId:
               placeholder="e.g., 85"
             />
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
-                Feedback (Optional) / التعليق (اختياري)
+              <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
+                General Feedback (Optional) / التعليق العام (اختياري)
               </label>
               <textarea
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89]"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 value={gradeData.feedback}
                 onChange={(e) => setGradeData({ ...gradeData, feedback: e.target.value })}
-                placeholder="Provide feedback to the student..."
+                placeholder="Provide general feedback to the student..."
                 rows={4}
               />
             </div>

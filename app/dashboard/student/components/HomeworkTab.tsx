@@ -8,6 +8,7 @@ import Alert from '@/components/ui/Alert'
 import Button from '@/components/ui/Button'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import Modal from '@/components/ui/Modal'
+import GrammarErrorHighlighter from '@/components/GrammarErrorHighlighter'
 
 interface Assignment {
   id: string
@@ -22,6 +23,7 @@ interface Assignment {
     textAnswer: string
     grade: number | null
     feedback: string | null
+    grammarErrors: string | null
     submittedAt: string
   }>
 }
@@ -205,16 +207,27 @@ export default function HomeworkTab({ isActive }: { isActive: boolean }) {
                       </p>
                     </div>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-lg mb-3">
-                    <p className="text-sm text-gray-700 font-medium mb-1">Your Answer / إجابتك:</p>
-                    <p className="text-sm text-gray-800">{submission.textAnswer}</p>
-                  </div>
+                  {submission.grammarErrors && JSON.parse(submission.grammarErrors).length > 0 ? (
+                    <div className="mb-3">
+                      <GrammarErrorHighlighter
+                        studentAnswer={submission.textAnswer}
+                        errors={JSON.parse(submission.grammarErrors)}
+                        onErrorsChange={() => {}}
+                        readonly={true}
+                      />
+                    </div>
+                  ) : (
+                    <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-3">
+                      <p className="text-sm text-gray-700 dark:text-gray-300 font-medium mb-1">Your Answer / إجابتك:</p>
+                      <p className="text-sm text-gray-800 dark:text-gray-200">{submission.textAnswer}</p>
+                    </div>
+                  )}
                   {submission.feedback && (
-                    <div className="bg-blue-50 p-4 rounded-lg">
-                      <p className="text-sm text-blue-900 font-medium mb-1">
-                        Teacher Feedback / تعليق المعلم:
+                    <div className="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg">
+                      <p className="text-sm text-blue-900 dark:text-blue-100 font-medium mb-1">
+                        General Feedback / التعليق العام:
                       </p>
-                      <p className="text-sm text-blue-800">{submission.feedback}</p>
+                      <p className="text-sm text-blue-800 dark:text-blue-200">{submission.feedback}</p>
                     </div>
                   )}
                 </Card>
