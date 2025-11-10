@@ -8,62 +8,47 @@ datasource db {
   schemas  = ["youspeak_exercisein"]
 }
 
-model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
-  name          String
-  phone         String?
-  passwordHash  String
-  role          String    @default("STUDENT")
-  profilePhoto  String?
-  isActive      Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  studentProfile StudentProfile?
-  teacherProfile TeacherProfile?
-  subscriptions  Subscription[]
-  words          Word[]
-  submissions    Submission[]
-  sentMessages   Chat[]        @relation("SentMessages")
-  receivedMessages Chat[]      @relation("ReceivedMessages")
-  sessions       SessionStudent[]
-  
+model Assignment {
+  id             String       @id
+  sessionId      String?
+  title          String
+  description    String?
+  attachmentUrls String?
+  dueDate        DateTime?    @db.Timestamp(6)
+  createdAt      DateTime     @default(now()) @db.Timestamp(6)
+  updatedAt      DateTime     @default(now()) @db.Timestamp(6)
+  Session        Session?     @relation(fields: [sessionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Submission     Submission[]
+
   @@schema("youspeak_exercisein")
 }
 
-model StudentProfile {
-  id            String        @id @default(uuid())
-  userId        String        @unique
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  age           Int?
-  levelInitial  String?
-  levelCurrent  String?
-  targetLevel   String?
-  goal          String?
-  preferredTime String?
-  isVerified    Boolean       @default(false)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  
+model AuditLog {
+  id        String   @id
+  action    String
+  userId    String?
+  details   String?
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+
   @@schema("youspeak_exercisein")
 }
 
-model TeacherProfile {
-  id              String    @id @default(uuid())
-  userId          String    @unique
-  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bio             String?
-  subjects        String?
-  sessionsCreated Session[] @relation("TeacherSessions")
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  
+model Chat {
+  id                         String   @id
+  fromUserId                 String
+  toUserId                   String
+  content                    String
+  attachments                String?
+  isSaved                    Boolean  @default(false)
+  createdAt                  DateTime @default(now()) @db.Timestamp(6)
+  User_Chat_fromUserIdToUser User     @relation("Chat_fromUserIdToUser", fields: [fromUserId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User_Chat_toUserIdToUser   User     @relation("Chat_toUserIdToUser", fields: [toUserId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
   @@schema("youspeak_exercisein")
 }
 
 model Package {
-  id            String         @id @default(uuid())
+  id            String         @id
   title         String
   titleAr       String
   description   String?
@@ -72,128 +57,142 @@ model Package {
   lessonsCount  Int
   durationDays  Int
   isActive      Boolean        @default(true)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  subscriptions Subscription[]
-  
-  @@schema("youspeak_exercisein")
-}
+  createdAt     DateTime       @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime       @default(now()) @db.Timestamp(6)
+  Subscription  Subscription[]
 
-model Subscription {
-  id         String   @id @default(uuid())
-  studentId  String
-  student    User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  packageId  String
-  package    Package  @relation(fields: [packageId], references: [id])
-  paid       Boolean  @default(false)
-  receiptUrl String?
-  startDate  DateTime?
-  endDate    DateTime?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  
   @@schema("youspeak_exercisein")
 }
 
 model Session {
-  id          String          @id @default(uuid())
-  teacherId   String
-  teacher     TeacherProfile  @relation("TeacherSessions", fields: [teacherId], references: [id])
-  title       String
-  startTime   DateTime
-  endTime     DateTime
-  status      String          @default("SCHEDULED")
-  roomId      String?         @unique
-  recordingUrl String?
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
-  students    SessionStudent[]
-  assignments Assignment[]
-  
+  id             String           @id
+  teacherId      String
+  title          String
+  startTime      DateTime         @db.Timestamp(6)
+  endTime        DateTime         @db.Timestamp(6)
+  status         String           @default("SCHEDULED")
+  roomId         String?          @unique
+  recordingUrl   String?
+  createdAt      DateTime         @default(now()) @db.Timestamp(6)
+  updatedAt      DateTime         @default(now()) @db.Timestamp(6)
+  Assignment     Assignment[]
+  TeacherProfile TeacherProfile   @relation(fields: [teacherId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  SessionStudent SessionStudent[]
+
   @@schema("youspeak_exercisein")
 }
 
 model SessionStudent {
-  id        String   @id @default(uuid())
+  id        String   @id
   sessionId String
-  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   studentId String
-  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
   attended  Boolean  @default(false)
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  Session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User      User     @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@unique([sessionId, studentId])
   @@schema("youspeak_exercisein")
 }
 
-model Word {
-  id                String   @id @default(uuid())
-  studentId         String
-  student           User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  englishWord       String
-  arabicMeaning     String
-  exampleSentence   String?
-  pronunciationUrl  String?
-  known             Boolean  @default(false)
-  reviewCount       Int      @default(0)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  
-  @@schema("youspeak_exercisein")
-}
+model StudentProfile {
+  id            String   @id
+  userId        String   @unique
+  age           Int?
+  levelInitial  String?
+  levelCurrent  String?
+  targetLevel   String?
+  goal          String?
+  preferredTime String?
+  isVerified    Boolean  @default(false)
+  createdAt     DateTime @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime @default(now()) @db.Timestamp(6)
+  User          User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-model Assignment {
-  id            String       @id @default(uuid())
-  sessionId     String?
-  session       Session?     @relation(fields: [sessionId], references: [id])
-  title         String
-  description   String?
-  attachmentUrls String?
-  dueDate       DateTime?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  submissions   Submission[]
-  
   @@schema("youspeak_exercisein")
 }
 
 model Submission {
-  id             String   @id @default(uuid())
-  assignmentId   String
-  assignment     Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
-  studentId      String
-  student        User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  textAnswer     String?
-  attachedFiles  String?
-  grade          Float?
-  feedback       String?
-  grammarErrors  String?
-  submittedAt    DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  
+  id            String     @id
+  assignmentId  String
+  studentId     String
+  textAnswer    String?
+  attachedFiles String?
+  grade         Float?
+  feedback      String?
+  grammarErrors String?
+  submittedAt   DateTime   @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime   @default(now()) @db.Timestamp(6)
+  Assignment    Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User          User       @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
   @@schema("youspeak_exercisein")
 }
 
-model Chat {
-  id          String   @id @default(uuid())
-  fromUserId  String
-  fromUser    User     @relation("SentMessages", fields: [fromUserId], references: [id], onDelete: Cascade)
-  toUserId    String
-  toUser      User     @relation("ReceivedMessages", fields: [toUserId], references: [id], onDelete: Cascade)
-  content     String
-  attachments String?
-  isSaved     Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  
+model Subscription {
+  id         String    @id
+  studentId  String
+  packageId  String
+  paid       Boolean   @default(false)
+  receiptUrl String?
+  startDate  DateTime? @db.Timestamp(6)
+  endDate    DateTime? @db.Timestamp(6)
+  createdAt  DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt  DateTime  @default(now()) @db.Timestamp(6)
+  Package    Package   @relation(fields: [packageId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User       User      @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
   @@schema("youspeak_exercisein")
 }
 
-model AuditLog {
-  id        String   @id @default(uuid())
-  action    String
-  userId    String?
-  details   String?
-  createdAt DateTime @default(now())
-  
+model TeacherProfile {
+  id        String    @id
+  userId    String    @unique
+  bio       String?
+  subjects  String?
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime  @default(now()) @db.Timestamp(6)
+  Session   Session[]
+  User      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("youspeak_exercisein")
+}
+
+model User {
+  id                         String           @id
+  email                      String           @unique
+  name                       String
+  phone                      String?
+  passwordHash               String
+  role                       String           @default("STUDENT")
+  profilePhoto               String?
+  isActive                   Boolean          @default(false)
+  createdAt                  DateTime         @default(now()) @db.Timestamp(6)
+  updatedAt                  DateTime         @default(now()) @db.Timestamp(6)
+  Chat_Chat_fromUserIdToUser Chat[]           @relation("Chat_fromUserIdToUser")
+  Chat_Chat_toUserIdToUser   Chat[]           @relation("Chat_toUserIdToUser")
+  SessionStudent             SessionStudent[]
+  StudentProfile             StudentProfile?
+  Submission                 Submission[]
+  Subscription               Subscription[]
+  TeacherProfile             TeacherProfile?
+  Word                       Word[]
+
+  @@schema("youspeak_exercisein")
+}
+
+model Word {
+  id               String   @id
+  studentId        String
+  englishWord      String
+  arabicMeaning    String
+  exampleSentence  String?
+  pronunciationUrl String?
+  known            Boolean  @default(false)
+  reviewCount      Int      @default(0)
+  createdAt        DateTime @default(now()) @db.Timestamp(6)
+  updatedAt        DateTime @default(now()) @db.Timestamp(6)
+  User             User     @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
   @@schema("youspeak_exercisein")
 }
