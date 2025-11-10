@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { v4 as uuidv4 } from 'uuid'
 
 export async function GET(request: NextRequest) {
   try {
@@ -40,6 +41,7 @@ export async function POST(request: NextRequest) {
 
     const word = await prisma.word.create({
       data: {
+        id: uuidv4(),
         studentId: session.user.id,
         englishWord,
         arabicMeaning,
@@ -47,7 +49,13 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    return NextResponse.json(word, { status: 201 })
+    const serializedWord = {
+      ...word,
+      createdAt: word.createdAt.toISOString(),
+      updatedAt: word.updatedAt.toISOString()
+    }
+
+    return NextResponse.json(serializedWord, { status: 201 })
   } catch (error) {
     console.error('Error creating word:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

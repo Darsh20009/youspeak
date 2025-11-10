@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, Trash2, Check, X } from 'lucide-react'
+import { Plus, Trash2, Check, X, FileDown } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import Alert from '@/components/ui/Alert'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import Badge from '@/components/ui/Badge'
+import { exportWordsToExcel } from '@/lib/utils/exportToExcel'
 
 interface Word {
   id: string
@@ -127,17 +128,35 @@ export default function MyLearnTab({ isActive }: { isActive: boolean }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-[#004E89]">
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[#004E89] dark:text-blue-400">
           MyLearn - My Words / كلماتي
         </h2>
-        <Button
-          variant="primary"
-          onClick={() => setShowAddForm(!showAddForm)}
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Add Word / أضف كلمة
-        </Button>
+        <div className="flex gap-2 flex-wrap">
+          <Button
+            variant="outline"
+            onClick={() => exportWordsToExcel(words.filter(w => !w.known), 'unknown-words.xlsx', true)}
+            disabled={words.filter(w => !w.known).length === 0}
+          >
+            <FileDown className="h-4 w-4 mr-2" />
+            Export Unknown / تصدير غير المحفوظة
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => exportWordsToExcel(words, 'all-words.xlsx')}
+            disabled={words.length === 0}
+          >
+            <FileDown className="h-4 w-4 mr-2" />
+            Export All / تصدير الكل
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => setShowAddForm(!showAddForm)}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Word / أضف كلمة
+          </Button>
+        </div>
       </div>
 
       {showAddForm && (

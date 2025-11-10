@@ -1,0 +1,156 @@
+export const translations = {
+  ar: {
+    // Navigation
+    home: 'الرئيسية',
+    about: 'من نحن',
+    packages: 'الباقات',
+    contact: 'اتصل بنا',
+    login: 'تسجيل الدخول',
+    logout: 'تسجيل الخروج',
+    dashboard: 'لوحة التحكم',
+    
+    // Home Page
+    heroTitle: 'تعلم الإنجليزية مع مستر يوسف',
+    heroSubtitle: 'منصة تعليم اللغة الإنجليزية عبر الإنترنت مع دروس حية تفاعلية',
+    joinUs: 'انضم إلينا',
+    contactWhatsApp: 'واتساب',
+    
+    // Features
+    liveClasses: 'حصص مباشرة',
+    levelAssessment: 'تقييم المستوى',
+    smartLearning: 'تعلم ذكي',
+    
+    // Packages
+    ourPackages: 'باقاتنا',
+    viewAllPackages: 'عرض جميع الباقات',
+    singleLevel: 'مستوى واحد',
+    monthly: 'شهري',
+    quarterly: 'ربع سنوي',
+    premium: 'بريميوم',
+    sar: 'ريال',
+    lessons: 'حصة',
+    months: 'أشهر',
+    bestValue: 'أفضل قيمة',
+    
+    // Auth
+    welcomeBack: 'مرحباً بعودتك',
+    signIn: 'قم بتسجيل الدخول',
+    email: 'البريد الإلكتروني',
+    password: 'كلمة المرور',
+    createAccount: 'أنشئ حسابك لبدء التعلم',
+    name: 'الاسم',
+    phone: 'رقم الهاتف',
+    register: 'تسجيل',
+    
+    // Dashboard
+    myWords: 'كلماتي',
+    mySessions: 'حصصي',
+    mySubscriptions: 'اشتراكاتي',
+    profile: 'الملف الشخصي',
+    students: 'الطلاب',
+    teachers: 'المعلمين',
+    system: 'النظام',
+    
+    // Words
+    addWord: 'إضافة كلمة',
+    englishWord: 'الكلمة بالإنجليزية',
+    arabicMeaning: 'المعنى بالعربية',
+    exampleSentence: 'جملة مثال',
+    known: 'محفوظة',
+    unknown: 'غير محفوظة',
+    totalWords: 'إجمالي الكلمات',
+    save: 'حفظ',
+    cancel: 'إلغاء',
+    delete: 'حذف',
+    export: 'تصدير',
+    exportToExcel: 'تصدير إلى Excel',
+    
+    // Common
+    loading: 'جاري التحميل...',
+    error: 'خطأ',
+    success: 'نجاح',
+    confirm: 'تأكيد',
+    active: 'نشط',
+    inactive: 'غير نشط',
+    activate: 'تفعيل',
+    deactivate: 'إلغاء التفعيل',
+  },
+  en: {
+    // Navigation
+    home: 'Home',
+    about: 'About',
+    packages: 'Packages',
+    contact: 'Contact',
+    login: 'Login',
+    logout: 'Logout',
+    dashboard: 'Dashboard',
+    
+    // Home Page
+    heroTitle: 'Learn English with Mister Youssef',
+    heroSubtitle: 'Professional online English learning platform with live interactive classes',
+    joinUs: 'Join Us',
+    contactWhatsApp: 'WhatsApp',
+    
+    // Features
+    liveClasses: 'Live Classes',
+    levelAssessment: 'Level Assessment',
+    smartLearning: 'Smart Learning',
+    
+    // Packages
+    ourPackages: 'Our Packages',
+    viewAllPackages: 'View All Packages',
+    singleLevel: 'Single Level',
+    monthly: 'Monthly',
+    quarterly: 'Quarterly',
+    premium: 'Premium',
+    sar: 'SAR',
+    lessons: 'lessons',
+    months: 'months',
+    bestValue: 'Best Value',
+    
+    // Auth
+    welcomeBack: 'Welcome Back',
+    signIn: 'Sign in to your account',
+    email: 'Email',
+    password: 'Password',
+    createAccount: 'Create your account to start learning',
+    name: 'Name',
+    phone: 'Phone',
+    register: 'Register',
+    
+    // Dashboard
+    myWords: 'My Words',
+    mySessions: 'My Sessions',
+    mySubscriptions: 'My Subscriptions',
+    profile: 'Profile',
+    students: 'Students',
+    teachers: 'Teachers',
+    system: 'System',
+    
+    // Words
+    addWord: 'Add Word',
+    englishWord: 'English Word',
+    arabicMeaning: 'Arabic Meaning',
+    exampleSentence: 'Example Sentence',
+    known: 'Known',
+    unknown: 'Unknown',
+    totalWords: 'Total Words',
+    save: 'Save',
+    cancel: 'Cancel',
+    delete: 'Delete',
+    export: 'Export',
+    exportToExcel: 'Export to Excel',
+    
+    // Common
+    loading: 'Loading...',
+    error: 'Error',
+    success: 'Success',
+    confirm: 'Confirm',
+    active: 'Active',
+    inactive: 'Inactive',
+    activate: 'Activate',
+    deactivate: 'Deactivate',
+  }
+}
+
+export type TranslationKey = keyof typeof translations.ar
