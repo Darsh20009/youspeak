@@ -7,6 +7,9 @@ import ChatBox from '@/components/ChatBox'
 import ConversationsList from '@/components/ConversationsList'
 import { MessageCircle } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+
 export default function ChatPage() {
   const { data: session, status } = useSession()
   const [selectedUser, setSelectedUser] = useState<any>(null)
