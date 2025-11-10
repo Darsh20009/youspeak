@@ -23,8 +23,8 @@ export const authOptions: NextAuthOptions = {
             email: credentials.email,
           },
           include: {
-            studentProfile: true,
-            teacherProfile: true,
+            StudentProfile: true,
+            TeacherProfile: true,
           },
         })
 
