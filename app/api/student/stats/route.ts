@@ -26,47 +26,47 @@ export async function GET(request: NextRequest) {
           paid: true,
           endDate: { gte: new Date() }
         },
-        include: { package: true }
+        include: { Package: true }
       })
     ])
 
     // Count pending assignments: assignments for sessions the student is enrolled in that have no submission
     const studentAssignments = await prisma.assignment.findMany({
       where: {
-        session: {
-          students: {
+        Session: {
+          SessionStudent: {
             some: { studentId: userId }
           }
         }
       },
       include: {
-        submissions: {
+        Submission: {
           where: { studentId: userId }
         }
       }
     })
     
-    const pendingAssignments = studentAssignments.filter(a => a.submissions.length === 0).length
+    const pendingAssignments = studentAssignments.filter(a => a.Submission.length === 0).length
 
     const nextSession = await prisma.sessionStudent.findFirst({
       where: {
         studentId: userId,
-        session: {
+        Session: {
           startTime: { gte: new Date() },
           status: 'SCHEDULED'
         }
       },
       include: {
-        session: {
+        Session: {
           include: {
-            teacher: {
-              include: { user: true }
+            TeacherProfile: {
+              include: { User: true }
             }
           }
         }
       },
       orderBy: {
-        session: { startTime: 'asc' }
+        Session: { startTime: 'asc' }
       }
     })
 
@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
         where: {
           studentId: userId,
           attended: true,
-          session: {
+          Session: {
             createdAt: {
               gte: activeSubscription.startDate || new Date()
             }
@@ -89,12 +89,12 @@ export async function GET(request: NextRequest) {
         : 0
       
       activeSubDetails = {
-        packageTitle: activeSubscription.package.title,
-        packageTitleAr: activeSubscription.package.titleAr,
+        packageTitle: activeSubscription.Package.title,
+        packageTitleAr: activeSubscription.Package.titleAr,
         startDate: activeSubscription.startDate,
         endDate: activeSubscription.endDate,
-        lessonsTotal: activeSubscription.package.lessonsCount,
-        lessonsRemaining: Math.max(0, activeSubscription.package.lessonsCount - attendedSessions),
+        lessonsTotal: activeSubscription.Package.lessonsCount,
+        lessonsRemaining: Math.max(0, activeSubscription.Package.lessonsCount - attendedSessions),
         daysRemaining: Math.max(0, daysRemaining)
       }
     }
@@ -105,11 +105,11 @@ export async function GET(request: NextRequest) {
       pendingAssignments,
       activeSubscription: activeSubDetails,
       nextSession: nextSession ? {
-        id: nextSession.session.id,
-        title: nextSession.session.title,
-        startTime: nextSession.session.startTime,
-        endTime: nextSession.session.endTime,
-        teacherName: nextSession.session.teacher.user.name
+        id: nextSession.Session.id,
+        title: nextSession.Session.title,
+        startTime: nextSession.Session.startTime,
+        endTime: nextSession.Session.endTime,
+        teacherName: nextSession.Session.TeacherProfile.User.name
       } : null
     })
   } catch (error) {
