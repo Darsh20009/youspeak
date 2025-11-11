@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F5F1E8;
+  --foreground: #000000;
   
   --primary: #004E89;
   --primary-foreground: #ffffff;
@@ -15,8 +15,10 @@
   --warning: #f59e0b;
   --info: #3b82f6;
   
-  --border: #e5e5e5;
+  --border: #d4c9b8;
   --radius: 0.5rem;
+  
+  --card-bg: #ffffff;
 }
 
 @theme inline {
@@ -44,8 +46,6 @@
 :root.dark {
   color-scheme: dark;
 }
-
-/* Dark mode overrides */
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -87,7 +87,6 @@ body {
   }
 }
 
-/* Mobile responsive improvements */
 @media (max-width: 640px) {
   .container {
     padding-left: 1rem;
@@ -107,7 +106,6 @@ body {
   }
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
