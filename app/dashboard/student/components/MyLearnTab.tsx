@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Plus, Trash2, Check, X, FileDown, Upload, Languages } from 'lucide-react'
+import { Plus, Trash2, Check, X, FileDown, Upload, Languages, CheckSquare } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
@@ -25,6 +25,7 @@ export default function MyLearnTab({ isActive }: { isActive: boolean }) {
   const [loading, setLoading] = useState(true)
   const [showAddForm, setShowAddForm] = useState(false)
   const [showImportForm, setShowImportForm] = useState(false)
+  const [selectedWords, setSelectedWords] = useState<Set<string>>(new Set())
   const [newWord, setNewWord] = useState({
     englishWord: '',
     arabicMeaning: '',
@@ -117,6 +118,45 @@ export default function MyLearnTab({ isActive }: { isActive: boolean }) {
     }
   }
 
+  async function handleDeleteSelected() {
+    if (selectedWords.size === 0) return
+    
+    if (!confirm(`Are you sure you want to delete ${selectedWords.size} word(s)?`)) {
+      return
+    }
+
+    try {
+      const deletePromises = Array.from(selectedWords).map(wordId =>
+        fetch(`/api/words/${wordId}`, { method: 'DELETE' })
+      )
+      
+      await Promise.all(deletePromises)
+      setWords(words.filter(w => !selectedWords.has(w.id)))
+      setSelectedWords(new Set())
+    } catch (error) {
+      console.error('Error deleting words:', error)
+      alert('Error deleting some words. Please try again.')
+    }
+  }
+
+  function toggleSelect(wordId: string) {
+    const newSelected = new Set(selectedWords)
+    if (newSelected.has(wordId)) {
+      newSelected.delete(wordId)
+    } else {
+      newSelected.add(wordId)
+    }
+    setSelectedWords(newSelected)
+  }
+
+  function selectAll() {
+    if (selectedWords.size === words.length) {
+      setSelectedWords(new Set())
+    } else {
+      setSelectedWords(new Set(words.map(w => w.id)))
+    }
+  }
+
   async function handleTranslate() {
     if (!newWord.englishWord) return
     
@@ -194,10 +234,33 @@ export default function MyLearnTab({ isActive }: { isActive: boolean }) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
-        <h2 className="text-2xl sm:text-3xl font-bold text-[#004E89] dark:text-blue-400">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
           MyLearn - My Words / كلماتي
         </h2>
         <div className="flex gap-2 flex-wrap">
+          {words.length > 0 && (
+            <>
+              <Button
+                variant="outline"
+                onClick={selectAll}
+                size="sm"
+              >
+                <CheckSquare className="h-4 w-4 mr-2" />
+                {selectedWords.size === words.length ? 'Deselect All / إلغاء الكل' : 'Select All / تحديد الكل'}
+              </Button>
+              {selectedWords.size > 0 && (
+                <Button
+                  variant="outline"
+                  onClick={handleDeleteSelected}
+                  size="sm"
+                  className="border-red-500 text-red-600 hover:bg-red-50"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete Selected ({selectedWords.size}) / حذف المحدد
+                </Button>
+              )}
+            </>
+          )}
           <Button
             variant="outline"
             onClick={() => setShowImportForm(!showImportForm)}
@@ -326,11 +389,21 @@ export default function MyLearnTab({ isActive }: { isActive: boolean }) {
       ) : (
         <div className="grid md:grid-cols-2 gap-4">
           {words.map((word) => (
-            <Card key={word.id} variant="elevated">
-              <div className="flex items-start justify-between mb-3">
+            <Card 
+              key={word.id} 
+              variant="elevated"
+              className={`transition-all ${selectedWords.has(word.id) ? 'ring-2 ring-gray-900 bg-gray-50' : ''}`}
+            >
+              <div className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={selectedWords.has(word.id)}
+                  onChange={() => toggleSelect(word.id)}
+                  className="mt-1 h-5 w-5 rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer"
+                />
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-lg font-bold text-[#004E89]">{word.englishWord}</h3>
+                    <h3 className="text-lg font-bold text-gray-900">{word.englishWord}</h3>
                     {word.known && (
                       <Badge variant="success" size="sm">
                         <Check className="h-3 w-3 mr-1" />
@@ -342,34 +415,34 @@ export default function MyLearnTab({ isActive }: { isActive: boolean }) {
                   {word.exampleSentence && (
                     <p className="text-sm text-gray-600 italic">{word.exampleSentence}</p>
                   )}
+                  <div className="flex gap-2 mt-4">
+                    <Button
+                      variant={word.known ? 'outline' : 'primary'}
+                      size="sm"
+                      fullWidth
+                      onClick={() => handleToggleKnown(word.id, word.known)}
+                    >
+                      {word.known ? (
+                        <>
+                          <X className="h-4 w-4 mr-1" />
+                          Mark Unknown / غير محفوظة
+                        </>
+                      ) : (
+                        <>
+                          <Check className="h-4 w-4 mr-1" />
+                          Mark Known / محفوظة
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDeleteWord(word.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-2 mt-4">
-                <Button
-                  variant={word.known ? 'outline' : 'primary'}
-                  size="sm"
-                  fullWidth
-                  onClick={() => handleToggleKnown(word.id, word.known)}
-                >
-                  {word.known ? (
-                    <>
-                      <X className="h-4 w-4 mr-1" />
-                      Mark Unknown / غير محفوظة
-                    </>
-                  ) : (
-                    <>
-                      <Check className="h-4 w-4 mr-1" />
-                      Mark Known / محفوظة
-                    </>
-                  )}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleDeleteWord(word.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
               </div>
             </Card>
           ))}
