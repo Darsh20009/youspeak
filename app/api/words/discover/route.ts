@@ -99,32 +99,33 @@ export async function POST(request: NextRequest) {
 
     const { word, arabic, example, known } = await request.json()
 
-    if (known) {
-      const existingWord = await prisma.word.findFirst({
-        where: {
+    const existingWord = await prisma.word.findFirst({
+      where: {
+        studentId: session.user.id,
+        englishWord: word
+      }
+    })
+
+    if (!existingWord) {
+      await prisma.word.create({
+        data: {
+          id: `word_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
           studentId: session.user.id,
-          englishWord: word
+          englishWord: word,
+          arabicMeaning: arabic,
+          exampleSentence: example,
+          known: known,
+          reviewCount: known ? 1 : 0
         }
       })
-
-      if (!existingWord) {
-        await prisma.word.create({
-          data: {
-            id: `word_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            studentId: session.user.id,
-            englishWord: word,
-            arabicMeaning: arabic,
-            exampleSentence: example,
-            known: true,
-            reviewCount: 1
-          }
-        })
-      } else {
-        await prisma.word.update({
-          where: { id: existingWord.id },
-          data: { known: true, reviewCount: { increment: 1 } }
-        })
-      }
+    } else {
+      await prisma.word.update({
+        where: { id: existingWord.id },
+        data: { 
+          known: known, 
+          reviewCount: known ? { increment: 1 } : existingWord.reviewCount 
+        }
+      })
     }
 
     return NextResponse.json({ success: true })

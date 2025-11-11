@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, X, Star, Sparkles, Brain, Trophy, ArrowRight } from 'lucide-react'
+import { Check, X, Star, Sparkles, Brain, Trophy } from 'lucide-react'
 
 interface Word {
   word: string
@@ -40,20 +40,20 @@ export default function DiscoverWordsPage() {
   const handleResponse = async (known: boolean) => {
     const currentWord = words[currentIndex]
     
+    await fetch('/api/words/discover', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        word: currentWord.word,
+        arabic: currentWord.arabic,
+        example: currentWord.example,
+        known: known
+      })
+    })
+    
     if (known) {
       setScore(score + 10)
       setStreak(streak + 1)
-      
-      await fetch('/api/words/discover', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          word: currentWord.word,
-          arabic: currentWord.arabic,
-          example: currentWord.example,
-          known: true
-        })
-      })
     } else {
       setStreak(0)
     }
@@ -68,9 +68,9 @@ export default function DiscoverWordsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-500 via-indigo-600 to-blue-700 flex items-center justify-center">
-        <div className="text-white text-2xl flex items-center gap-3">
-          <Sparkles className="animate-spin h-8 w-8" />
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-gray-800 text-2xl flex items-center gap-3">
+          <Sparkles className="animate-spin h-8 w-8 text-primary" />
           <span>جاري تحميل الكلمات...</span>
         </div>
       </div>
@@ -80,34 +80,34 @@ export default function DiscoverWordsPage() {
   const currentWord = words[currentIndex]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-500 via-indigo-600 to-blue-700 p-4 md:p-8">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       {/* Header */}
       <div className="max-w-6xl mx-auto mb-8">
         <motion.div
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="flex flex-col md:flex-row justify-between items-center gap-4 bg-white/10 backdrop-blur-lg rounded-2xl p-6 text-white"
+          className="flex flex-col md:flex-row justify-between items-center gap-4 bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg"
         >
           <div className="flex items-center gap-4">
-            <div className="bg-yellow-400 p-3 rounded-xl">
-              <Brain className="h-8 w-8 text-purple-900" />
+            <div className="bg-primary p-3 rounded-xl">
+              <Brain className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold">اكتشف الكلمات الجديدة</h1>
-              <p className="text-purple-100">Discover New Words</p>
+              <h1 className="text-3xl font-bold text-gray-900">اكتشف الكلمات الجديدة</h1>
+              <p className="text-gray-600">Discover New Words</p>
             </div>
           </div>
 
           <div className="flex gap-4">
-            <div className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-xl text-center">
-              <Star className="h-6 w-6 mx-auto mb-1 text-yellow-300" />
-              <div className="text-2xl font-bold">{score}</div>
-              <div className="text-xs text-purple-100">النقاط</div>
+            <div className="bg-primary/10 border-2 border-primary px-6 py-3 rounded-xl text-center">
+              <Star className="h-6 w-6 mx-auto mb-1 text-primary" />
+              <div className="text-2xl font-bold text-gray-900">{score}</div>
+              <div className="text-xs text-gray-600">النقاط</div>
             </div>
-            <div className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-xl text-center">
-              <Trophy className="h-6 w-6 mx-auto mb-1 text-orange-300" />
-              <div className="text-2xl font-bold">{streak}</div>
-              <div className="text-xs text-purple-100">التتابع</div>
+            <div className="bg-accent/20 border-2 border-accent px-6 py-3 rounded-xl text-center">
+              <Trophy className="h-6 w-6 mx-auto mb-1 text-accent-600" />
+              <div className="text-2xl font-bold text-gray-900">{streak}</div>
+              <div className="text-xs text-gray-600">التتابع</div>
             </div>
           </div>
         </motion.div>
@@ -123,10 +123,10 @@ export default function DiscoverWordsPage() {
             <button
               key={lvl}
               onClick={() => setLevel(lvl)}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+              className={`px-6 py-3 rounded-xl font-semibold transition-all border-2 ${
                 level === lvl
-                  ? 'bg-white text-purple-600 shadow-xl scale-110'
-                  : 'bg-white/20 text-white hover:bg-white/30'
+                  ? 'bg-primary text-white border-primary shadow-lg scale-110'
+                  : 'bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary'
               }`}
             >
               {lvl === 'beginner' && 'مبتدئ'}
@@ -147,11 +147,11 @@ export default function DiscoverWordsPage() {
               animate={{ scale: 1, rotateY: 0 }}
               exit={{ scale: 0, rotateY: 180 }}
               transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-              className="bg-white rounded-3xl shadow-2xl p-12 text-center relative overflow-hidden"
+              className="bg-white border-2 border-gray-200 rounded-3xl shadow-xl p-12 text-center relative overflow-hidden"
             >
               {/* Background Decoration */}
-              <div className="absolute top-0 right-0 w-40 h-40 bg-purple-200 rounded-full filter blur-3xl opacity-30 -z-10" />
-              <div className="absolute bottom-0 left-0 w-40 h-40 bg-blue-200 rounded-full filter blur-3xl opacity-30 -z-10" />
+              <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full filter blur-3xl -z-10" />
+              <div className="absolute bottom-0 left-0 w-40 h-40 bg-primary/10 rounded-full filter blur-3xl -z-10" />
 
               {/* Word */}
               <motion.div
@@ -159,7 +159,7 @@ export default function DiscoverWordsPage() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                <div className="inline-block bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-8 py-4 rounded-2xl mb-6">
+                <div className="inline-block bg-primary text-white px-8 py-4 rounded-2xl mb-6">
                   <h2 className="text-6xl font-bold">{currentWord.word}</h2>
                 </div>
 
@@ -170,7 +170,7 @@ export default function DiscoverWordsPage() {
                       key={idx}
                       className={`h-2 rounded-full transition-all ${
                         idx === currentIndex
-                          ? 'w-12 bg-purple-600'
+                          ? 'w-12 bg-primary'
                           : idx < currentIndex
                           ? 'w-2 bg-green-400'
                           : 'w-2 bg-gray-300'
@@ -181,7 +181,7 @@ export default function DiscoverWordsPage() {
 
                 {/* Arabic Meaning */}
                 <div className="mb-8">
-                  <p className="text-3xl font-bold text-gray-800 mb-2" dir="rtl">
+                  <p className="text-3xl font-bold text-gray-900 mb-2" dir="rtl">
                     {currentWord.arabic}
                   </p>
                 </div>
@@ -189,7 +189,7 @@ export default function DiscoverWordsPage() {
                 {/* Example Toggle */}
                 <button
                   onClick={() => setShowExample(!showExample)}
-                  className="mb-6 flex items-center gap-2 mx-auto text-purple-600 hover:text-purple-800 font-semibold"
+                  className="mb-6 flex items-center gap-2 mx-auto text-primary hover:text-primary-600 font-semibold"
                 >
                   <Sparkles className="h-5 w-5" />
                   {showExample ? 'إخفاء المثال' : 'عرض المثال'}
@@ -199,7 +199,7 @@ export default function DiscoverWordsPage() {
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
-                    className="bg-purple-50 rounded-xl p-6 mb-8"
+                    className="bg-gray-100 rounded-xl p-6 mb-8 border border-gray-200"
                   >
                     <p className="text-lg text-gray-700 italic">"{currentWord.example}"</p>
                   </motion.div>
@@ -211,7 +211,7 @@ export default function DiscoverWordsPage() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handleResponse(false)}
-                    className="flex-1 max-w-xs bg-red-500 hover:bg-red-600 text-white px-8 py-6 rounded-2xl font-bold text-xl shadow-xl flex items-center justify-center gap-3 transition-colors"
+                    className="flex-1 max-w-xs bg-error hover:bg-error-600 text-white px-8 py-6 rounded-2xl font-bold text-xl shadow-lg flex items-center justify-center gap-3 transition-colors"
                   >
                     <X className="h-8 w-8" />
                     <span>لا أعرفها</span>
@@ -221,7 +221,7 @@ export default function DiscoverWordsPage() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handleResponse(true)}
-                    className="flex-1 max-w-xs bg-green-500 hover:bg-green-600 text-white px-8 py-6 rounded-2xl font-bold text-xl shadow-xl flex items-center justify-center gap-3 transition-colors"
+                    className="flex-1 max-w-xs bg-success hover:bg-success-600 text-white px-8 py-6 rounded-2xl font-bold text-xl shadow-lg flex items-center justify-center gap-3 transition-colors"
                   >
                     <Check className="h-8 w-8" />
                     <span>أعرفها!</span>
@@ -229,8 +229,9 @@ export default function DiscoverWordsPage() {
                 </div>
 
                 {/* Tips */}
-                <div className="mt-8 text-sm text-gray-500">
-                  <p>💡 الكلمات التي تعرفها ستضاف لقائمتك الخاصة تلقائياً</p>
+                <div className="mt-8 text-sm text-gray-600 bg-primary/5 p-4 rounded-xl border border-primary/20">
+                  <p>💡 <strong>جميع الكلمات</strong> ستُضاف تلقائياً لقائمة "كلماتي" - الكلمات التي تعرفها ستُعلم كـ "معروفة" ✅</p>
+                  <p className="mt-2">📚 الكلمات التي لا تعرفها ستُحفظ كـ "غير معروفة" ❌ لمراجعتها لاحقاً</p>
                 </div>
               </motion.div>
             </motion.div>
