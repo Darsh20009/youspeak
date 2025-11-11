@@ -2,7 +2,13 @@ import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { v4 as uuidv4 } from 'uuid'
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.EXTERNAL_DATABASE_URL,
+    },
+  },
+})
 
 async function main() {
   console.log('🌱 Starting database seed...')
