@@ -31,8 +31,18 @@ The platform is built on a modern web stack featuring **Next.js 16 (App Router)*
 -   **Translation Services:** **Google Translate API** (for word import and translation).
 -   **Communication:** **WhatsApp API** (for notifications, subscription flows, and support).
 
-## Recent Changes (November 13, 2024)
--   **Database Migration:** Successfully migrated from filess.io to AWS PostgreSQL database
+## Recent Changes (November 13, 2025)
+-   **AWS Database Integration:** Successfully connected platform to AWS RDS PostgreSQL database
+    -   Created schema `youspeak_exercisein` in AWS database
+    -   Pushed all 12 Prisma tables to AWS using `prisma db push`
+    -   Verified database connection and table creation
+-   **Authentication Configuration:** 
+    -   Configured NEXTAUTH_SECRET for secure session management
+    -   Authentication system now fully operational
+-   **Test Accounts Created:** Added test users for development and testing:
+    -   Admin account: admin@youspeak.com (password: 123456)
+    -   Teacher account: teacher@youspeak.com (password: 123456)
+    -   Student account: student@youspeak.com (password: 123456)
 -   **API Enhancements:** Added complete CRUD operations for all resources:
     -   Sessions: Added PUT and DELETE endpoints for teachers (`/api/teacher/sessions/[id]`)
     -   Assignments: Added GET, PUT, DELETE endpoints for teachers (`/api/teacher/assignments/[id]`)
@@ -40,5 +50,4 @@ The platform is built on a modern web stack featuring **Next.js 16 (App Router)*
     -   Subscriptions: Added GET, PUT, DELETE endpoints for admins (`/api/admin/subscriptions/[id]`)
     -   Chat: Added DELETE endpoint for messages (`/api/chat/messages/[id]`)
 -   **Authorization Helpers:** Created `lib/auth-helpers.ts` with reusable functions (`requireTeacher`, `requireAdmin`, `requireStudent`, `parseJsonBody`) to standardize authentication and authorization across endpoints
--   **Security Fixes:** Resolved authentication issues by properly configuring NEXTAUTH_SECRET
 -   **Code Quality:** Refactored endpoints to use shared authorization helpers, improving maintainability and consistency
