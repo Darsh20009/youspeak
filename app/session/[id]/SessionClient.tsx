@@ -154,7 +154,7 @@ export default function SessionClient({ sessionId, user }: SessionClientProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F5F5DC] flex items-center justify-center">
+      <div className="min-h-screen bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center">
         <LoadingSpinner />
       </div>
     )
@@ -165,8 +165,8 @@ export default function SessionClient({ sessionId, user }: SessionClientProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5DC] flex flex-col">
-      <div className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+    <div className="min-h-screen bg-neutral-100 dark:bg-neutral-900 flex flex-col">
+      <div className="bg-white dark:bg-neutral-800 shadow-sm border-b border-neutral-200 dark:border-neutral-700 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button
@@ -177,17 +177,17 @@ export default function SessionClient({ sessionId, user }: SessionClientProps) {
               Back / رجوع
             </Button>
             <div>
-              <h1 className="text-xl font-bold text-[#004E89]">
+              <h1 className="text-xl font-bold text-primary-600 dark:text-primary-300">
                 {session.title}
               </h1>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">
                 Teacher: {session.teacher.name} | {new Date(session.startTime).toLocaleString()}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Video className="h-5 w-5 text-[#004E89]" />
-            <span className="text-sm font-medium text-[#004E89]">Live Session</span>
+            <Video className="h-5 w-5 text-primary-600 dark:text-primary-300" />
+            <span className="text-sm font-medium text-primary-600 dark:text-primary-300">Live Session</span>
           </div>
         </div>
       </div>

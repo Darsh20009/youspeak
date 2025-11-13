@@ -104,7 +104,7 @@ export default function SessionsTab({ teacherProfileId }: { teacherProfileId: st
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-[#004E89]">
+        <h2 className="text-3xl font-bold text-primary-600 dark:text-primary-300">
           My Sessions / حصصي
         </h2>
         <Button
@@ -117,7 +117,7 @@ export default function SessionsTab({ teacherProfileId }: { teacherProfileId: st
       </div>
 
       <div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
+        <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-4">
           Upcoming Sessions / الحصص القادمة ({upcomingSessions.length})
         </h3>
         {upcomingSessions.length === 0 ? (
@@ -132,10 +132,10 @@ export default function SessionsTab({ teacherProfileId }: { teacherProfileId: st
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-bold text-[#004E89]">{session.title}</h3>
+                      <h3 className="text-lg font-bold text-primary-600 dark:text-primary-300">{session.title}</h3>
                       <Badge variant="primary">Upcoming</Badge>
                     </div>
-                    <div className="space-y-1 text-sm text-gray-600">
+                    <div className="space-y-1 text-sm text-neutral-600 dark:text-neutral-400">
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
                         <span>{new Date(session.startTime).toLocaleDateString('ar-EG', {
@@ -183,7 +183,7 @@ export default function SessionsTab({ teacherProfileId }: { teacherProfileId: st
       </div>
 
       <div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
+        <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-4">
           Past Sessions / الحصص السابقة ({pastSessions.length})
         </h3>
         {pastSessions.length === 0 ? (
@@ -198,10 +198,10 @@ export default function SessionsTab({ teacherProfileId }: { teacherProfileId: st
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-bold text-gray-700">{session.title}</h3>
+                      <h3 className="text-lg font-bold text-neutral-700 dark:text-neutral-300">{session.title}</h3>
                       <Badge variant="neutral">Completed</Badge>
                     </div>
-                    <div className="space-y-1 text-sm text-gray-600">
+                    <div className="space-y-1 text-sm text-neutral-600 dark:text-neutral-400">
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
                         <span>{new Date(session.startTime).toLocaleDateString('ar-EG')}</span>

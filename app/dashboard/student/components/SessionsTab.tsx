@@ -63,7 +63,7 @@ export default function SessionsTab({ isActive }: { isActive: boolean }) {
   if (!isActive) {
     return (
       <div>
-        <h2 className="text-3xl font-bold text-[#004E89] mb-6">
+        <h2 className="text-3xl font-bold text-primary-600 dark:text-primary-300 mb-6">
           My Sessions / حصصي
         </h2>
         <Alert variant="warning">
@@ -83,12 +83,12 @@ export default function SessionsTab({ isActive }: { isActive: boolean }) {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-[#004E89]">
+      <h2 className="text-3xl font-bold text-primary-600 dark:text-primary-300">
         My Sessions / حصصي
       </h2>
 
       <div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
+        <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-4">
           Upcoming Sessions / الحصص القادمة
         </h3>
         {upcomingSessions.length === 0 ? (
@@ -103,10 +103,10 @@ export default function SessionsTab({ isActive }: { isActive: boolean }) {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-bold text-[#004E89]">{session.session.title}</h3>
+                      <h3 className="text-lg font-bold text-primary-600 dark:text-primary-300">{session.session.title}</h3>
                       <Badge variant="primary">Upcoming / قادمة</Badge>
                     </div>
-                    <div className="space-y-1 text-sm text-gray-600">
+                    <div className="space-y-1 text-sm text-neutral-600 dark:text-neutral-400">
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
                         <span>{new Date(session.session.startTime).toLocaleDateString('ar-EG', {
@@ -152,7 +152,7 @@ export default function SessionsTab({ isActive }: { isActive: boolean }) {
       </div>
 
       <div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
+        <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-4">
           Past Sessions / الحصص السابقة
         </h3>
         {pastSessions.length === 0 ? (
@@ -167,7 +167,7 @@ export default function SessionsTab({ isActive }: { isActive: boolean }) {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-bold text-gray-700">{session.session.title}</h3>
+                      <h3 className="text-lg font-bold text-neutral-700 dark:text-neutral-300">{session.session.title}</h3>
                       {session.attended ? (
                         <Badge variant="success">
                           <CheckCircle className="h-3 w-3 mr-1" />
@@ -180,7 +180,7 @@ export default function SessionsTab({ isActive }: { isActive: boolean }) {
                         </Badge>
                       )}
                     </div>
-                    <div className="space-y-1 text-sm text-gray-600">
+                    <div className="space-y-1 text-sm text-neutral-600 dark:text-neutral-400">
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
                         <span>{new Date(session.session.startTime).toLocaleDateString('ar-EG')}</span>
