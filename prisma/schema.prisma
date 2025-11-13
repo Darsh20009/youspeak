@@ -188,6 +188,7 @@ model Word {
   arabicMeaning    String
   exampleSentence  String?
   pronunciationUrl String?
+  imageUrl         String?
   known            Boolean  @default(false)
   reviewCount      Int      @default(0)
   createdAt        DateTime @default(now()) @db.Timestamp(6)
