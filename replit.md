@@ -22,11 +22,23 @@ The platform is built on a modern web stack featuring **Next.js 16 (App Router)*
 -   **Workflow:** The development server runs on port 5000 with `node server.js` for Socket.IO integration, configured for Replit proxy.
 
 ## External Dependencies
--   **Database:** **PostgreSQL** hosted externally on filess.io (pdk8zc.h.filess.io).
+-   **Database:** **PostgreSQL** hosted on AWS (configured via DATABASE_URL environment variable).
 -   **ORM:** **Prisma**.
--   **Authentication:** **NextAuth.js**.
+-   **Authentication:** **NextAuth.js** (requires NEXTAUTH_SECRET environment variable).
 -   **Real-time Communication:** **Socket.IO**.
 -   **Video Conferencing:** **Jitsi Meet SDK**.
 -   **AI Services:** **OpenAI GPT-5** (for grammar checking).
 -   **Translation Services:** **Google Translate API** (for word import and translation).
 -   **Communication:** **WhatsApp API** (for notifications, subscription flows, and support).
+
+## Recent Changes (November 13, 2024)
+-   **Database Migration:** Successfully migrated from filess.io to AWS PostgreSQL database
+-   **API Enhancements:** Added complete CRUD operations for all resources:
+    -   Sessions: Added PUT and DELETE endpoints for teachers (`/api/teacher/sessions/[id]`)
+    -   Assignments: Added GET, PUT, DELETE endpoints for teachers (`/api/teacher/assignments/[id]`)
+    -   Packages: Added POST (create), PUT, DELETE endpoints for admins (`/api/admin/packages`, `/api/admin/packages/[id]`)
+    -   Subscriptions: Added GET, PUT, DELETE endpoints for admins (`/api/admin/subscriptions/[id]`)
+    -   Chat: Added DELETE endpoint for messages (`/api/chat/messages/[id]`)
+-   **Authorization Helpers:** Created `lib/auth-helpers.ts` with reusable functions (`requireTeacher`, `requireAdmin`, `requireStudent`, `parseJsonBody`) to standardize authentication and authorization across endpoints
+-   **Security Fixes:** Resolved authentication issues by properly configuring NEXTAUTH_SECRET
+-   **Code Quality:** Refactored endpoints to use shared authorization helpers, improving maintainability and consistency
