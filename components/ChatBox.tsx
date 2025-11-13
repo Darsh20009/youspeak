@@ -163,12 +163,12 @@ export default function ChatBox({ otherUser, onClose }: ChatBoxProps) {
   }
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden">
+    <div className="flex flex-col h-full bg-white dark:bg-neutral-800 rounded-lg shadow-xl border border-neutral-200 dark:border-neutral-700 overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#004E89] to-[#1A5F7A] p-4 text-white">
+      <div className="bg-gradient-to-r from-primary-600 to-primary-700 dark:from-primary-500 dark:to-primary-600 p-4 text-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#004E89] font-bold">
+            <div className="w-10 h-10 bg-white dark:bg-neutral-200 rounded-full flex items-center justify-center text-primary-600 dark:text-primary-700 font-bold">
               {otherUser.profilePhoto ? (
                 <img src={otherUser.profilePhoto} alt={otherUser.name} className="w-full h-full rounded-full object-cover" />
               ) : (
@@ -196,13 +196,13 @@ export default function ChatBox({ otherUser, onClose }: ChatBoxProps) {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-neutral-50 dark:bg-neutral-900">
         {loading ? (
           <div className="flex items-center justify-center h-full">
-            <Loader2 className="w-8 h-8 animate-spin text-[#004E89]" />
+            <Loader2 className="w-8 h-8 animate-spin text-primary-600 dark:text-primary-400" />
           </div>
         ) : messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-gray-400">
+          <div className="flex flex-col items-center justify-center h-full text-neutral-400 dark:text-neutral-500">
             <MessageCircle className="w-16 h-16 mb-2" />
             <p>لا توجد رسائل بعد</p>
             <p className="text-sm">ابدأ المحادثة الآن!</p>
@@ -218,14 +218,14 @@ export default function ChatBox({ otherUser, onClose }: ChatBoxProps) {
                 <div
                   className={`max-w-[70%] rounded-2xl px-4 py-2 ${
                     isOwn
-                      ? 'bg-gradient-to-r from-[#004E89] to-[#1A5F7A] text-white rounded-br-sm'
-                      : 'bg-white text-gray-800 border border-gray-200 rounded-bl-sm'
+                      ? 'bg-gradient-to-r from-primary-600 to-primary-700 dark:from-primary-500 dark:to-primary-600 text-white rounded-br-sm'
+                      : 'bg-white dark:bg-neutral-700 text-neutral-800 dark:text-neutral-100 border border-neutral-200 dark:border-neutral-600 rounded-bl-sm'
                   }`}
                 >
                   <p className="whitespace-pre-wrap break-words text-right" dir="rtl">
                     {message.content}
                   </p>
-                  <p className={`text-xs mt-1 ${isOwn ? 'text-white/70' : 'text-gray-400'}`}>
+                  <p className={`text-xs mt-1 ${isOwn ? 'text-white/70' : 'text-neutral-400 dark:text-neutral-500'}`}>
                     {new Date(message.createdAt).toLocaleTimeString('ar-EG', {
                       hour: '2-digit',
                       minute: '2-digit'
@@ -240,12 +240,12 @@ export default function ChatBox({ otherUser, onClose }: ChatBoxProps) {
       </div>
 
       {/* Input */}
-      <div className="p-4 bg-white border-t border-gray-200">
+      <div className="p-4 bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700">
         <div className="flex gap-2">
           <button
             onClick={handleSend}
             disabled={!newMessage.trim() || sending}
-            className="bg-gradient-to-r from-[#004E89] to-[#1A5F7A] text-white p-3 rounded-full hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+            className="bg-gradient-to-r from-primary-600 to-primary-700 dark:from-primary-500 dark:to-primary-600 text-white p-3 rounded-full hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
           >
             {sending ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -259,7 +259,7 @@ export default function ChatBox({ otherUser, onClose }: ChatBoxProps) {
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="اكتب رسالتك..."
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-right"
+            className="flex-1 px-4 py-3 border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-500 dark:placeholder:text-neutral-400 rounded-full focus:ring-2 focus:ring-primary-600 dark:focus:ring-primary-400 focus:border-transparent text-right"
             dir="rtl"
             disabled={sending}
           />
