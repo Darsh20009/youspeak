@@ -88,190 +88,176 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F5F5DC] to-white py-8 px-4">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-4 hover:opacity-80 transition-opacity">
-            <Image src="/logo.png" alt="Youspeak" width={50} height={50} />
-            <span className="text-2xl font-bold text-[#004E89]">Youspeak</span>
+    <div className="min-h-screen bg-[#F5F1E8] flex items-center justify-center p-4">
+      <Card className="w-full max-w-md shadow-2xl bg-[#F5F1E8] border-2 border-[#d4c9b8]">
+        {error && (
+          <Alert
+            variant="error"
+            dismissible
+            onDismiss={() => setError('')}
+            className="mb-6"
+          >
+            {error}
+          </Alert>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <Input
+            type="text"
+            label="Full Name / الاسم الكامل *"
+            placeholder="John Doe"
+            required
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            leftIcon={<User className="h-5 w-5" />}
+            inputSize="lg"
+          />
+
+          <Input
+            type="email"
+            label="Email / البريد الإلكتروني *"
+            placeholder="your.email@example.com"
+            required
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            leftIcon={<Mail className="h-5 w-5" />}
+            inputSize="lg"
+          />
+
+          <Input
+            type="tel"
+            label="WhatsApp Number / رقم الواتساب *"
+            placeholder="+966... or +20..."
+            required
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            leftIcon={<Phone className="h-5 w-5" />}
+            inputSize="lg"
+            hint="Required for account activation / مطلوب لتفعيل الحساب"
+          />
+
+          <Input
+            type="number"
+            label="Age / العمر *"
+            placeholder="18"
+            required
+            value={formData.age}
+            onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+            leftIcon={<Calendar className="h-5 w-5" />}
+            inputSize="lg"
+            min="5"
+            max="100"
+          />
+
+          <div>
+            <label className="block text-sm font-medium text-black mb-2">
+              Current English Level / مستواك الحالي *
+            </label>
+            <select
+              required
+              value={formData.levelInitial}
+              onChange={(e) => setFormData({ ...formData, levelInitial: e.target.value })}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-base"
+            >
+              <option value="">Select your level / اختر مستواك</option>
+              <option value="A1">A1 - Beginner / مبتدئ</option>
+              <option value="A2">A2 - Elementary / ابتدائي</option>
+              <option value="B1">B1 - Intermediate / متوسط</option>
+              <option value="B2">B2 - Upper Intermediate / فوق المتوسط</option>
+            </select>
+            <p className="mt-1 text-xs text-gray-500">
+              Don't know your level? You'll take a 20-minute assessment / لا تعرف مستواك؟ ستأخذ اختبار 20 دقيقة
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-black mb-2" htmlFor="goal">
+              Learning Goal / الهدف من التعلم *
+            </label>
+            <textarea
+              id="goal"
+              required
+              value={formData.goal}
+              onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
+              placeholder="e.g., Travel, Work, Study abroad / مثال: السفر، العمل، الدراسة في الخارج"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-base resize-none"
+              rows={3}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-black mb-2">
+              Preferred Class Time / الوقت المفضل للحصص *
+            </label>
+            <select
+              required
+              value={formData.preferredTime}
+              onChange={(e) => setFormData({ ...formData, preferredTime: e.target.value })}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-base"
+            >
+              <option value="">Select preferred time / اختر الوقت المفضل</option>
+              <option value="morning">Morning (8 AM - 12 PM) / صباحاً (8 - 12 ظهراً)</option>
+              <option value="afternoon">Afternoon (12 PM - 5 PM) / بعد الظهر (12 - 5 مساءً)</option>
+              <option value="evening">Evening (5 PM - 10 PM) / مساءً (5 - 10 مساءً)</option>
+              <option value="flexible">Flexible / مرن</option>
+            </select>
+          </div>
+
+          <Input
+            type="password"
+            label="Password / كلمة المرور *"
+            placeholder="••••••••"
+            required
+            value={formData.password}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            leftIcon={<Lock className="h-5 w-5" />}
+            inputSize="lg"
+            hint="At least 6 characters / 6 أحرف على الأقل"
+          />
+
+          <Input
+            type="password"
+            label="Confirm Password / تأكيد كلمة المرور *"
+            placeholder="••••••••"
+            required
+            value={formData.confirmPassword}
+            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+            leftIcon={<Lock className="h-5 w-5" />}
+            inputSize="lg"
+          />
+
+          <Button
+            type="submit"
+            fullWidth
+            size="lg"
+            loading={loading}
+            className="font-semibold bg-[#004E89] hover:bg-[#003A6B] text-white"
+          >
+            {loading ? 'Creating Account... / جارٍ إنشاء الحساب' : 'Register / سجل'}
+          </Button>
+        </form>
+
+        <p className="mt-6 text-center text-black">
+          Already have an account? / لديك حساب بالفعل؟{' '}
+          <Link href="/auth/login" className="text-[#004E89] hover:text-[#003A6B] font-semibold">
+            Login / تسجيل الدخول
           </Link>
-          <h1 className="text-3xl font-bold text-[#004E89] mb-2">
-            Join Us / انضم إلينا
-          </h1>
-          <p className="text-gray-600">
-            Create your account to start learning / أنشئ حسابك لبدء التعلم
-          </p>
-        </div>
-
-        <Card variant="elevated" padding="lg">
-          {error && (
-            <Alert 
-              variant="error" 
-              dismissible 
-              onDismiss={() => setError('')}
-              className="mb-6"
-            >
-              {error}
-            </Alert>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <Input
-              type="text"
-              label="Full Name / الاسم الكامل *"
-              placeholder="John Doe"
-              required
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              leftIcon={<User className="h-5 w-5" />}
-              inputSize="lg"
-            />
-
-            <Input
-              type="email"
-              label="Email / البريد الإلكتروني *"
-              placeholder="your.email@example.com"
-              required
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              leftIcon={<Mail className="h-5 w-5" />}
-              inputSize="lg"
-            />
-
-            <Input
-              type="tel"
-              label="WhatsApp Number / رقم الواتساب *"
-              placeholder="+966... or +20..."
-              required
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              leftIcon={<Phone className="h-5 w-5" />}
-              inputSize="lg"
-              hint="Required for account activation / مطلوب لتفعيل الحساب"
-            />
-
-            <Input
-              type="number"
-              label="Age / العمر *"
-              placeholder="18"
-              required
-              value={formData.age}
-              onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-              leftIcon={<Calendar className="h-5 w-5" />}
-              inputSize="lg"
-              min="5"
-              max="100"
-            />
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Current English Level / مستواك الحالي *
-              </label>
-              <select
-                required
-                value={formData.levelInitial}
-                onChange={(e) => setFormData({ ...formData, levelInitial: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-base"
-              >
-                <option value="">Select your level / اختر مستواك</option>
-                <option value="A1">A1 - Beginner / مبتدئ</option>
-                <option value="A2">A2 - Elementary / ابتدائي</option>
-                <option value="B1">B1 - Intermediate / متوسط</option>
-                <option value="B2">B2 - Upper Intermediate / فوق المتوسط</option>
-              </select>
-              <p className="mt-1 text-xs text-gray-500">
-                Don't know your level? You'll take a 20-minute assessment / لا تعرف مستواك؟ ستأخذ اختبار 20 دقيقة
-              </p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="goal">
-                Learning Goal / الهدف من التعلم *
-              </label>
-              <textarea
-                id="goal"
-                required
-                value={formData.goal}
-                onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
-                placeholder="e.g., Travel, Work, Study abroad / مثال: السفر، العمل، الدراسة في الخارج"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-base resize-none"
-                rows={3}
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Preferred Class Time / الوقت المفضل للحصص *
-              </label>
-              <select
-                required
-                value={formData.preferredTime}
-                onChange={(e) => setFormData({ ...formData, preferredTime: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-base"
-              >
-                <option value="">Select preferred time / اختر الوقت المفضل</option>
-                <option value="morning">Morning (8 AM - 12 PM) / صباحاً (8 - 12 ظهراً)</option>
-                <option value="afternoon">Afternoon (12 PM - 5 PM) / بعد الظهر (12 - 5 مساءً)</option>
-                <option value="evening">Evening (5 PM - 10 PM) / مساءً (5 - 10 مساءً)</option>
-                <option value="flexible">Flexible / مرن</option>
-              </select>
-            </div>
-
-            <Input
-              type="password"
-              label="Password / كلمة المرور *"
-              placeholder="••••••••"
-              required
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              leftIcon={<Lock className="h-5 w-5" />}
-              inputSize="lg"
-              hint="At least 6 characters / 6 أحرف على الأقل"
-            />
-
-            <Input
-              type="password"
-              label="Confirm Password / تأكيد كلمة المرور *"
-              placeholder="••••••••"
-              required
-              value={formData.confirmPassword}
-              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-              leftIcon={<Lock className="h-5 w-5" />}
-              inputSize="lg"
-            />
-
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              fullWidth
-              loading={loading}
-            >
-              {loading ? 'Creating Account... / جارٍ إنشاء الحساب' : 'Register / سجل'}
-            </Button>
-          </form>
-
-          <p className="mt-6 text-center text-gray-600">
-            Already have an account? / لديك حساب بالفعل؟{' '}
-            <Link 
-              href="/auth/login" 
-              className="text-[#004E89] font-semibold hover:underline transition-all"
-            >
-              Login / تسجيل الدخول
-            </Link>
-          </p>
-        </Card>
+        </p>
 
         <Alert variant="info" className="mt-6">
           <p className="text-sm">
-            <strong>Note / ملاحظة:</strong> After registration, your account will be reviewed. 
+            <strong>Note / ملاحظة:</strong> After registration, your account will be reviewed.
             You'll be contacted via WhatsApp at <strong className="text-[#004E89]">+201091515594</strong> for payment and activation.
           </p>
           <p className="text-sm mt-2">
             بعد التسجيل، سيتم مراجعة حسابك. سيتم التواصل معك عبر الواتساب على <strong className="text-[#004E89]">+201091515594</strong> للدفع والتفعيل.
           </p>
         </Alert>
-      </div>
+      </Card>
+
+      <footer className="absolute bottom-0 left-0 right-0 p-4 text-center text-sm text-gray-500">
+        Made with ❤️ for English learners worldwide x Made with ❤️ MA3K Company
+      </footer>
     </div>
   )
 }

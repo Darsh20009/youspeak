@@ -18,7 +18,7 @@
   --border: #d4c9b8;
   --radius: 0.5rem;
   
-  --card-bg: #ffffff;
+  --card-bg: #F5F1E8;
 }
 
 @theme inline {
@@ -98,6 +98,23 @@ h1, h2, h3, h4, h5, h6, p, span, div, label {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.animate-fade-out {
+  animation: fade-out 2.5s ease-in-out forwards;
 }
 
 @media (max-width: 640px) {

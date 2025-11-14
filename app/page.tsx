@@ -300,7 +300,7 @@ export default function Home() {
             © 2024 Youspeak - All Rights Reserved • جميع الحقوق محفوظة
           </p>
           <p className="text-xs opacity-60 mt-2">
-            Made with ❤️ for English learners worldwide
+            Made with ❤️ MA3K Company • for English learners worldwide
           </p>
         </div>
       </footer>
