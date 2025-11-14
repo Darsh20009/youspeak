@@ -56,17 +56,17 @@ export default function SettingsPage() {
   const text = t[language]
 
   return (
-    <div className="min-h-screen bg-[var(--background)] p-4 md:p-8 transition-colors">
+    <div className="min-h-screen bg-[#F5F1E8] p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-2">
-            <div className="bg-blue-600 p-3 rounded-xl">
+            <div className="bg-[#004E89] p-3 rounded-xl">
               <Settings className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-[var(--foreground)]">{text.title}</h1>
-              <p className="text-[var(--foreground)] opacity-70">{text.subtitle}</p>
+              <h1 className="text-4xl font-bold text-black">{text.title}</h1>
+              <p className="text-black opacity-70">{text.subtitle}</p>
             </div>
           </div>
         </div>
@@ -185,6 +185,9 @@ export default function SettingsPage() {
           </div>
         </Card>
       </div>
+      <footer className="mt-8 text-center text-sm text-black pb-4">
+        Made with ❤️ by MA3K Company
+      </footer>
     </div>
   )
 }

@@ -70,14 +70,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F1E8] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#F5F1E8] flex flex-col items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-2xl bg-[#F5F1E8] border-2 border-[#d4c9b8]">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4 hover:opacity-80 transition-opacity">
             <Image src="/logo.png" alt="Youspeak" width={50} height={50} />
-            <span className="text-2xl font-bold text-[#004E89]">Youspeak</span>
+            <span className="text-2xl font-bold text-black">Youspeak</span>
           </Link>
-          <h1 className="text-3xl font-bold text-center mb-2 text-[#004E89]">
+          <h1 className="text-3xl font-bold text-center mb-2 text-black">
             Welcome Back / مرحباً بعودتك
           </h1>
           <p className="text-center text-black mb-8">
@@ -135,7 +135,7 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="text-center">
+          <div className="text-center mt-6">
             <p className="text-sm text-black">
               Don't have an account? / ليس لديك حساب؟{' '}
               <Link href="/auth/register" className="text-[#004E89] hover:text-[#003A6B] font-semibold">
@@ -144,10 +144,10 @@ export default function LoginPage() {
             </p>
           </div>
         </Card>
-        <footer className="mt-8 text-center text-sm text-black">
-          Made with ❤️ for English learners worldwide x Made with ❤️ MA3K Company
-        </footer>
       </Card>
+      <footer className="mt-8 text-center text-sm text-black">
+        Made with ❤️ by MA3K Company
+      </footer>
     </div>
   )
 }

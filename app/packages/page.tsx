@@ -12,7 +12,7 @@ export default async function PackagesPage() {
   })
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F5F5DC] to-white">
+    <div className="min-h-screen bg-[#F5F1E8]">
       <header className="bg-[#004E89] text-white shadow-lg">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
@@ -40,13 +40,13 @@ export default async function PackagesPage() {
 
       <main className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-[#004E89] mb-4">
+          <h2 className="text-4xl font-bold text-black mb-4">
             Our Packages / باقاتنا
           </h2>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+          <p className="text-xl text-black max-w-3xl mx-auto">
             Choose the perfect learning package for your English journey
           </p>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto" dir="rtl">
+          <p className="text-xl text-black max-w-3xl mx-auto" dir="rtl">
             اختر الباقة المثالية لرحلتك في تعلم اللغة الإنجليزية
           </p>
         </div>
@@ -69,61 +69,61 @@ export default async function PackagesPage() {
                   </div>
                 )}
                 
-                <div className={`p-8 ${isRecommended ? 'bg-gradient-to-br from-[#004E89] to-[#1a6ba8]' : 'bg-gray-50'}`}>
-                  <h3 className={`text-2xl font-bold mb-2 ${isRecommended ? 'text-white' : 'text-[#004E89]'}`}>
+                <div className={`p-8 ${isRecommended ? 'bg-gradient-to-br from-[#004E89] to-[#1a6ba8]' : 'bg-[#F5F1E8]'}`}>
+                  <h3 className={`text-2xl font-bold mb-2 ${isRecommended ? 'text-white' : 'text-black'}`}>
                     {pkg.title}
                   </h3>
-                  <p className={`text-lg ${isRecommended ? 'text-white/90' : 'text-gray-600'}`}>
+                  <p className={`text-lg ${isRecommended ? 'text-white/90' : 'text-black'}`}>
                     {pkg.titleAr}
                   </p>
                 </div>
 
                 <div className="p-8">
                   <div className="text-center mb-6">
-                    <p className="text-5xl font-bold text-[#004E89] mb-2">
+                    <p className="text-5xl font-bold text-black mb-2">
                       {pkg.price}
-                      <span className="text-2xl text-gray-600"> SAR</span>
+                      <span className="text-2xl text-black"> SAR</span>
                     </p>
-                    <p className="text-gray-600">
+                    <p className="text-black">
                       {Math.ceil(pkg.durationDays / 30)} month(s) / شهر
                     </p>
                   </div>
 
                   <div className="space-y-3 mb-8">
                     <div className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                      <p className="text-gray-700">
+                      <Check className="h-5 w-5 text-[#004E89] flex-shrink-0 mt-0.5" />
+                      <p className="text-black">
                         {pkg.lessonsCount} live sessions / حصة مباشرة
                       </p>
                     </div>
                     <div className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                      <p className="text-gray-700">
+                      <Check className="h-5 w-5 text-[#004E89] flex-shrink-0 mt-0.5" />
+                      <p className="text-black">
                         60-minute interactive classes / حصص تفاعلية 60 دقيقة
                       </p>
                     </div>
                     <div className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                      <p className="text-gray-700">
+                      <Check className="h-5 w-5 text-[#004E89] flex-shrink-0 mt-0.5" />
+                      <p className="text-black">
                         Homework & corrections / واجبات وتصحيح
                       </p>
                     </div>
                     <div className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                      <p className="text-gray-700">
+                      <Check className="h-5 w-5 text-[#004E89] flex-shrink-0 mt-0.5" />
+                      <p className="text-black">
                         Vocabulary tracking / تتبع الكلمات
                       </p>
                     </div>
                     {pkg.description && (
                       <div className="flex items-start gap-2">
-                        <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                        <p className="text-gray-700">{pkg.description}</p>
+                        <Check className="h-5 w-5 text-[#004E89] flex-shrink-0 mt-0.5" />
+                        <p className="text-black">{pkg.description}</p>
                       </div>
                     )}
                     {pkg.descriptionAr && (
                       <div className="flex items-start gap-2">
-                        <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                        <p className="text-gray-700" dir="rtl">{pkg.descriptionAr}</p>
+                        <Check className="h-5 w-5 text-[#004E89] flex-shrink-0 mt-0.5" />
+                        <p className="text-black" dir="rtl">{pkg.descriptionAr}</p>
                       </div>
                     )}
                   </div>
@@ -144,8 +144,8 @@ export default async function PackagesPage() {
           })}
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-4xl mx-auto">
-          <h3 className="text-2xl font-bold text-[#004E89] mb-6 text-center">
+        <div className="bg-[#F5F1E8] rounded-2xl shadow-xl p-8 max-w-4xl mx-auto border-2 border-[#d4c9b8]">
+          <h3 className="text-2xl font-bold text-black mb-6 text-center">
             How It Works / كيف يعمل
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
@@ -153,8 +153,8 @@ export default async function PackagesPage() {
               <div className="w-16 h-16 bg-[#004E89] text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 1
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Register / سجل</h4>
-              <p className="text-sm text-gray-600">
+              <h4 className="font-semibold text-black mb-2">Register / سجل</h4>
+              <p className="text-sm text-black">
                 Create your account and select a package
               </p>
             </div>
@@ -162,8 +162,8 @@ export default async function PackagesPage() {
               <div className="w-16 h-16 bg-[#004E89] text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 2
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Pay / ادفع</h4>
-              <p className="text-sm text-gray-600">
+              <h4 className="font-semibold text-black mb-2">Pay / ادفع</h4>
+              <p className="text-sm text-black">
                 Contact us via WhatsApp for payment details
               </p>
             </div>
@@ -171,18 +171,18 @@ export default async function PackagesPage() {
               <div className="w-16 h-16 bg-[#004E89] text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 3
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Learn / تعلم</h4>
-              <p className="text-sm text-gray-600">
+              <h4 className="font-semibold text-black mb-2">Learn / تعلم</h4>
+              <p className="text-sm text-black">
                 Start attending live interactive sessions
               </p>
             </div>
           </div>
 
           <div className="mt-8 text-center">
-            <p className="text-gray-700 mb-4">
+            <p className="text-black mb-4">
               Need help choosing? Contact us on WhatsApp
             </p>
-            <p className="text-gray-700 mb-4" dir="rtl">
+            <p className="text-black mb-4" dir="rtl">
               تحتاج مساعدة في الاختيار؟ تواصل معنا عبر الواتساب
             </p>
             <a
@@ -197,11 +197,11 @@ export default async function PackagesPage() {
         </div>
       </main>
 
-      <footer className="bg-[#004E89] text-white py-8 mt-16">
+      <footer className="bg-[#F5F1E8] text-black py-8 mt-16 border-t-2 border-[#d4c9b8]">
         <div className="container mx-auto px-4 text-center">
           <p className="mb-2">Contact Us: youspeak.help@gmail.com</p>
           <p className="mb-2">WhatsApp: +201091515594</p>
-          <p className="text-sm opacity-75">© 2024 Youspeak - All Rights Reserved</p>
+          <p className="text-sm mt-4">Made with ❤️ by MA3K Company</p>
         </div>
       </footer>
 

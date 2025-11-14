@@ -30,20 +30,20 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800">
+    <div className="min-h-screen bg-[#F5F1E8]">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 flex items-center gap-3">
-            <MessageCircle className="w-8 h-8 text-primary-600 dark:text-primary-300" />
+          <h1 className="text-3xl font-bold text-black flex items-center gap-3">
+            <MessageCircle className="w-8 h-8 text-[#004E89]" />
             الرسائل
           </h1>
-          <p className="text-neutral-600 dark:text-neutral-400 mt-2">تواصل مع المدرسين والطلاب</p>
+          <p className="text-black mt-2">تواصل مع المدرسين والطلاب</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-200px)]">
           {/* Conversations List */}
-          <div className="lg:col-span-1 bg-white dark:bg-neutral-800 rounded-lg shadow-lg overflow-hidden">
-            <div className="bg-gradient-to-r from-primary-600 to-primary-700 dark:from-primary-500 dark:to-primary-600 p-4 text-white">
+          <div className="lg:col-span-1 bg-[#F5F1E8] rounded-lg shadow-lg overflow-hidden border-2 border-[#d4c9b8]">
+            <div className="bg-[#004E89] p-4 text-white">
               <h2 className="font-bold text-lg">المحادثات</h2>
             </div>
             <div className="overflow-y-auto h-[calc(100%-60px)]">
@@ -62,8 +62,8 @@ export default function ChatPage() {
                 onClose={() => setSelectedUser(null)}
               />
             ) : (
-              <div className="h-full bg-white dark:bg-neutral-800 rounded-lg shadow-lg flex flex-col items-center justify-center text-neutral-400 dark:text-neutral-500">
-                <MessageCircle className="w-24 h-24 mb-4" />
+              <div className="h-full bg-[#F5F1E8] rounded-lg shadow-lg flex flex-col items-center justify-center text-black border-2 border-[#d4c9b8]">
+                <MessageCircle className="w-24 h-24 mb-4 text-[#004E89]" />
                 <p className="text-xl font-medium">اختر محادثة للبدء</p>
                 <p className="text-sm mt-2">حدد محادثة من القائمة على اليسار</p>
               </div>
@@ -71,6 +71,9 @@ export default function ChatPage() {
           </div>
         </div>
       </div>
+      <footer className="mt-8 text-center text-sm text-black pb-4">
+        Made with ❤️ by MA3K Company
+      </footer>
     </div>
   )
 }

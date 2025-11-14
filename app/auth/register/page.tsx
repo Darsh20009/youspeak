@@ -88,8 +88,21 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F1E8] flex items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-2xl bg-[#F5F1E8] border-2 border-[#d4c9b8]">
+    <div className="min-h-screen bg-[#F5F1E8] flex flex-col items-center justify-center p-4">
+      <Card className="w-full max-w-md shadow-2xl bg-[#F5F1E8] border-2 border-[#d4c9b8] mb-4">
+        <div className="text-center mb-8">
+          <Link href="/" className="inline-flex items-center gap-2 mb-4 hover:opacity-80 transition-opacity">
+            <Image src="/logo.png" alt="Youspeak" width={50} height={50} />
+            <span className="text-2xl font-bold text-black">Youspeak</span>
+          </Link>
+          <h1 className="text-3xl font-bold text-center mb-2 text-black">
+            Create Account / إنشاء حساب
+          </h1>
+          <p className="text-center text-black mb-8">
+            Join us today / انضم إلينا اليوم
+          </p>
+        </div>
+
         {error && (
           <Alert
             variant="error"
@@ -245,18 +258,18 @@ export default function RegisterPage() {
         </p>
 
         <Alert variant="info" className="mt-6">
-          <p className="text-sm">
+          <p className="text-sm text-black">
             <strong>Note / ملاحظة:</strong> After registration, your account will be reviewed.
             You'll be contacted via WhatsApp at <strong className="text-[#004E89]">+201091515594</strong> for payment and activation.
           </p>
-          <p className="text-sm mt-2">
+          <p className="text-sm mt-2 text-black">
             بعد التسجيل، سيتم مراجعة حسابك. سيتم التواصل معك عبر الواتساب على <strong className="text-[#004E89]">+201091515594</strong> للدفع والتفعيل.
           </p>
         </Alert>
       </Card>
 
-      <footer className="absolute bottom-0 left-0 right-0 p-4 text-center text-sm text-gray-500">
-        Made with ❤️ for English learners worldwide x Made with ❤️ MA3K Company
+      <footer className="mt-8 text-center text-sm text-black">
+        Made with ❤️ by MA3K Company
       </footer>
     </div>
   )
