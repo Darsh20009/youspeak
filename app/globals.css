@@ -29,35 +29,35 @@
 }
 
 .dark {
-  --background: #0f172a;
-  --foreground: #f1f5f9;
-  --border: #334155;
-  --primary: #60a5fa;
-  --primary-foreground: #0f172a;
-  --card-bg: #1e293b;
-  --input-bg: #0f172a;
-  --accent: #fbbf24;
-  --success: #10b981;
-  --error: #f87171;
-  --warning: #fbbf24;
-  --info: #60a5fa;
+  --background: #F5F1E8;
+  --foreground: #000000;
+  --border: #d4c9b8;
+  --primary: #004E89;
+  --primary-foreground: #ffffff;
+  --card-bg: #F5F1E8;
+  --input-bg: #ffffff;
+  --accent: #FFD700;
+  --success: #22c55e;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --info: #004E89;
 }
 
 :root.dark {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0f172a;
-    --foreground: #f1f5f9;
-    --border: #334155;
+    --background: #F5F1E8;
+    --foreground: #000000;
+    --border: #d4c9b8;
   }
 }
 
 body {
-  background: var(--background);
-  color: #000000;
+  background: #F5F1E8 !important;
+  color: #000000 !important;
   font-family: Arial, Helvetica, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -86,6 +86,21 @@ h1, h2, h3, h4, h5, h6, p, span, div, label {
 [dir="ltr"] {
   direction: ltr;
   text-align: left;
+}
+
+html {
+  background: #F5F1E8 !important;
+}
+
+main, section, div, header, footer {
+  background-color: transparent;
+}
+
+.dark body,
+.dark main,
+.dark section {
+  background: #F5F1E8 !important;
+  color: #000000 !important;
 }
 
 @supports (font-variation-settings: normal) {
