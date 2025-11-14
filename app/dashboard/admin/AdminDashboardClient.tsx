@@ -54,7 +54,7 @@ export default function AdminDashboardClient({ user }: AdminDashboardClientProps
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => signOut({ callbackUrl: '/' })}
+                onClick={() => signOut({ callbackUrl: '/auth/login' })}
                 className="text-white border-white hover:bg-white hover:text-[#004E89] text-xs sm:text-sm px-2 sm:px-4"
               >
                 <LogOut className="h-4 w-4 sm:mr-2" />
@@ -69,12 +69,12 @@ export default function AdminDashboardClient({ user }: AdminDashboardClientProps
         <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
           {/* Mobile Sidebar Overlay */}
           {sidebarOpen && (
-            <div 
+            <div
               className="fixed inset-0 bg-black/50 z-40 lg:hidden"
               onClick={() => setSidebarOpen(false)}
             />
           )}
-          
+
           {/* Sidebar */}
           <div className={`
             fixed lg:static inset-y-0 left-0 z-50 lg:z-auto
@@ -94,7 +94,7 @@ export default function AdminDashboardClient({ user }: AdminDashboardClientProps
                       <p className="text-xs sm:text-sm text-gray-600">{user.role}</p>
                     </div>
                   </div>
-                  <button 
+                  <button
                     className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
                     onClick={() => setSidebarOpen(false)}
                   >

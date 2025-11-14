@@ -57,7 +57,7 @@ export default function TeacherDashboardClient({ user }: TeacherDashboardClientP
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => signOut({ callbackUrl: '/' })}
+                onClick={() => signOut({ callbackUrl: '/auth/login' })}
                 className="text-white border-white hover:bg-white hover:text-[#004E89] text-xs sm:text-sm px-2 sm:px-4"
               >
                 <LogOut className="h-4 w-4 sm:mr-2" />
@@ -77,7 +77,7 @@ export default function TeacherDashboardClient({ user }: TeacherDashboardClientP
               onClick={() => setSidebarOpen(false)}
             />
           )}
-          
+
           {/* Sidebar */}
           <div className={`
             fixed lg:static inset-y-0 left-0 z-50 lg:z-auto
