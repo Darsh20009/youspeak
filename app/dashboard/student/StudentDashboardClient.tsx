@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { 
@@ -30,9 +31,15 @@ interface StudentDashboardClientProps {
 }
 
 export default function StudentDashboardClient({ user }: StudentDashboardClientProps) {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState('home')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const isActive = user.isActive
+
+  const handleSignOut = async () => {
+    await signOut({ redirect: false })
+    router.push('/auth/login')
+  }
 
   const menuItems = [
     { id: 'home', label: 'Home / الرئيسية', icon: Home },
@@ -93,12 +100,7 @@ export default function StudentDashboardClient({ user }: StudentDashboardClientP
               <Button
                 variant="outline"
                 size="sm"
-                onClick={async () => {
-                  await signOut({ 
-                    callbackUrl: '/auth/login',
-                    redirect: true 
-                  })
-                }}
+                onClick={handleSignOut}
                 className="text-white border-white hover:bg-white hover:text-[#004E89] text-xs sm:text-sm px-2 sm:px-4"
               >
                 <LogOut className="h-4 w-4 sm:mr-2" />

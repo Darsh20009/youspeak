@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { Home, Users, CreditCard, Activity, LogOut, Shield } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
@@ -21,8 +22,14 @@ interface AdminDashboardClientProps {
 }
 
 export default function AdminDashboardClient({ user }: AdminDashboardClientProps) {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState('home')
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const handleSignOut = async () => {
+    await signOut({ redirect: false })
+    router.push('/auth/login')
+  }
 
   const menuItems = [
     { id: 'home', label: 'Home / الرئيسية', icon: Home },
@@ -54,12 +61,7 @@ export default function AdminDashboardClient({ user }: AdminDashboardClientProps
               <Button
                 variant="outline"
                 size="sm"
-                onClick={async () => {
-                  await signOut({ 
-                    callbackUrl: '/auth/login',
-                    redirect: true 
-                  })
-                }}
+                onClick={handleSignOut}
                 className="text-white border-white hover:bg-white hover:text-[#004E89] text-xs sm:text-sm px-2 sm:px-4"
               >
                 <LogOut className="h-4 w-4 sm:mr-2" />
