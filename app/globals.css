@@ -8,7 +8,7 @@
   --primary-foreground: #ffffff;
   
   --accent: #FFD700;
-  --accent-foreground: #171717;
+  --accent-foreground: #000000;
   
   --success: #22c55e;
   --error: #ef4444;
@@ -57,13 +57,13 @@
 
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: #000000;
   font-family: Arial, Helvetica, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .text-auto-contrast {
-  color: var(--foreground);
+  color: #000000;
 }
 
 .bg-auto-contrast {
@@ -71,7 +71,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6, p, span, div, label {
-  color: inherit;
+  color: #000000;
 }
 
 * {
