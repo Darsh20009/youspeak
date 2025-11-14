@@ -93,7 +93,12 @@ export default function StudentDashboardClient({ user }: StudentDashboardClientP
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => signOut({ callbackUrl: '/auth/login' })}
+                onClick={async () => {
+                  await signOut({ 
+                    callbackUrl: '/auth/login',
+                    redirect: true 
+                  })
+                }}
                 className="text-white border-white hover:bg-white hover:text-[#004E89] text-xs sm:text-sm px-2 sm:px-4"
               >
                 <LogOut className="h-4 w-4 sm:mr-2" />
