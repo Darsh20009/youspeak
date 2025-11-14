@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
+    "dev": "node start-server.js",
     "build": "next build",
-    "start": "node server.js",
+    "start": "node start-server.js",
     "lint": "eslint",
     "postinstall": "prisma generate"
   },

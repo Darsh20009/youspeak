@@ -1,0 +1,67 @@
+
+Search
+
+Live tail
+GMT+3
+
+Menu
+
+==> Downloading cache...
+==> Cloning from https://github.com/Darsh20009/youspeak
+==> Checking out commit 9e5575c403d85182aa264f57fb554b3312e0378a in branch main
+==> Downloaded 596MB in 4s. Extraction took 16s.
+==> Using Node.js version 22.16.0 (default)
+==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+==> Running build command 'npm install; npm run build'...
+> youspeak@0.1.0 postinstall
+> prisma generate
+Prisma schema loaded from prisma/schema.prisma
+✔ Generated Prisma Client (v6.19.0) to ./node_modules/@prisma/client in 697ms
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+up to date, audited 506 packages in 4s
+164 packages are looking for funding
+  run `npm fund` for details
+5 vulnerabilities (3 low, 1 moderate, 1 high)
+To address issues that do not require attention, run:
+  npm audit fix
+To address all issues possible (including breaking changes), run:
+  npm audit fix --force
+Some issues need review, and may require choosing
+a different dependency.
+Run `npm audit` for details.
+> youspeak@0.1.0 build
+> next build
+   ▲ Next.js 16.0.1 (Turbopack)
+ ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 13.1s
+   Running TypeScript ...
+   Collecting page data ...
+Error [PrismaClientConstructorValidationError]: Invalid value undefined for datasource "db" provided to PrismaClient constructor.
+It should have this form: { url: "CONNECTION_STRING" }
+Read more at https://pris.ly/d/client-constructor
+    at module evaluation (.next/server/chunks/[root-of-the-server]__f98fae95._.js:1:3272)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:715:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:738:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:228:20)
+    at module evaluation (.next/server/chunks/_d03c0e5b._.js:34:44862)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:715:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:738:12)
+Error [PrismaClientConstructorValidationError]: Invalid value undefined for datasource "db" provided to PrismaClient constructor.
+It should have this form: { url: "CONNECTION_STRING" }
+Read more at https://pris.ly/d/client-constructor
+    at module evaluation (.next/server/chunks/[root-of-the-server]__63e69a6a._.js:1:3272)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:715:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:738:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:228:20)
+    at module evaluation (.next/server/chunks/_d03c0e5b._.js:34:44862)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:715:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:738:12)
+> Build error occurred
+Error: Failed to collect page data for /api/auth/[...nextauth]
+    at ignore-listed frames {
+  type: 'Error'
+}
+==> Build failed 😞
+==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys

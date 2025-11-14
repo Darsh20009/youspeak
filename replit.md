@@ -31,11 +31,16 @@ The platform is built on a modern web stack featuring **Next.js 16 (App Router)*
 -   **Translation Services:** **Google Translate API** (for word import and translation).
 -   **Communication:** **WhatsApp API** (for notifications, subscription flows, and support).
 
-## Recent Changes (November 13, 2025)
--   **AWS Database Integration:** Successfully connected platform to AWS RDS PostgreSQL database
-    -   Created schema `youspeak_exercisein` in AWS database
-    -   Pushed all 12 Prisma tables to AWS using `prisma db push`
-    -   Verified database connection and table creation
+## Recent Changes (November 14, 2025)
+-   **AWS Database Connection Setup:** Successfully connected platform to AWS RDS PostgreSQL database
+    -   Database Host: youspeak.czu88we8syd5.eu-north-1.rds.amazonaws.com
+    -   Database Name: postgres
+    -   Schema: youspeak_exercisein
+    -   Port: 5432
+    -   Connection managed via environment variables (AWS_DB_HOST, AWS_DB_PORT, AWS_DB_NAME, AWS_DB_USER, AWS_DB_PASSWORD)
+    -   Created `start-server.js` to automatically construct DATABASE_URL from AWS credentials
+    -   All 12 tables verified and working: Assignment, AuditLog, Chat, Package, Session, SessionStudent, StudentProfile, Submission, Subscription, TeacherProfile, User, Word
+    -   Updated package.json to use new startup script
 -   **Authentication Configuration:** 
     -   Configured NEXTAUTH_SECRET for secure session management
     -   Authentication system now fully operational
