@@ -12,13 +12,13 @@ export default function Home() {
   const { theme, toggleTheme } = useTheme();
   
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#F5F1E8] text-black">
       {/* Header */}
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex items-center justify-between backdrop-blur-sm bg-white/10 rounded-2xl px-6 py-4 shadow-lg">
+        <div className="flex items-center justify-between backdrop-blur-sm bg-white/30 rounded-2xl px-6 py-4 shadow-lg border-2 border-[#d4c9b8]">
           <div className="flex items-center gap-3">
             <div className="relative">
-              <div className="absolute inset-0 bg-[#004E89] blur-xl opacity-30 rounded-full"></div>
+              <div className="absolute inset-0 bg-[#004E89] blur-xl opacity-20 rounded-full"></div>
               <Image
                 src="/logo.png"
                 alt="Youspeak Logo"
@@ -30,16 +30,16 @@ export default function Home() {
               />
             </div>
             <div>
-              <span className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              <span className="text-2xl sm:text-3xl font-bold text-black">
                 Youspeak
               </span>
-              <p className="text-xs text-gray-400">Master English Today</p>
+              <p className="text-xs text-gray-700">Master English Today</p>
             </div>
           </div>
           <div className="flex gap-3 items-center">
             <button
               onClick={toggleTheme}
-              className="p-2.5 rounded-xl border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300 shadow-md hover:shadow-xl"
+              className="p-2.5 rounded-xl border-2 border-[#004E89] text-[#004E89] hover:bg-[#004E89] hover:text-white transition-all duration-300 shadow-md hover:shadow-xl"
               aria-label="Toggle theme"
             >
               {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
@@ -58,39 +58,39 @@ export default function Home() {
         {/* Hero Section */}
         <section className="py-16 sm:py-20 md:py-24 text-center relative">
           {/* Decorative Elements */}
-          <div className="absolute top-20 left-10 text-6xl opacity-10 animate-bounce">📚</div>
-          <div className="absolute top-40 right-20 text-5xl opacity-10 animate-pulse">🎓</div>
-          <div className="absolute bottom-20 left-1/4 text-7xl opacity-10">✨</div>
+          <div className="absolute top-20 left-10 text-6xl opacity-20 animate-bounce">📚</div>
+          <div className="absolute top-40 right-20 text-5xl opacity-20 animate-pulse">🎓</div>
+          <div className="absolute bottom-20 left-1/4 text-7xl opacity-20">✨</div>
           
           <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 bg-[#004E89]/20 px-6 py-2 rounded-full mb-6 backdrop-blur-sm">
-              <Sparkles className="w-5 h-5 text-white" />
-              <span className="text-sm font-semibold text-white">
+            <div className="inline-flex items-center gap-2 bg-[#004E89]/10 border-2 border-[#004E89] px-6 py-2 rounded-full mb-6 backdrop-blur-sm">
+              <Sparkles className="w-5 h-5 text-[#004E89]" />
+              <span className="text-sm font-semibold text-black">
                 Professional Online Learning Platform
               </span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 px-2">
-              <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
+              <span className="text-black">
                 Learn English
               </span>
               <br />
-              <span className="text-white">
+              <span className="text-[#004E89]">
                 with Mister Youssef
               </span>
             </h1>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 px-2" dir="rtl">
-              <span className="bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
+              <span className="text-black">
                 تعلم الإنجليزية
               </span>
-              <span className="text-white"> مع مستر يوسف</span>
+              <span className="text-[#004E89]"> مع مستر يوسف</span>
             </h2>
 
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-4 max-w-3xl mx-auto px-4 leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-800 mb-4 max-w-3xl mx-auto px-4 leading-relaxed">
               🌟 Transform your English skills with interactive live classes
             </p>
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto px-4 leading-relaxed" dir="rtl">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-800 mb-10 max-w-3xl mx-auto px-4 leading-relaxed" dir="rtl">
               حوّل مهاراتك في اللغة الإنجليزية مع دروس حية تفاعلية 🌟
             </p>
             
@@ -173,9 +173,9 @@ export default function Home() {
           ].map((feature, index) => (
             <div
               key={index}
-              className="group bg-white/5 backdrop-blur-sm p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-white/10 hover:border-[#004E89] relative overflow-hidden"
+              className="group bg-white/60 backdrop-blur-sm p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-[#d4c9b8] hover:border-[#004E89] relative overflow-hidden"
             >
-              <div className="absolute top-0 right-0 text-6xl opacity-5 transform translate-x-4 -translate-y-2">
+              <div className="absolute top-0 right-0 text-6xl opacity-10 transform translate-x-4 -translate-y-2">
                 {feature.emoji}
               </div>
               <div className="relative z-10">
@@ -185,16 +185,16 @@ export default function Home() {
                   </div>
                   <span className="text-4xl">{feature.emoji}</span>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">
+                <h3 className="text-xl font-bold text-black mb-2">
                   {feature.title}
                 </h3>
-                <h4 className="text-lg font-semibold text-gray-300 mb-3" dir="rtl">
+                <h4 className="text-lg font-semibold text-gray-800 mb-3" dir="rtl">
                   {feature.titleAr}
                 </h4>
-                <p className="text-sm text-gray-400 mb-1">
+                <p className="text-sm text-gray-700 mb-1">
                   {feature.description}
                 </p>
-                <p className="text-sm text-gray-400" dir="rtl">
+                <p className="text-sm text-gray-700" dir="rtl">
                   {feature.descriptionAr}
                 </p>
               </div>
@@ -203,22 +203,22 @@ export default function Home() {
         </section>
 
         {/* Packages Section */}
-        <section className="py-16 bg-white/5 backdrop-blur-sm rounded-3xl shadow-2xl p-8 md:p-12 mb-16 border border-white/10">
+        <section className="py-16 bg-white/60 backdrop-blur-sm rounded-3xl shadow-2xl p-8 md:p-12 mb-16 border-2 border-[#d4c9b8]">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-[#004E89]/20 px-6 py-2 rounded-full mb-4">
-              <Globe className="w-5 h-5 text-white" />
-              <span className="text-sm font-semibold text-white">
+            <div className="inline-flex items-center gap-2 bg-[#004E89]/10 border-2 border-[#004E89] px-6 py-2 rounded-full mb-4">
+              <Globe className="w-5 h-5 text-[#004E89]" />
+              <span className="text-sm font-semibold text-black">
                 Choose Your Package
               </span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
+              <span className="text-black">
                 Our Packages
               </span>
-              <span className="text-white"> • </span>
-              <span className="text-white" dir="rtl">باقاتنا</span>
+              <span className="text-black"> • </span>
+              <span className="text-black" dir="rtl">باقاتنا</span>
             </h2>
-            <p className="text-lg text-gray-300">
+            <p className="text-lg text-gray-800">
               💎 Premium learning experiences at affordable prices
             </p>
           </div>
@@ -235,7 +235,7 @@ export default function Home() {
                 className={`relative rounded-2xl p-6 text-center transform hover:scale-105 transition-all duration-300 ${
                   pkg.popular
                     ? 'bg-[#004E89] text-white shadow-2xl scale-105'
-                    : 'bg-white/10 backdrop-blur-sm border-2 border-white/20 shadow-lg hover:shadow-2xl text-white'
+                    : 'bg-white/80 backdrop-blur-sm border-2 border-[#d4c9b8] shadow-lg hover:shadow-2xl text-black'
                 }`}
               >
                 {pkg.popular && (
@@ -244,19 +244,19 @@ export default function Home() {
                   </div>
                 )}
                 <div className="text-5xl mb-3">{pkg.emoji}</div>
-                <h3 className="text-xl font-bold mb-2 text-white">
+                <h3 className={`text-xl font-bold mb-2 ${pkg.popular ? 'text-white' : 'text-black'}`}>
                   {pkg.name}
                 </h3>
-                <p className="text-sm mb-4 text-gray-300" dir="rtl">
+                <p className={`text-sm mb-4 ${pkg.popular ? 'text-gray-200' : 'text-gray-800'}`} dir="rtl">
                   {pkg.nameAr}
                 </p>
                 <div className="mb-4">
-                  <span className="text-4xl font-bold text-white">
+                  <span className={`text-4xl font-bold ${pkg.popular ? 'text-white' : 'text-black'}`}>
                     {pkg.price}
                   </span>
-                  <span className="text-lg text-gray-300"> SAR</span>
+                  <span className={`text-lg ${pkg.popular ? 'text-gray-200' : 'text-gray-700'}`}> SAR</span>
                 </div>
-                <p className="text-sm text-gray-300">
+                <p className={`text-sm ${pkg.popular ? 'text-gray-200' : 'text-gray-700'}`}>
                   {pkg.lessons} lessons • {pkg.duration}
                 </p>
               </div>
@@ -276,7 +276,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-black/50 backdrop-blur-sm border-t border-white/10 text-white py-12 mt-16">
+      <footer className="bg-white/40 backdrop-blur-sm border-t-2 border-[#d4c9b8] text-black py-12 mt-16">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-3 mb-6">
             <Image
@@ -286,9 +286,9 @@ export default function Home() {
               height={40}
               className="w-10 h-10"
             />
-            <span className="text-2xl font-bold text-white">Youspeak</span>
+            <span className="text-2xl font-bold text-black">Youspeak</span>
           </div>
-          <div className="space-y-2 mb-6 text-gray-300">
+          <div className="space-y-2 mb-6 text-gray-800">
             <p className="flex items-center justify-center gap-2">
               📧 youspeak.help@gmail.com
             </p>
@@ -296,11 +296,11 @@ export default function Home() {
               📱 +201091515594
             </p>
           </div>
-          <div className="h-px bg-white/20 max-w-md mx-auto mb-6"></div>
-          <p className="text-sm text-gray-400">
+          <div className="h-px bg-[#d4c9b8] max-w-md mx-auto mb-6"></div>
+          <p className="text-sm text-gray-700">
             © 2024 Youspeak - All Rights Reserved • جميع الحقوق محفوظة
           </p>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-gray-600 mt-2">
             Made with ❤️ by MA3K Company
           </p>
         </div>
