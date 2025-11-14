@@ -2,9 +2,11 @@
 
 import { useState } from 'react'
 import { signOut } from 'next-auth/react'
+import Link from 'next/link'
+import Image from 'next/image'
 import { 
   Home, BookOpen, Calendar, MessageCircle, Trophy, 
-  CreditCard, LogOut, CheckCircle, XCircle, Bell, Sparkles 
+  CreditCard, LogOut, CheckCircle, XCircle, Bell, Sparkles, Settings, Brain 
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
@@ -36,6 +38,7 @@ export default function StudentDashboardClient({ user }: StudentDashboardClientP
     { id: 'home', label: 'Home / الرئيسية', icon: Home },
     { id: 'mylearn', label: 'MyLearn / كلماتي', icon: BookOpen },
     { id: 'discover', label: 'Discover Words / اكتشف الكلمات', icon: Sparkles, badge: 'جديد', disabled: !isActive },
+    { id: 'test', label: 'Test Yourself / اختبر نفسك', icon: Trophy, badge: 'جديد', disabled: !isActive },
     { id: 'sessions', label: 'Sessions / الحصص', icon: Calendar },
     { id: 'homework', label: 'Homework / الواجبات', icon: Trophy },
     { id: 'packages', label: 'Packages / الباقات', icon: CreditCard },
@@ -57,7 +60,10 @@ export default function StudentDashboardClient({ user }: StudentDashboardClientP
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <h1 className="text-xl sm:text-2xl font-bold">Youspeak</h1>
+              <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <Image src="/logo.png" alt="Youspeak Logo" width={40} height={40} className="rounded-lg" />
+                <h1 className="text-xl sm:text-2xl font-bold">Youspeak</h1>
+              </Link>
               <Badge variant={isActive ? 'success' : 'warning'} className="hidden sm:flex">
                 {isActive ? (
                   <>
@@ -74,6 +80,16 @@ export default function StudentDashboardClient({ user }: StudentDashboardClientP
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
               <span className="text-xs sm:text-sm hidden sm:block">{user.name}</span>
+              <Link href="/settings">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-white border-white hover:bg-white hover:text-[#004E89] text-xs sm:text-sm px-2 sm:px-4"
+                >
+                  <Settings className="h-4 w-4" />
+                  <span className="hidden sm:inline ml-2">إعدادات</span>
+                </Button>
+              </Link>
               <Button
                 variant="outline"
                 size="sm"
@@ -183,6 +199,7 @@ export default function StudentDashboardClient({ user }: StudentDashboardClientP
             {activeTab === 'home' && <HomeTab isActive={isActive} />}
             {activeTab === 'mylearn' && <MyLearnTab isActive={isActive} />}
             {activeTab === 'discover' && <DiscoverTab isActive={isActive} />}
+            {activeTab === 'test' && <TestTab isActive={isActive} />}
             {activeTab === 'sessions' && <SessionsTab isActive={isActive} />}
             {activeTab === 'homework' && <HomeworkTab isActive={isActive} />}
             {activeTab === 'packages' && <PackagesTab isActive={isActive} />}
@@ -216,6 +233,55 @@ function DiscoverTab({ isActive }: { isActive: boolean }) {
         className="w-full h-[calc(100vh-200px)] border-0 rounded-lg shadow-lg"
         title="Discover New Words"
       />
+    </div>
+  )
+}
+
+function TestTab({ isActive }: { isActive: boolean }) {
+  if (!isActive) {
+    return (
+      <div>
+        <h2 className="text-2xl sm:text-3xl font-bold text-[#004E89] mb-4">
+          Test Yourself / اختبر نفسك
+        </h2>
+        <Alert variant="warning">
+          <p>قم بتفعيل حسابك للوصول لهذه الميزة / Activate your account to access this feature</p>
+        </Alert>
+      </div>
+    )
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow-lg p-6">
+      <div className="flex items-center gap-4 mb-6">
+        <div className="bg-blue-600 p-3 rounded-xl">
+          <Brain className="h-8 w-8 text-white" />
+        </div>
+        <div>
+          <h2 className="text-3xl font-bold text-black">اختبر نفسك</h2>
+          <p className="text-black opacity-70">Test Your Vocabulary</p>
+        </div>
+      </div>
+      
+      <div className="grid md:grid-cols-2 gap-6">
+        <Link href="/dashboard/student/test-words">
+          <div className="bg-white border-2 border-blue-600 rounded-2xl p-8 text-left shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105">
+            <BookOpen className="h-12 w-12 text-blue-600 mb-4" />
+            <h3 className="text-2xl font-bold text-black mb-2">اختيار من متعدد</h3>
+            <p className="text-black opacity-70">Multiple Choice Test</p>
+            <p className="text-black text-sm mt-3">اختر الإجابة الصحيحة من 4 خيارات</p>
+          </div>
+        </Link>
+
+        <Link href="/dashboard/student/test-words">
+          <div className="bg-white border-2 border-blue-600 rounded-2xl p-8 text-left shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105">
+            <Trophy className="h-12 w-12 text-blue-600 mb-4" />
+            <h3 className="text-2xl font-bold text-black mb-2">اختبار الكتابة</h3>
+            <p className="text-black opacity-70">Writing Test</p>
+            <p className="text-black text-sm mt-3">اكتب الإجابة الصحيحة بنفسك</p>
+          </div>
+        </Link>
+      </div>
     </div>
   )
 }

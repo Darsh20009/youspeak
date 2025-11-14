@@ -8,6 +8,7 @@ interface Word {
   word: string
   arabic: string
   example: string
+  imageUrl?: string
 }
 
 export default function DiscoverWordsPage() {
@@ -153,12 +154,26 @@ export default function DiscoverWordsPage() {
               <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/10 rounded-full filter blur-3xl -z-10" />
               <div className="absolute bottom-0 left-0 w-40 h-40 bg-blue-500/10 rounded-full filter blur-3xl -z-10" />
 
-              {/* Word */}
+              {/* Word with Image */}
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
+                {/* Image */}
+                {currentWord.imageUrl && (
+                  <div className="mb-6 relative w-64 h-64 mx-auto rounded-2xl overflow-hidden shadow-lg">
+                    <img 
+                      src={currentWord.imageUrl} 
+                      alt={currentWord.word}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none'
+                      }}
+                    />
+                  </div>
+                )}
+
                 <div className="inline-block bg-blue-600 text-white px-8 py-4 rounded-2xl mb-6">
                   <h2 className="text-6xl font-bold">{currentWord.word}</h2>
                 </div>
