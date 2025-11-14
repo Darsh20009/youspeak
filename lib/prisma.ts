@@ -18,6 +18,10 @@ const getDatabaseUrl = () => {
       return `postgresql://${awsDbUser}:${awsDbPassword}@${awsDbHost}:${awsDbPort}/${awsDbName}?schema=youspeak_exercisein`;
     }
     
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('DATABASE_URL is required in production. Set DATABASE_URL or all AWS_DB_* variables.');
+    }
+    
     return 'postgresql://user:password@localhost:5432/db?schema=youspeak_exercisein';
   }
   
