@@ -18,12 +18,12 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false)
   const [theme, setTheme] = useState<Theme>('light')
-  const [language, setLanguageState] = useState<Language>('ar')
+  const [language, setLanguageState] = useState<Language>('en')
 
   useEffect(() => {
     setMounted(true)
     const savedTheme = (localStorage.getItem('theme') as Theme) || 'light'
-    const savedLanguage = (localStorage.getItem('language') as Language) || 'ar'
+    const savedLanguage = (localStorage.getItem('language') as Language) || 'en'
     
     setTheme(savedTheme)
     setLanguageState(savedLanguage)
