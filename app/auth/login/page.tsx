@@ -48,12 +48,6 @@ export default function LoginPage() {
     }
   }
 
-  black">MA3K Company</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-[#F5F1E8] flex flex-col">
       <AppHeader variant="marketing">
