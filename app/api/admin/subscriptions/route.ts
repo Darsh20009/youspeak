@@ -13,13 +13,25 @@ export async function GET(request: NextRequest) {
 
     const subscriptions = await prisma.subscription.findMany({
       include: {
-        user: {
+        User: {
           select: {
+            id: true,
             name: true,
-            email: true
+            email: true,
+            phone: true
           }
         },
-        package: true
+        Package: true,
+        AssignedTeacher: {
+          include: {
+            User: {
+              select: {
+                name: true,
+                email: true
+              }
+            }
+          }
+        }
       },
       orderBy: {
         createdAt: 'desc'

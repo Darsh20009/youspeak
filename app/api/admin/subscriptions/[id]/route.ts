@@ -15,7 +15,7 @@ export async function GET(
     const subscription = await prisma.subscription.findUnique({
       where: { id },
       include: {
-        user: {
+        User: {
           select: {
             id: true,
             name: true,
@@ -23,7 +23,17 @@ export async function GET(
             phone: true
           }
         },
-        package: true
+        Package: true,
+        AssignedTeacher: {
+          include: {
+            User: {
+              select: {
+                name: true,
+                email: true
+              }
+            }
+          }
+        }
       }
     })
 
@@ -49,46 +59,110 @@ export async function PUT(
     const { id } = await params
 
     const body = await parseJsonBody<{
-      paid?: boolean
-      receiptUrl?: string
-      startDate?: string
-      endDate?: string
+      action: 'approve' | 'reject'
+      assignedTeacherId?: string
+      adminNotes?: string
     }>(request)
     if (isNextResponse(body)) return body
 
-    const { paid, receiptUrl, startDate, endDate } = body
+    const { action, assignedTeacherId, adminNotes } = body
 
-    const existingSubscription = await prisma.subscription.findUnique({
-      where: { id }
-    })
-
-    if (!existingSubscription) {
-      return NextResponse.json({ error: 'Subscription not found' }, { status: 404 })
-    }
-
-    const updateData: any = {}
-    if (paid !== undefined) updateData.paid = paid
-    if (receiptUrl !== undefined) updateData.receiptUrl = receiptUrl
-    if (startDate !== undefined) updateData.startDate = startDate ? new Date(startDate) : null
-    if (endDate !== undefined) updateData.endDate = endDate ? new Date(endDate) : null
-    updateData.updatedAt = new Date()
-
-    const updatedSubscription = await prisma.subscription.update({
+    const subscription = await prisma.subscription.findUnique({
       where: { id },
-      data: updateData,
       include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        },
-        package: true
+        Package: true
       }
     })
 
-    return NextResponse.json(updatedSubscription)
+    if (!subscription) {
+      return NextResponse.json({ error: 'Subscription not found' }, { status: 404 })
+    }
+
+    if (subscription.status !== 'UNDER_REVIEW' && subscription.status !== 'PENDING') {
+      return NextResponse.json({ error: 'Subscription cannot be modified in current status' }, { status: 400 })
+    }
+
+    if (action === 'approve') {
+      if (!assignedTeacherId) {
+        return NextResponse.json({ error: 'Teacher assignment required for approval' }, { status: 400 })
+      }
+
+      const teacher = await prisma.teacherProfile.findUnique({
+        where: { id: assignedTeacherId }
+      })
+
+      if (!teacher) {
+        return NextResponse.json({ error: 'Teacher not found' }, { status: 404 })
+      }
+
+      const startDate = new Date()
+      const endDate = new Date()
+      endDate.setDate(endDate.getDate() + subscription.Package.durationDays)
+
+      const updatedSubscription = await prisma.subscription.update({
+        where: { id },
+        data: {
+          status: 'APPROVED',
+          paid: true,
+          assignedTeacherId: assignedTeacherId,
+          approvedAt: new Date(),
+          startDate: startDate,
+          endDate: endDate,
+          adminNotes: adminNotes,
+          updatedAt: new Date()
+        },
+        include: {
+          User: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              phone: true
+            }
+          },
+          Package: true,
+          AssignedTeacher: {
+            include: {
+              User: {
+                select: {
+                  name: true,
+                  email: true
+                }
+              }
+            }
+          }
+        }
+      })
+
+      return NextResponse.json(updatedSubscription)
+    }
+
+    if (action === 'reject') {
+      const updatedSubscription = await prisma.subscription.update({
+        where: { id },
+        data: {
+          status: 'REJECTED',
+          rejectedAt: new Date(),
+          adminNotes: adminNotes,
+          updatedAt: new Date()
+        },
+        include: {
+          User: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              phone: true
+            }
+          },
+          Package: true
+        }
+      })
+
+      return NextResponse.json(updatedSubscription)
+    }
+
+    return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
   } catch (error) {
     console.error('Error updating subscription:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
