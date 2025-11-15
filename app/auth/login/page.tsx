@@ -132,8 +132,8 @@ export default function LoginPage() {
         </Card>
       </div>
 
-      <footer className="py-3 sm:py-4 text-center text-xs sm:text-sm text-black bg-[#F5F1E8]">
-        Made with ❤️ by MA3K Company
+      <footer className="w-full py-4 sm:py-6 text-center text-sm sm:text-base text-black bg-[#F5F1E8] border-t-2 border-[#d4c9b8] mt-auto">
+        <p className="px-4">Made with ❤️ by MA3K Company</p>
       </footer>
     </div>
   )

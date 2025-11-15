@@ -191,10 +191,10 @@ export default async function PackagesPage() {
       </main>
 
       <footer className="bg-[#F5F1E8] text-black py-6 sm:py-8 mt-8 sm:mt-12 md:mt-16 border-t-2 border-[#d4c9b8]">
-        <div className="container mx-auto px-4 text-center">
-          <p className="mb-2 text-sm sm:text-base">Contact Us: youspeak.help@gmail.com</p>
-          <p className="mb-2 text-sm sm:text-base">WhatsApp: +201091515594</p>
-          <p className="text-xs sm:text-sm mt-3 sm:mt-4">Made with ❤️ by MA3K Company</p>
+        <div className="container mx-auto px-4 sm:px-6 text-center">
+          <p className="mb-3 sm:mb-2 text-base sm:text-lg">Contact Us: youspeak.help@gmail.com</p>
+          <p className="mb-3 sm:mb-2 text-base sm:text-lg">WhatsApp: +201091515594</p>
+          <p className="text-sm sm:text-base mt-4 sm:mt-4">Made with ❤️ by MA3K Company</p>
         </div>
       </footer>
 

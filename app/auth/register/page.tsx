@@ -268,8 +268,8 @@ export default function RegisterPage() {
         </Alert>
       </Card>
 
-      <footer className="mt-4 sm:mt-8 text-center text-xs sm:text-sm text-black px-4">
-        Made with ❤️ by MA3K Company
+      <footer className="w-full py-4 sm:py-6 text-center text-sm sm:text-base text-black bg-[#F5F1E8] border-t-2 border-[#d4c9b8] mt-4 sm:mt-8">
+        <p className="px-4">Made with ❤️ by MA3K Company</p>
       </footer>
     </div>
   )
