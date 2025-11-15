@@ -108,10 +108,10 @@ export default function RegisterPage() {
             <span className="text-xl sm:text-2xl font-bold text-black">Youspeak</span>
           </Link>
           <h1 className="text-2xl sm:text-3xl font-bold text-center mb-2 text-black">
-            {t('createAccount')}
+            Create Your Account
           </h1>
           <p className="text-sm sm:text-base text-center text-black mb-4 sm:mb-8">
-            {t('joinUsToday')}
+            Join us today to start learning
           </p>
         </div>
 
@@ -278,7 +278,7 @@ export default function RegisterPage() {
       </Card>
 
       <footer className="w-full py-4 sm:py-6 text-center text-sm sm:text-base text-black bg-[#F5F1E8] border-t-2 border-[#d4c9b8] mt-4 sm:mt-8">
-        <p className="px-4">{t('madeBy')}</p>
+        <p className="px-4">Made with ❤️ by MA3K Company</p>
       </footer>
     </div>
   )
