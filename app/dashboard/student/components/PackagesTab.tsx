@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { CreditCard, CheckCircle, Clock } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { CreditCard, CheckCircle, Clock, ShoppingCart, Plus } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
 import Alert from '@/components/ui/Alert'
@@ -30,10 +31,13 @@ interface Subscription {
 }
 
 export default function PackagesTab({ isActive }: { isActive: boolean }) {
+  const router = useRouter()
   const [packages, setPackages] = useState<Package[]>([])
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
+  const [cart, setCart] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [selecting, setSelecting] = useState(false)
+  const [addingToCart, setAddingToCart] = useState<string | null>(null)
 
   useEffect(() => {
     fetchData()
@@ -41,9 +45,10 @@ export default function PackagesTab({ isActive }: { isActive: boolean }) {
 
   async function fetchData() {
     try {
-      const [packagesRes, subsRes] = await Promise.all([
+      const [packagesRes, subsRes, cartRes] = await Promise.all([
         fetch('/api/packages'),
-        fetch('/api/subscriptions')
+        fetch('/api/subscriptions'),
+        fetch('/api/cart')
       ])
 
       if (packagesRes.ok) {
@@ -55,6 +60,11 @@ export default function PackagesTab({ isActive }: { isActive: boolean }) {
         const subsData = await subsRes.json()
         setSubscriptions(subsData)
       }
+
+      if (cartRes.ok) {
+        const cartData = await cartRes.json()
+        setCart(cartData)
+      }
     } catch (error) {
       console.error('Error fetching data:', error)
     } finally {
@@ -62,33 +72,32 @@ export default function PackagesTab({ isActive }: { isActive: boolean }) {
     }
   }
 
-  async function handleSelectPackage(packageId: string) {
-    setSelecting(true)
+  async function handleAddToCart(packageId: string) {
+    setAddingToCart(packageId)
     try {
-      const pkg = packages.find(p => p.id === packageId)
-      const response = await fetch('/api/subscriptions', {
+      const response = await fetch('/api/cart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ packageId })
       })
 
       if (response.ok) {
-        const subscriptionData = await response.json()
-        const message = `مرحباً! 👋\n\nأرغب في الاشتراك في باقة:\n📦 *${pkg?.titleAr}* (${pkg?.title})\n💰 السعر: ${pkg?.price} SAR\n📚 عدد الحصص: ${pkg?.lessonsCount}\n⏱️ المدة: ${Math.ceil((pkg?.durationDays || 0) / 30)} شهر\n\nرقم الاشتراك: ${subscriptionData.id}\n\nالرجاء تزويدي بتفاصيل الدفع. شكراً! 🙏`
-        
-        const phoneNumber = '201091515594'
-        const encodedMessage = encodeURIComponent(message)
-        window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank')
-        
-        alert('تم اختيار الباقة بنجاح! سيتم التواصل معك عبر واتساب لإكمال الدفع.\n\nPackage selected successfully! We will contact you via WhatsApp to complete payment.')
         await fetchData()
+        alert('✓ تم إضافة الباقة للسلة!\n\nPackage added to cart!')
+      } else {
+        const error = await response.json()
+        alert(error.error || 'Failed to add to cart')
       }
     } catch (error) {
-      console.error('Error selecting package:', error)
+      console.error('Error adding to cart:', error)
       alert('حدث خطأ. الرجاء المحاولة مرة أخرى.\n\nAn error occurred. Please try again.')
     } finally {
-      setSelecting(false)
+      setAddingToCart(null)
     }
+  }
+
+  function isPackageInCart(packageId: string): boolean {
+    return cart?.CartItem?.some((item: any) => item.Package.id === packageId) || false
   }
 
   const activeSubscription = subscriptions.find(s => 
@@ -103,11 +112,24 @@ export default function PackagesTab({ isActive }: { isActive: boolean }) {
     )
   }
 
+  const cartItemsCount = cart?.CartItem?.length || 0
+
   return (
     <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-[#004E89]">
-        Packages / الباقات
-      </h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-3xl font-bold text-[#004E89]">
+          Packages / الباقات
+        </h2>
+        {cartItemsCount > 0 && (
+          <Button 
+            variant="primary"
+            onClick={() => router.push('/dashboard/student/cart')}
+          >
+            <ShoppingCart className="h-5 w-5 ml-2" />
+            Cart ({cartItemsCount}) / السلة
+          </Button>
+        )}
+      </div>
 
       {activeSubscription && (
         <Card variant="elevated" className="bg-green-50 border-green-200">
@@ -153,14 +175,30 @@ export default function PackagesTab({ isActive }: { isActive: boolean }) {
               {pkg.description && (
                 <p className="text-sm text-gray-600 mb-4">{pkg.description}</p>
               )}
-              <Button 
-                variant={isRecommended ? 'primary' : 'outline'} 
-                fullWidth
-                onClick={() => handleSelectPackage(pkg.id)}
-                disabled={selecting}
-              >
-                {selecting ? 'Processing...' : 'Select / اختر'}
-              </Button>
+              {isPackageInCart(pkg.id) ? (
+                <Button 
+                  variant="outline"
+                  fullWidth
+                  onClick={() => router.push('/dashboard/student/cart')}
+                >
+                  <ShoppingCart className="h-4 w-4 ml-2" />
+                  In Cart / في السلة
+                </Button>
+              ) : (
+                <Button 
+                  variant={isRecommended ? 'primary' : 'outline'} 
+                  fullWidth
+                  onClick={() => handleAddToCart(pkg.id)}
+                  disabled={addingToCart === pkg.id}
+                >
+                  {addingToCart === pkg.id ? 'Adding...' : (
+                    <>
+                      <Plus className="h-4 w-4 ml-2" />
+                      Add to Cart / أضف للسلة
+                    </>
+                  )}
+                </Button>
+              )}
             </Card>
           )
         })}
@@ -169,14 +207,12 @@ export default function PackagesTab({ isActive }: { isActive: boolean }) {
       <Alert variant="info">
         <CreditCard className="h-5 w-5" />
         <div>
-          <p className="font-semibold">Payment Instructions / تعليمات الدفع:</p>
+          <p className="font-semibold">How to Subscribe / كيفية الاشتراك:</p>
           <p className="text-sm mt-1">
-            After selecting a package, you will receive payment details via WhatsApp at{' '}
-            <strong>+201091515594</strong>. Please send your payment receipt for verification.
-          </p>
-          <p className="text-sm mt-1">
-            بعد اختيار الباقة، ستستلم تعليمات الدفع عبر الواتساب على{' '}
-            <strong>+201091515594</strong>. الرجاء إرسال إيصال الدفع للتحقق.
+            1. Add packages to your cart / أضف الباقات للسلة<br/>
+            2. Proceed to checkout / انتقل للدفع<br/>
+            3. Choose payment method (Bank Transfer or E-Wallet) / اختر طريقة الدفع<br/>
+            4. Upload payment receipt for verification / ارفع إيصال الدفع للتحقق
           </p>
         </div>
       </Alert>
