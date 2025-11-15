@@ -34,6 +34,19 @@ The platform is built on a modern web stack featuring **Next.js 16 (App Router)*
 ## Recent Changes
 
 ### November 15, 2025
+-   **Subscription Payment System Implementation:**
+    -   Complete subscription workflow from cart to admin approval
+    -   **Cart Management:** Added shopping cart API (GET/POST/DELETE) with cart badge in student dashboard
+    -   **Checkout Flow:** Multi-step checkout with Egyptian payment methods (Bank Transfer: eg00, E-Wallet: InstaPay/Etisalat Cash 01155201921)
+    -   **Receipt Upload:** Secure receipt upload endpoint with file validation and status transition to UNDER_REVIEW
+    -   **Admin Approval System:** Complete admin subscription management with approve/reject workflow and teacher assignment
+    -   **Status Flow:** PENDING → UNDER_REVIEW → APPROVED/REJECTED
+    -   **Security:** All endpoints properly secured with requireStudent/requireAdmin helpers
+    -   **UI Components:**
+        -   Student cart page with package details and checkout button
+        -   Checkout page with payment method selection and receipt upload
+        -   Admin SubscriptionsTab with receipt preview, teacher selection, and bulk operations
+        -   Updated PackagesTab with "Add to Cart" functionality
 -   **Homepage Design Improvements:**
     -   Removed theme toggle button from marketing homepage
     -   Implemented professional beige gradient background (from-[#F5F1E8] via-[#E8DCC8] to-[#F5F1E8])
