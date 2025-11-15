@@ -31,7 +31,26 @@ The platform is built on a modern web stack featuring **Next.js 16 (App Router)*
 -   **Translation Services:** **Google Translate API** (for word import and translation).
 -   **Communication:** **WhatsApp API** (for notifications, subscription flows, and support).
 
-## Recent Changes (November 14, 2025)
+## Recent Changes
+
+### November 15, 2025
+-   **Homepage Design Improvements:**
+    -   Removed theme toggle button from marketing homepage
+    -   Implemented professional beige gradient background (from-[#F5F1E8] via-[#E8DCC8] to-[#F5F1E8])
+    -   Redesigned hero section with gradient text effects and modern styling
+    -   Added trust indicators showing platform statistics (500+ Students, 50+ Teachers, etc.)
+    -   Enhanced feature cards with individual gradient colors and hover effects
+    -   Improved packages section with elegant design and BEST VALUE highlighting
+    -   Restructured footer with separated contact information and bottom credit section
+-   **Splash Screen Enhancements:**
+    -   Fixed background to solid beige (#F5F1E8) with inline style for guaranteed opacity
+    -   Changed text display to vertical layout (stacked words)
+    -   Implemented typewriter effect with character-by-character animation
+    -   Extended splash screen duration to 4 seconds
+    -   Maintained correct word order: Your → English → Steps
+    -   Added modern logo container with gradient background effect
+
+### November 14, 2025
 -   **AWS Database Connection Setup:** Successfully connected platform to AWS RDS PostgreSQL database
     -   Database Host: youspeak.czu88we8syd5.eu-north-1.rds.amazonaws.com
     -   Database Name: postgres

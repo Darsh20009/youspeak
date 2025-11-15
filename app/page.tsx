@@ -352,13 +352,17 @@ export default function Home() {
             
             <div className="w-full h-px bg-gradient-to-r from-transparent via-[#004E89]/30 to-transparent mb-8"></div>
             
-            <p className="text-base font-semibold text-gray-700 mb-3">
+            <p className="text-base font-semibold text-gray-700">
               © 2024 Youspeak - All Rights Reserved • جميع الحقوق محفوظة
             </p>
-            <p className="text-sm text-gray-600 flex items-center justify-center gap-2">
-              Crafted with <span className="text-red-500">❤️</span> by MA3K Company
-            </p>
           </div>
+        </div>
+        
+        {/* Bottom Credit */}
+        <div className="mt-8 pt-6 border-t border-[#004E89]/10">
+          <p className="text-sm text-gray-600 flex items-center justify-center gap-2">
+            Crafted with <span className="text-red-500">❤️</span> by MA3K Company
+          </p>
         </div>
       </footer>
 
