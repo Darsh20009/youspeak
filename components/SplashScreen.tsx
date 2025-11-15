@@ -31,7 +31,7 @@ export default function SplashScreen() {
   ];
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-[#F5F1E8]">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#F5F1E8' }}>
       
       <div className="text-center relative z-10">
         <motion.div
