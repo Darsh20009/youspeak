@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Check, ArrowLeft } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import FloatingContactButtons from '@/components/FloatingContactButtons'
+import AppHeader from '@/components/layout/AppHeader'
 
 export const dynamic = 'force-dynamic'
 
@@ -13,30 +14,22 @@ export default async function PackagesPage() {
 
   return (
     <div className="min-h-screen bg-[#F5F1E8]">
-      <header className="bg-[#004E89] text-white shadow-lg">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-bold">Youspeak</h1>
-            </div>
-            <div className="flex gap-4">
-              <Link
-                href="/"
-                className="px-6 py-2 rounded-lg border-2 border-white text-white hover:bg-white hover:text-[#004E89] transition-colors flex items-center gap-2"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Back to Home / العودة للرئيسية
-              </Link>
-              <Link
-                href="/auth/login"
-                className="px-6 py-2 rounded-lg bg-white text-[#004E89] hover:bg-gray-100 transition-colors"
-              >
-                Login / تسجيل الدخول
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <AppHeader variant="marketing">
+        <Link
+          href="/"
+          className="px-4 py-2 sm:px-6 sm:py-2 rounded-lg border-2 border-[#004E89] text-[#004E89] hover:bg-[#004E89] hover:text-white transition-colors flex items-center gap-2 text-sm sm:text-base"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span className="hidden sm:inline">Back to Home / العودة للرئيسية</span>
+          <span className="sm:hidden">Back / عودة</span>
+        </Link>
+        <Link
+          href="/auth/login"
+          className="px-4 py-2 sm:px-6 sm:py-2 rounded-lg bg-[#004E89] text-white hover:bg-[#003A6B] transition-colors text-sm sm:text-base"
+        >
+          Login / تسجيل الدخول
+        </Link>
+      </AppHeader>
 
       <main className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">

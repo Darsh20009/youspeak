@@ -2,9 +2,9 @@
 
 'use client';
 
-import Image from "next/image";
 import Link from "next/link";
 import FloatingContactButtons from "@/components/FloatingContactButtons";
+import AppHeader from "@/components/layout/AppHeader";
 import { useTheme } from "@/lib/contexts/ThemeContext";
 import { Moon, Sun, BookOpen, Video, Users, Award, Globe, Sparkles, MessageCircle, Target } from "lucide-react";
 
@@ -13,46 +13,21 @@ export default function Home() {
   
   return (
     <div className="min-h-screen bg-[#F5F1E8] text-black">
-      {/* Header */}
-      <header className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex items-center justify-between backdrop-blur-sm bg-white/30 rounded-2xl px-6 py-4 shadow-lg border-2 border-[#d4c9b8]">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="absolute inset-0 bg-[#004E89] blur-xl opacity-20 rounded-full"></div>
-              <Image
-                src="/logo.png"
-                alt="Youspeak Logo"
-                width={50}
-                height={50}
-                priority
-                className="relative w-12 h-12 sm:w-14 sm:h-14"
-                style={{ width: 'auto', height: 'auto' }}
-              />
-            </div>
-            <div>
-              <span className="text-2xl sm:text-3xl font-bold text-black">
-                Youspeak
-              </span>
-              <p className="text-xs text-gray-700">Master English Today</p>
-            </div>
-          </div>
-          <div className="flex gap-3 items-center">
-            <button
-              onClick={toggleTheme}
-              className="p-2.5 rounded-xl border-2 border-[#004E89] text-[#004E89] hover:bg-[#004E89] hover:text-white transition-all duration-300 shadow-md hover:shadow-xl"
-              aria-label="Toggle theme"
-            >
-              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-            <Link
-              href="/auth/login"
-              className="px-4 py-2.5 sm:px-6 sm:py-2.5 text-sm sm:text-base rounded-xl bg-[#004E89] text-white hover:bg-[#003A6B] transition-all duration-300 shadow-lg hover:shadow-xl font-semibold"
-            >
-              تسجيل الدخول • Login
-            </Link>
-          </div>
-        </div>
-      </header>
+      <AppHeader variant="marketing">
+        <button
+          onClick={toggleTheme}
+          className="p-2.5 rounded-xl border-2 border-[#004E89] text-[#004E89] hover:bg-[#004E89] hover:text-white transition-all duration-300 shadow-md hover:shadow-xl"
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
+        <Link
+          href="/auth/login"
+          className="px-4 py-2.5 sm:px-6 sm:py-2.5 text-sm sm:text-base rounded-xl bg-[#004E89] text-white hover:bg-[#003A6B] transition-all duration-300 shadow-lg hover:shadow-xl font-semibold"
+        >
+          تسجيل الدخول • Login
+        </Link>
+      </AppHeader>
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}

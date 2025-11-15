@@ -10,6 +10,7 @@ import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import Card from '@/components/ui/Card'
 import Alert from '@/components/ui/Alert'
+import AppHeader from '@/components/layout/AppHeader'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -70,20 +71,26 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F1E8] flex flex-col items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-2xl bg-[#F5F1E8] border-2 border-[#d4c9b8]">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-4 hover:opacity-80 transition-opacity">
-            <Image src="/logo.png" alt="Youspeak" width={50} height={50} />
-            <span className="text-2xl font-bold text-black">Youspeak</span>
-          </Link>
-          <h1 className="text-3xl font-bold text-center mb-2 text-black">
-            Welcome Back / مرحباً بعودتك
-          </h1>
-          <p className="text-center text-black mb-8">
-            Sign in to your account / قم بتسجيل الدخول
-          </p>
-        </div>
+    <div className="min-h-screen bg-[#F5F1E8] flex flex-col">
+      <AppHeader variant="marketing">
+        <Link
+          href="/auth/register"
+          className="px-4 py-2 sm:px-6 sm:py-2 rounded-lg border-2 border-[#004E89] text-[#004E89] hover:bg-[#004E89] hover:text-white transition-colors text-sm sm:text-base"
+        >
+          Register / سجل
+        </Link>
+      </AppHeader>
+      
+      <div className="flex-1 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md shadow-2xl bg-[#F5F1E8] border-2 border-[#d4c9b8]">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-center mb-2 text-black">
+              Welcome Back / مرحباً بعودتك
+            </h1>
+            <p className="text-center text-black mb-8">
+              Sign in to your account / قم بتسجيل الدخول
+            </p>
+          </div>
 
         <Card variant="elevated" padding="lg">
           {error && (
@@ -144,10 +151,11 @@ export default function LoginPage() {
             </p>
           </div>
         </Card>
-      </Card>
-      <footer className="mt-8 text-center text-sm text-black">
-        Made with ❤️ by MA3K Company
-      </footer>
+        </Card>
+        <footer className="mt-8 text-center text-sm text-black">
+          Made with ❤️ by MA3K Company
+        </footer>
+      </div>
     </div>
   )
 }
