@@ -14,7 +14,7 @@ export default function Home() {
           href="/auth/login"
           className="px-6 py-3 text-base rounded-xl bg-[#004E89] text-white hover:bg-[#003A6B] transition-all duration-300 shadow-lg hover:shadow-xl font-semibold"
         >
-          تسجيل الدخول • Login
+          Login
         </Link>
       </AppHeader>
 
@@ -54,25 +54,13 @@ export default function Home() {
                 </span>
               </h1>
 
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-12 leading-tight" dir="rtl">
-                <span className="block text-[#1a1a1a] mb-3">
-                  أتقن الإنجليزية
-                </span>
-                <span className="block bg-gradient-to-r from-[#004E89] via-[#0066CC] to-[#004E89] bg-clip-text text-transparent">
-                  مع التميز
-                </span>
-              </h2>
-
               {/* Subtitle */}
               <div className="max-w-3xl mx-auto mb-12 space-y-4">
                 <p className="text-xl md:text-2xl text-gray-700 font-medium leading-relaxed">
                   Transform your future with interactive live classes led by expert instructors
                 </p>
-                <p className="text-xl md:text-2xl text-gray-700 font-medium leading-relaxed" dir="rtl">
-                  غيّر مستقبلك مع دروس تفاعلية مباشرة يقودها معلمون خبراء
-                </p>
               </div>
-              
+
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center max-w-2xl mx-auto mb-16">
                 <Link
@@ -81,7 +69,7 @@ export default function Home() {
                 >
                   <span className="relative z-10 flex items-center justify-center gap-3">
                     <Zap className="w-6 h-6" />
-                    ابدأ رحلتك الآن • Start Your Journey
+                    Start Your Journey
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 translate-x-full group-hover:translate-x-[-200%] transition-transform duration-1000"></div>
@@ -94,7 +82,7 @@ export default function Home() {
                 >
                   <span className="flex items-center justify-center gap-3">
                     <MessageCircle className="w-6 h-6" />
-                    تواصل معنا • Contact Us
+                    Contact Us
                   </span>
                 </a>
               </div>
@@ -102,15 +90,14 @@ export default function Home() {
               {/* Trust Indicators */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
                 {[
-                  { number: "500+", label: "Students", labelAr: "طالب" },
-                  { number: "50+", label: "Teachers", labelAr: "معلم" },
-                  { number: "1000+", label: "Classes", labelAr: "درس" },
-                  { number: "98%", label: "Satisfaction", labelAr: "رضا" }
+                  { number: "500+", label: "Students" },
+                  { number: "50+", label: "Teachers" },
+                  { number: "1000+", label: "Classes" },
+                  { number: "98%", label: "Satisfaction" }
                 ].map((stat, index) => (
                   <div key={index} className="bg-white/60 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-[#004E89]/10">
                     <div className="text-4xl font-extrabold text-[#004E89] mb-2">{stat.number}</div>
                     <div className="text-sm font-semibold text-gray-700">{stat.label}</div>
-                    <div className="text-sm font-semibold text-gray-600" dir="rtl">{stat.labelAr}</div>
                   </div>
                 ))}
               </div>
@@ -126,9 +113,6 @@ export default function Home() {
                 <span className="text-[#1a1a1a]">Why Choose </span>
                 <span className="text-[#004E89]">Youspeak</span>
               </h2>
-              <h3 className="text-3xl md:text-4xl font-extrabold text-[#1a1a1a] mb-6" dir="rtl">
-                لماذا تختار <span className="text-[#004E89]">يوسبيك</span>
-              </h3>
               <div className="w-24 h-1.5 bg-gradient-to-r from-transparent via-[#004E89] to-transparent mx-auto"></div>
             </div>
 
@@ -138,49 +122,37 @@ export default function Home() {
                   icon: <Video className="w-10 h-10" />,
                   gradient: "from-blue-500 to-blue-700",
                   title: "Live Interactive Classes",
-                  titleAr: "دروس تفاعلية مباشرة",
-                  description: "Engage in real-time 60-minute sessions with professional teachers",
-                  descriptionAr: "تفاعل في جلسات مباشرة مدتها 60 دقيقة مع معلمين محترفين"
+                  description: "Engage in real-time 60-minute sessions with professional teachers"
                 },
                 {
                   icon: <Target className="w-10 h-10" />,
                   gradient: "from-orange-500 to-red-600",
                   title: "Personalized Assessment",
-                  titleAr: "تقييم شخصي",
-                  description: "Free 20-minute placement test to identify your level",
-                  descriptionAr: "اختبار تحديد مستوى مجاني لمدة 20 دقيقة"
+                  description: "Free 20-minute placement test to identify your level"
                 },
                 {
                   icon: <BookOpen className="w-10 h-10" />,
                   gradient: "from-green-500 to-emerald-700",
                   title: "Smart Learning System",
-                  titleAr: "نظام تعلم ذكي",
-                  description: "AI-powered vocabulary tracking and progress monitoring",
-                  descriptionAr: "تتبع المفردات ومراقبة التقدم بالذكاء الاصطناعي"
+                  description: "AI-powered vocabulary tracking and progress monitoring"
                 },
                 {
                   icon: <Users className="w-10 h-10" />,
                   gradient: "from-purple-500 to-purple-700",
                   title: "Expert Instructors",
-                  titleAr: "معلمون خبراء",
-                  description: "Certified professionals with years of teaching experience",
-                  descriptionAr: "محترفون معتمدون بسنوات من الخبرة التدريسية"
+                  description: "Certified professionals with years of teaching experience"
                 },
                 {
                   icon: <MessageCircle className="w-10 h-10" />,
                   gradient: "from-pink-500 to-rose-700",
                   title: "24/7 Support",
-                  titleAr: "دعم متواصل",
-                  description: "Round-the-clock assistance for your learning journey",
-                  descriptionAr: "مساعدة على مدار الساعة في رحلتك التعليمية"
+                  description: "Round-the-clock assistance for your learning journey"
                 },
                 {
                   icon: <Award className="w-10 h-10" />,
                   gradient: "from-yellow-500 to-orange-600",
                   title: "Recognized Certificates",
-                  titleAr: "شهادات معترف بها",
-                  description: "Industry-recognized completion certificates",
-                  descriptionAr: "شهادات إنجاز معترف بها في الصناعة"
+                  description: "Industry-recognized completion certificates"
                 }
               ].map((feature, index) => (
                 <div
@@ -189,25 +161,19 @@ export default function Home() {
                 >
                   {/* Gradient Background on Hover */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
-                  
+
                   <div className="relative z-10">
                     <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg`}>
                       {feature.icon}
                     </div>
-                    <h3 className="text-2xl font-bold text-[#1a1a1a] mb-2">
+                    <h3 className="text-2xl font-bold text-[#1a1a1a] mb-4">
                       {feature.title}
                     </h3>
-                    <h4 className="text-xl font-bold text-gray-600 mb-4" dir="rtl">
-                      {feature.titleAr}
-                    </h4>
-                    <p className="text-gray-600 leading-relaxed mb-2">
+                    <p className="text-gray-600 leading-relaxed">
                       {feature.description}
                     </p>
-                    <p className="text-gray-600 leading-relaxed" dir="rtl">
-                      {feature.descriptionAr}
-                    </p>
                   </div>
-                  
+
                   {/* Corner Accent */}
                   <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#004E89]/5 to-transparent rounded-bl-3xl"></div>
                 </div>
@@ -232,9 +198,6 @@ export default function Home() {
                   <span className="text-[#1a1a1a]">Choose Your </span>
                   <span className="text-[#004E89]">Package</span>
                 </h2>
-                <h3 className="text-3xl md:text-4xl font-extrabold text-[#1a1a1a] mb-6" dir="rtl">
-                  اختر <span className="text-[#004E89]">باقتك</span>
-                </h3>
                 <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                   Premium learning experiences at competitive prices
                 </p>
@@ -242,10 +205,10 @@ export default function Home() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                 {[
-                  { name: "Single Level", nameAr: "مستوى واحد", price: "200", lessons: "8", duration: "2 months", gradient: "from-blue-500 to-blue-600", popular: false },
-                  { name: "Monthly", nameAr: "شهري", price: "360", lessons: "12", duration: "1 month", gradient: "from-orange-500 to-red-600", popular: true },
-                  { name: "Quarterly", nameAr: "ربع سنوي", price: "1000", lessons: "36", duration: "3 months", gradient: "from-purple-500 to-purple-600", popular: false },
-                  { name: "Premium", nameAr: "بريميوم", price: "1800", lessons: "48", duration: "6 months", gradient: "from-yellow-500 to-orange-600", popular: false }
+                  { name: "Single Level", price: "200", lessons: "8", duration: "2 months", gradient: "from-blue-500 to-blue-600", popular: false },
+                  { name: "Monthly", price: "360", lessons: "12", duration: "1 month", gradient: "from-orange-500 to-red-600", popular: true },
+                  { name: "Quarterly", price: "1000", lessons: "36", duration: "3 months", gradient: "from-purple-500 to-purple-600", popular: false },
+                  { name: "Premium", price: "1800", lessons: "48", duration: "6 months", gradient: "from-yellow-500 to-orange-600", popular: false }
                 ].map((pkg, index) => (
                   <div
                     key={index}
@@ -264,18 +227,15 @@ export default function Home() {
                         </div>
                       </div>
                     )}
-                    
+
                     <div className={`w-20 h-20 mx-auto mb-6 bg-gradient-to-br ${pkg.gradient} rounded-2xl flex items-center justify-center text-white text-4xl font-bold shadow-lg ${pkg.popular ? 'bg-white/20' : ''}`}>
                       {index + 1}
                     </div>
-                    
-                    <h3 className={`text-2xl font-extrabold mb-2 ${pkg.popular ? 'text-white' : 'text-[#1a1a1a]'}`}>
+
+                    <h3 className={`text-2xl font-extrabold mb-6 ${pkg.popular ? 'text-white' : 'text-[#1a1a1a]'}`}>
                       {pkg.name}
                     </h3>
-                    <p className={`text-lg font-bold mb-6 ${pkg.popular ? 'text-white/90' : 'text-gray-600'}`} dir="rtl">
-                      {pkg.nameAr}
-                    </p>
-                    
+
                     <div className="mb-6">
                       <div className="flex items-end justify-center gap-2">
                         <span className={`text-5xl font-black ${pkg.popular ? 'text-white' : 'text-[#004E89]'}`}>
@@ -286,7 +246,7 @@ export default function Home() {
                         </span>
                       </div>
                     </div>
-                    
+
                     <div className="space-y-3 mb-6">
                       <div className={`flex items-center justify-center gap-2 ${pkg.popular ? 'text-white' : 'text-gray-700'}`}>
                         <CheckCircle className="w-5 h-5" />
@@ -307,7 +267,7 @@ export default function Home() {
                   className="inline-flex items-center gap-3 px-12 py-5 bg-gradient-to-r from-[#004E89] to-[#0066CC] text-white rounded-2xl text-lg font-bold hover:shadow-2xl transition-all duration-300 hover:scale-105"
                 >
                   <BookOpen className="w-6 h-6" />
-                  <span>View All Packages • عرض جميع الباقات</span>
+                  <span>View All Packages</span>
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -334,7 +294,7 @@ export default function Home() {
                 Youspeak
               </span>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 max-w-2xl mx-auto">
               <a href="mailto:youspeak.help@gmail.com" className="flex items-center justify-center gap-3 bg-white/60 backdrop-blur-sm rounded-xl p-4 hover:shadow-lg transition-all duration-300 border border-gray-200">
                 <div className="w-10 h-10 bg-[#004E89] rounded-lg flex items-center justify-center text-white">
@@ -349,15 +309,15 @@ export default function Home() {
                 <span className="font-semibold text-gray-700">+201091515594</span>
               </a>
             </div>
-            
+
             <div className="w-full h-px bg-gradient-to-r from-transparent via-[#004E89]/30 to-transparent mb-8"></div>
-            
+
             <p className="text-base font-semibold text-gray-700">
-              © 2024 Youspeak - All Rights Reserved • جميع الحقوق محفوظة
+              © 2024 Youspeak - All Rights Reserved
             </p>
           </div>
         </div>
-        
+
         {/* Bottom Credit */}
         <div className="mt-8 pt-6 border-t border-[#004E89]/10">
           <p className="text-sm text-gray-600 flex items-center justify-center gap-2">
