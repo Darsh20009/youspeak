@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, X, Star, Sparkles, Brain, Trophy } from 'lucide-react'
+import { Check, X, Star, Sparkles, Brain, Trophy, ArrowRight } from 'lucide-react'
 
 interface Word {
   word: string
@@ -40,7 +40,7 @@ export default function DiscoverWordsPage() {
 
   const handleResponse = async (known: boolean) => {
     const currentWord = words[currentIndex]
-    
+
     await fetch('/api/words/discover', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -51,7 +51,7 @@ export default function DiscoverWordsPage() {
         known: known
       })
     })
-    
+
     if (known) {
       setScore(score + 10)
       setStreak(streak + 1)

@@ -42,7 +42,7 @@ export default function TestWordsPage() {
       const res = await fetch('/api/words')
       const data = await res.json()
       const knownWords = data.words.filter((w: Word) => w.known)
-      
+
       if (knownWords.length < 5) {
         alert('تحتاج على الأقل 5 كلمات معروفة لبدء الاختبار')
         setMode(null)
@@ -53,7 +53,7 @@ export default function TestWordsPage() {
       const shuffled = knownWords.sort(() => Math.random() - 0.5).slice(0, 10)
       const generatedQuestions = shuffled.map((word: Word) => {
         const questionType: QuestionType = Math.random() > 0.5 ? 'en-to-ar' : 'ar-to-en'
-        
+
         if (testMode === 'multiple-choice') {
           const correctAnswer = questionType === 'en-to-ar' ? word.arabicMeaning : word.englishWord
           const wrongOptions = knownWords
@@ -61,9 +61,9 @@ export default function TestWordsPage() {
             .sort(() => Math.random() - 0.5)
             .slice(0, 3)
             .map((w: Word) => questionType === 'en-to-ar' ? w.arabicMeaning : w.englishWord)
-          
+
           const options = [correctAnswer, ...wrongOptions].sort(() => Math.random() - 0.5)
-          
+
           return {
             word,
             type: questionType,
@@ -71,14 +71,14 @@ export default function TestWordsPage() {
             correctAnswer
           }
         }
-        
+
         return {
           word,
           type: questionType,
           correctAnswer: questionType === 'en-to-ar' ? word.arabicMeaning : word.englishWord
         }
       })
-      
+
       setQuestions(generatedQuestions)
       setCurrentIndex(0)
       setScore(0)
@@ -95,17 +95,17 @@ export default function TestWordsPage() {
   const handleAnswer = (answer: string) => {
     const currentQuestion = questions[currentIndex]
     const correct = answer.trim().toLowerCase() === currentQuestion.correctAnswer.trim().toLowerCase()
-    
+
     setIsCorrect(correct)
     setShowResult(true)
-    
+
     if (correct) {
       setScore(score + 1)
       setAnswers([...answers, true])
     } else {
       setAnswers([...answers, false])
     }
-    
+
     setTimeout(() => {
       if (currentIndex < questions.length - 1) {
         setCurrentIndex(currentIndex + 1)
@@ -191,7 +191,7 @@ export default function TestWordsPage() {
             <p className="text-2xl text-black mb-8">
               {score} من {questions.length} إجابة صحيحة
             </p>
-            
+
             <div className="space-y-3 mb-8">
               {questions.map((q, idx) => (
                 <div

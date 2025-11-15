@@ -5,7 +5,8 @@ import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import ChatBox from '@/components/ChatBox'
 import ConversationsList from '@/components/ConversationsList'
-import { MessageCircle } from 'lucide-react'
+import { MessageCircle, ArrowRight } from 'lucide-react'
+import Button from '@/components/ui/Button'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -31,8 +32,29 @@ export default function ChatPage() {
 
   return (
     <div className="min-h-screen bg-[#F5F1E8]">
+      {/* Header */}
+      <div className="bg-[#004E89] text-white p-4 sm:p-6 shadow-lg">
+        <div className="container mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => redirect('/')} // Assuming redirecting to homepage
+              className="text-white hover:bg-white/20 p-2 sm:p-2"
+            >
+              <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6" />
+            </Button>
+            <div>
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">💬 المحادثات</h1>
+              <p className="text-xs sm:text-sm text-gray-200 mt-1">تواصل مع المدرسين والطلاب</p>
+            </div>
+          </div>
+          {/* Placeholder for logout button if needed, not present in original */}
+        </div>
+      </div>
+
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8">
-        <div className="mb-4 sm:mb-6">
+        <div className="mb-4 sm:mb-6 hidden"> {/* Hidden as per original structure */}
           <h1 className="text-2xl sm:text-3xl font-bold text-black flex items-center gap-2 sm:gap-3">
             <MessageCircle className="w-6 h-6 sm:w-8 sm:h-8 text-[#004E89]" />
             الرسائل
@@ -47,7 +69,7 @@ export default function ChatPage() {
               <h2 className="font-bold text-base sm:text-lg">المحادثات</h2>
             </div>
             <div className="overflow-y-auto h-[calc(100%-52px)] sm:h-[calc(100%-60px)]">
-              <ConversationsList 
+              <ConversationsList
                 onSelectConversation={setSelectedUser}
                 selectedUserId={selectedUser?.id}
               />
@@ -57,7 +79,7 @@ export default function ChatPage() {
           {/* Chat Box */}
           <div className="lg:col-span-2">
             {selectedUser ? (
-              <ChatBox 
+              <ChatBox
                 otherUser={selectedUser}
                 onClose={() => setSelectedUser(null)}
               />

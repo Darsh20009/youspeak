@@ -48,7 +48,7 @@ export default async function PackagesPage() {
           {packages.map((pkg, index) => {
             const isRecommended = pkg.title === 'Monthly' || pkg.titleAr === 'شهري'
             const isPopular = pkg.lessonsCount === 12
-            
+
             return (
               <div
                 key={pkg.id}
@@ -61,7 +61,7 @@ export default async function PackagesPage() {
                     Recommended / موصى به
                   </div>
                 )}
-                
+
                 <div className={`p-4 sm:p-6 md:p-8 ${isRecommended ? 'bg-gradient-to-br from-[#004E89] to-[#1a6ba8]' : 'bg-[#F5F1E8]'}`}>
                   <h3 className={`text-xl sm:text-2xl font-bold mb-2 ${isRecommended ? 'text-white' : 'text-black'}`}>
                     {pkg.title}
