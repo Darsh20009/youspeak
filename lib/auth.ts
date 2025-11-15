@@ -41,6 +41,10 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Invalid credentials')
         }
 
+        if (!user.isActive) {
+          throw new Error('Account is not active. Please contact admin.')
+        }
+
         return {
           id: user.id,
           email: user.email,
