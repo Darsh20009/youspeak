@@ -74,6 +74,9 @@ export const translations = {
     inactive: 'غير نشط',
     activate: 'تفعيل',
     deactivate: 'إلغاء التفعيل',
+    back: 'رجوع',
+    settings: 'الإعدادات',
+    language: 'ar',
   },
   en: {
     // Navigation
@@ -150,6 +153,9 @@ export const translations = {
     inactive: 'Inactive',
     activate: 'Activate',
     deactivate: 'Deactivate',
+    back: 'Back',
+    settings: 'Settings',
+    language: 'en',
   }
 }
 

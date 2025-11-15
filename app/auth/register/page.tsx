@@ -4,14 +4,17 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { User, Mail, Phone, Lock, Calendar, Target, Clock } from 'lucide-react'
+import { User, Mail, Phone, Lock, Calendar, Target, Clock, ArrowLeft } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import Card from '@/components/ui/Card'
 import Alert from '@/components/ui/Alert'
+import LanguageToggle from '@/components/LanguageToggle'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 
 export default function RegisterPage() {
   const router = useRouter()
+  const { t } = useTranslation()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -32,24 +35,24 @@ export default function RegisterPage() {
 
     // Validation
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match / كلمات المرور غير متطابقة')
+      setError(t('passwordsDoNotMatch'))
       return
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters / كلمة المرور يجب أن تكون 6 أحرف على الأقل')
+      setError(t('passwordTooShort'))
       return
     }
 
     const phoneRegex = /^\+?[0-9]{10,15}$/
     if (!phoneRegex.test(formData.phone.replace(/\s/g, ''))) {
-      setError('Please enter a valid phone number / يرجى إدخال رقم هاتف صحيح')
+      setError(t('invalidPhoneNumber'))
       return
     }
 
     const age = parseInt(formData.age)
     if (isNaN(age) || age < 5 || age > 100) {
-      setError('Please enter a valid age (5-100) / يرجى إدخال عمر صحيح (5-100)')
+      setError(t('invalidAge'))
       return
     }
 
@@ -76,7 +79,7 @@ export default function RegisterPage() {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Registration failed / فشل التسجيل')
+        throw new Error(data.error || t('registrationFailed'))
       }
 
       router.push('/auth/login?registered=true')
@@ -88,18 +91,27 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F1E8] flex flex-col items-center justify-center p-3 sm:p-4 md:p-6">
-      <Card className="w-full max-w-md shadow-2xl bg-[#F5F1E8] border-2 border-[#d4c9b8] mb-4">
+    <div className="min-h-screen bg-gradient-to-b from-[#F5F1E8] via-[#E8DCC8] to-[#F5F1E8] flex flex-col items-center justify-center px-4 py-8 sm:py-12">
+      <Card className="w-full max-w-md p-6 sm:p-8 bg-white/90 backdrop-blur-sm shadow-2xl border-2 border-[#d4c9b8]">
+        <div className="flex justify-between items-center mb-4">
+          <Link href="/">
+            <Button variant="ghost" size="sm" className="gap-2">
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+          </Link>
+          <LanguageToggle />
+        </div>
+
         <div className="text-center mb-6 sm:mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-3 sm:mb-4 hover:opacity-80 transition-opacity">
             <Image src="/logo.png" alt="Youspeak" width={40} height={40} className="sm:w-[50px] sm:h-[50px]" />
             <span className="text-xl sm:text-2xl font-bold text-black">Youspeak</span>
           </Link>
           <h1 className="text-2xl sm:text-3xl font-bold text-center mb-2 text-black">
-            Create Account / إنشاء حساب
+            {t('createAccount')}
           </h1>
           <p className="text-sm sm:text-base text-center text-black mb-4 sm:mb-8">
-            Join us today / انضم إلينا اليوم
+            {t('joinUsToday')}
           </p>
         </div>
 
@@ -117,7 +129,7 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
           <Input
             type="text"
-            label="Full Name / الاسم الكامل *"
+            label={t('fullName')}
             placeholder="John Doe"
             required
             value={formData.name}
@@ -128,7 +140,7 @@ export default function RegisterPage() {
 
           <Input
             type="email"
-            label="Email / البريد الإلكتروني *"
+            label={t('email')}
             placeholder="your.email@example.com"
             required
             value={formData.email}
@@ -139,19 +151,19 @@ export default function RegisterPage() {
 
           <Input
             type="tel"
-            label="WhatsApp Number / رقم الواتساب *"
+            label={t('whatsappNumber')}
             placeholder="+966... or +20..."
             required
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             leftIcon={<Phone className="h-4 w-4 sm:h-5 sm:w-5" />}
             inputSize="md"
-            hint="Required for account activation / مطلوب لتفعيل الحساب"
+            hint={t('phoneHint')}
           />
 
           <Input
             type="number"
-            label="Age / العمر *"
+            label={t('age')}
             placeholder="18"
             required
             value={formData.age}
@@ -164,7 +176,7 @@ export default function RegisterPage() {
 
           <div>
             <label className="block text-xs sm:text-sm font-medium text-black mb-2">
-              Current English Level / مستواك الحالي *
+              {t('currentLevel')} *
             </label>
             <select
               required
@@ -172,27 +184,27 @@ export default function RegisterPage() {
               onChange={(e) => setFormData({ ...formData, levelInitial: e.target.value })}
               className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-sm sm:text-base"
             >
-              <option value="">Select your level / اختر مستواك</option>
-              <option value="A1">A1 - Beginner / مبتدئ</option>
-              <option value="A2">A2 - Elementary / ابتدائي</option>
-              <option value="B1">B1 - Intermediate / متوسط</option>
-              <option value="B2">B2 - Upper Intermediate / فوق المتوسط</option>
+              <option value="">{t('selectLevel')}</option>
+              <option value="A1">A1 - Beginner</option>
+              <option value="A2">A2 - Elementary</option>
+              <option value="B1">B1 - Intermediate</option>
+              <option value="B2">B2 - Upper Intermediate</option>
             </select>
             <p className="mt-1 text-xs text-gray-500">
-              Don't know your level? You'll take a 20-minute assessment / لا تعرف مستواك؟ ستأخذ اختبار 20 دقيقة
+              {t('dontKnowLevelHint')}
             </p>
           </div>
 
           <div>
             <label className="block text-xs sm:text-sm font-medium text-black mb-2" htmlFor="goal">
-              Learning Goal / الهدف من التعلم *
+              {t('learningGoal')} *
             </label>
             <textarea
               id="goal"
               required
               value={formData.goal}
               onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
-              placeholder="e.g., Travel, Work, Study abroad / مثال: السفر، العمل، الدراسة في الخارج"
+              placeholder={t('goalPlaceholder')}
               className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-sm sm:text-base resize-none"
               rows={3}
             />
@@ -200,7 +212,7 @@ export default function RegisterPage() {
 
           <div>
             <label className="block text-xs sm:text-sm font-medium text-black mb-2">
-              Preferred Class Time / الوقت المفضل للحصص *
+              {t('preferredTime')} *
             </label>
             <select
               required
@@ -208,29 +220,29 @@ export default function RegisterPage() {
               onChange={(e) => setFormData({ ...formData, preferredTime: e.target.value })}
               className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-sm sm:text-base"
             >
-              <option value="">Select preferred time / اختر الوقت المفضل</option>
-              <option value="morning">Morning (8 AM - 12 PM) / صباحاً (8 - 12 ظهراً)</option>
-              <option value="afternoon">Afternoon (12 PM - 5 PM) / بعد الظهر (12 - 5 مساءً)</option>
-              <option value="evening">Evening (5 PM - 10 PM) / مساءً (5 - 10 مساءً)</option>
-              <option value="flexible">Flexible / مرن</option>
+              <option value="">{t('selectTime')}</option>
+              <option value="morning">{t('morning')}</option>
+              <option value="afternoon">{t('afternoon')}</option>
+              <option value="evening">{t('evening')}</option>
+              <option value="flexible">{t('flexible')}</option>
             </select>
           </div>
 
           <Input
             type="password"
-            label="Password / كلمة المرور *"
+            label={t('password')}
             placeholder="••••••••"
             required
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             leftIcon={<Lock className="h-4 w-4 sm:h-5 sm:w-5" />}
             inputSize="md"
-            hint="At least 6 characters / 6 أحرف على الأقل"
+            hint={t('passwordHint')}
           />
 
           <Input
             type="password"
-            label="Confirm Password / تأكيد كلمة المرور *"
+            label={t('confirmPassword')}
             placeholder="••••••••"
             required
             value={formData.confirmPassword}
@@ -246,30 +258,27 @@ export default function RegisterPage() {
             loading={loading}
             className="font-semibold bg-[#004E89] hover:bg-[#003A6B] text-white text-base sm:text-lg py-3 sm:py-4"
           >
-            {loading ? 'Creating Account... / جارٍ إنشاء الحساب' : 'Register / سجل'}
+            {loading ? t('creatingAccount') : t('register')}
           </Button>
         </form>
 
         <p className="mt-4 sm:mt-6 text-center text-black text-xs sm:text-sm">
-          Already have an account? / لديك حساب بالفعل؟{' '}
+          {t('alreadyHaveAccount')} {' '}
           <Link href="/auth/login" className="text-[#004E89] hover:text-[#003A6B] font-semibold">
-            Login / تسجيل الدخول
+            {t('login')}
           </Link>
         </p>
 
         <Alert variant="info" className="mt-4 sm:mt-6">
           <p className="text-xs sm:text-sm text-black">
-            <strong>Note / ملاحظة:</strong> After registration, your account will be reviewed.
-            You'll be contacted via WhatsApp at <strong className="text-[#004E89]">+201091515594</strong> for payment and activation.
-          </p>
-          <p className="text-xs sm:text-sm mt-2 text-black">
-            بعد التسجيل، سيتم مراجعة حسابك. سيتم التواصل معك عبر الواتساب على <strong className="text-[#004E89]">+201091515594</strong> للدفع والتفعيل.
+            <strong>{t('note')}:</strong> {t('accountReview')}
+            <strong className="text-[#004E89]">{t('contactNumber')}</strong> {t('forPaymentActivation')}
           </p>
         </Alert>
       </Card>
 
       <footer className="w-full py-4 sm:py-6 text-center text-sm sm:text-base text-black bg-[#F5F1E8] border-t-2 border-[#d4c9b8] mt-4 sm:mt-8">
-        <p className="px-4">Made with ❤️ by MA3K Company</p>
+        <p className="px-4">{t('madeBy')}</p>
       </footer>
     </div>
   )
