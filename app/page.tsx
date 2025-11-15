@@ -3,6 +3,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image";
 import FloatingContactButtons from "@/components/FloatingContactButtons";
 import AppHeader from "@/components/layout/AppHeader";
 import { useTheme } from "@/lib/contexts/ThemeContext";
