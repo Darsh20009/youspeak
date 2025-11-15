@@ -17,7 +17,7 @@ export async function GET(
       include: {
         Subscription: {
           include: {
-            user: {
+            User: {
               select: {
                 id: true,
                 name: true,

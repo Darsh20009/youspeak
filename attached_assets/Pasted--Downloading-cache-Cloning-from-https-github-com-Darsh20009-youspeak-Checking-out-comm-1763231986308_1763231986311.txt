@@ -1,0 +1,45 @@
+> Downloading cache...
+==> Cloning from https://github.com/Darsh20009/youspeak
+==> Checking out commit 1443e208b221fbe52f1acffde90c781b83fe4f5f in branch main
+==> Downloaded 596MB in 3s. Extraction took 11s.
+==> Using Node.js version 22.16.0 (default)
+==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+==> Running build command 'npm install; npm run build'...
+> youspeak@0.1.0 postinstall
+> prisma generate
+Prisma schema loaded from prisma/schema.prisma
+✔ Generated Prisma Client (v6.19.0) to ./node_modules/@prisma/client in 478ms
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+up to date, audited 506 packages in 4s
+164 packages are looking for funding
+  run `npm fund` for details
+5 vulnerabilities (3 low, 1 moderate, 1 high)
+To address issues that do not require attention, run:
+  npm audit fix
+To address all issues possible (including breaking changes), run:
+  npm audit fix --force
+Some issues need review, and may require choosing
+a different dependency.
+Run `npm audit` for details.
+> youspeak@0.1.0 build
+> next build
+   ▲ Next.js 16.0.1 (Turbopack)
+ ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 14.5s
+   Running TypeScript ...
+Failed to compile.
+./app/api/admin/packages/[id]/route.ts:20:13
+Type error: Object literal may only specify known properties, but 'user' does not exist in type 'SubscriptionInclude<DefaultArgs>'. Did you mean to write 'User'?
+  18 |         Subscription: {
+  19 |           include: {
+> 20 |             user: {
+     |             ^
+  21 |               select: {
+  22 |                 id: true,
+  23 |                 name: true,
+Next.js build worker exited with code: 1 and signal: null
+==> Build failed 😞
+==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
+Need better ways to work with logs? Try theRender CLI, Render MCP Server, or set up a log stream 

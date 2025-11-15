@@ -8,6 +8,29 @@ datasource db {
   schemas  = ["youspeak_exercisein"]
 }
 
+enum SubscriptionStatus {
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+
+  @@schema("youspeak_exercisein")
+}
+
+enum PaymentMethod {
+  BANK_TRANSFER
+  E_WALLET
+
+  @@schema("youspeak_exercisein")
+}
+
+enum EWalletProvider {
+  INSTAPAY
+  ETISALAT_CASH
+
+  @@schema("youspeak_exercisein")
+}
+
 model Assignment {
   id             String       @id
   sessionId      String?
@@ -60,6 +83,7 @@ model Package {
   createdAt     DateTime       @default(now()) @db.Timestamp(6)
   updatedAt     DateTime       @default(now()) @db.Timestamp(6)
   Subscription  Subscription[]
+  CartItem      CartItem[]
 
   @@schema("youspeak_exercisein")
 }
@@ -130,30 +154,40 @@ model Submission {
 }
 
 model Subscription {
-  id         String    @id
-  studentId  String
-  packageId  String
-  paid       Boolean   @default(false)
-  receiptUrl String?
-  startDate  DateTime? @db.Timestamp(6)
-  endDate    DateTime? @db.Timestamp(6)
-  createdAt  DateTime  @default(now()) @db.Timestamp(6)
-  updatedAt  DateTime  @default(now()) @db.Timestamp(6)
-  Package    Package   @relation(fields: [packageId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User       User      @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id                String              @id
+  studentId         String
+  packageId         String
+  status            SubscriptionStatus  @default(PENDING)
+  paid              Boolean             @default(false)
+  paymentMethod     PaymentMethod?
+  eWalletProvider   EWalletProvider?
+  paymentReference  String?
+  receiptUrl        String?
+  assignedTeacherId String?
+  approvedAt        DateTime?           @db.Timestamp(6)
+  rejectedAt        DateTime?           @db.Timestamp(6)
+  adminNotes        String?
+  startDate         DateTime?           @db.Timestamp(6)
+  endDate           DateTime?           @db.Timestamp(6)
+  createdAt         DateTime            @default(now()) @db.Timestamp(6)
+  updatedAt         DateTime            @default(now()) @db.Timestamp(6)
+  Package           Package             @relation(fields: [packageId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User              User                @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  AssignedTeacher   TeacherProfile?     @relation("AssignedSubscriptions", fields: [assignedTeacherId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@schema("youspeak_exercisein")
 }
 
 model TeacherProfile {
-  id        String    @id
-  userId    String    @unique
-  bio       String?
-  subjects  String?
-  createdAt DateTime  @default(now()) @db.Timestamp(6)
-  updatedAt DateTime  @default(now()) @db.Timestamp(6)
-  Session   Session[]
-  User      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id                    String         @id
+  userId                String         @unique
+  bio                   String?
+  subjects              String?
+  createdAt             DateTime       @default(now()) @db.Timestamp(6)
+  updatedAt             DateTime       @default(now()) @db.Timestamp(6)
+  Session               Session[]
+  User                  User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  AssignedSubscriptions Subscription[] @relation("AssignedSubscriptions")
 
   @@schema("youspeak_exercisein")
 }
@@ -177,6 +211,7 @@ model User {
   Subscription               Subscription[]
   TeacherProfile             TeacherProfile?
   Word                       Word[]
+  Cart                       Cart?
 
   @@schema("youspeak_exercisein")
 }
@@ -195,5 +230,28 @@ model Word {
   updatedAt        DateTime @default(now()) @db.Timestamp(6)
   User             User     @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
+  @@schema("youspeak_exercisein")
+}
+
+model Cart {
+  id        String     @id
+  studentId String     @unique
+  createdAt DateTime   @default(now()) @db.Timestamp(6)
+  updatedAt DateTime   @default(now()) @db.Timestamp(6)
+  User      User       @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  CartItem  CartItem[]
+
+  @@schema("youspeak_exercisein")
+}
+
+model CartItem {
+  id        String   @id
+  cartId    String
+  packageId String
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  Cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Package   Package  @relation(fields: [packageId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([cartId, packageId])
   @@schema("youspeak_exercisein")
 }
