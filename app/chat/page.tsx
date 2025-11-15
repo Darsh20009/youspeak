@@ -31,22 +31,22 @@ export default function ChatPage() {
 
   return (
     <div className="min-h-screen bg-[#F5F1E8]">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-black flex items-center gap-3">
-            <MessageCircle className="w-8 h-8 text-[#004E89]" />
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8">
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-black flex items-center gap-2 sm:gap-3">
+            <MessageCircle className="w-6 h-6 sm:w-8 sm:h-8 text-[#004E89]" />
             الرسائل
           </h1>
-          <p className="text-black mt-2">تواصل مع المدرسين والطلاب</p>
+          <p className="text-sm sm:text-base text-black mt-1 sm:mt-2">تواصل مع المدرسين والطلاب</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-200px)]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 h-[calc(100vh-180px)] sm:h-[calc(100vh-200px)]">
           {/* Conversations List */}
           <div className="lg:col-span-1 bg-[#F5F1E8] rounded-lg shadow-lg overflow-hidden border-2 border-[#d4c9b8]">
-            <div className="bg-[#004E89] p-4 text-white">
-              <h2 className="font-bold text-lg">المحادثات</h2>
+            <div className="bg-[#004E89] p-3 sm:p-4 text-white">
+              <h2 className="font-bold text-base sm:text-lg">المحادثات</h2>
             </div>
-            <div className="overflow-y-auto h-[calc(100%-60px)]">
+            <div className="overflow-y-auto h-[calc(100%-52px)] sm:h-[calc(100%-60px)]">
               <ConversationsList 
                 onSelectConversation={setSelectedUser}
                 selectedUserId={selectedUser?.id}
@@ -62,16 +62,16 @@ export default function ChatPage() {
                 onClose={() => setSelectedUser(null)}
               />
             ) : (
-              <div className="h-full bg-[#F5F1E8] rounded-lg shadow-lg flex flex-col items-center justify-center text-black border-2 border-[#d4c9b8]">
-                <MessageCircle className="w-24 h-24 mb-4 text-[#004E89]" />
-                <p className="text-xl font-medium">اختر محادثة للبدء</p>
-                <p className="text-sm mt-2">حدد محادثة من القائمة على اليسار</p>
+              <div className="h-full bg-[#F5F1E8] rounded-lg shadow-lg flex flex-col items-center justify-center text-black border-2 border-[#d4c9b8] p-4">
+                <MessageCircle className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mb-3 sm:mb-4 text-[#004E89]" />
+                <p className="text-lg sm:text-xl font-medium text-center">اختر محادثة للبدء</p>
+                <p className="text-xs sm:text-sm mt-1 sm:mt-2 text-center">حدد محادثة من القائمة على اليسار</p>
               </div>
             )}
           </div>
         </div>
       </div>
-      <footer className="mt-8 text-center text-sm text-black pb-4">
+      <footer className="mt-4 sm:mt-6 md:mt-8 text-center text-xs sm:text-sm text-black pb-3 sm:pb-4 px-4">
         Made with ❤️ by MA3K Company
       </footer>
     </div>

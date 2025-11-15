@@ -88,17 +88,17 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F1E8] flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-[#F5F1E8] flex flex-col items-center justify-center p-3 sm:p-4 md:p-6">
       <Card className="w-full max-w-md shadow-2xl bg-[#F5F1E8] border-2 border-[#d4c9b8] mb-4">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-4 hover:opacity-80 transition-opacity">
-            <Image src="/logo.png" alt="Youspeak" width={50} height={50} />
-            <span className="text-2xl font-bold text-black">Youspeak</span>
+        <div className="text-center mb-6 sm:mb-8">
+          <Link href="/" className="inline-flex items-center gap-2 mb-3 sm:mb-4 hover:opacity-80 transition-opacity">
+            <Image src="/logo.png" alt="Youspeak" width={40} height={40} className="sm:w-[50px] sm:h-[50px]" />
+            <span className="text-xl sm:text-2xl font-bold text-black">Youspeak</span>
           </Link>
-          <h1 className="text-3xl font-bold text-center mb-2 text-black">
+          <h1 className="text-2xl sm:text-3xl font-bold text-center mb-2 text-black">
             Create Account / إنشاء حساب
           </h1>
-          <p className="text-center text-black mb-8">
+          <p className="text-sm sm:text-base text-center text-black mb-4 sm:mb-8">
             Join us today / انضم إلينا اليوم
           </p>
         </div>
@@ -114,7 +114,7 @@ export default function RegisterPage() {
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
           <Input
             type="text"
             label="Full Name / الاسم الكامل *"
@@ -122,8 +122,8 @@ export default function RegisterPage() {
             required
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            leftIcon={<User className="h-5 w-5" />}
-            inputSize="lg"
+            leftIcon={<User className="h-4 w-4 sm:h-5 sm:w-5" />}
+            inputSize="md"
           />
 
           <Input
@@ -133,8 +133,8 @@ export default function RegisterPage() {
             required
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            leftIcon={<Mail className="h-5 w-5" />}
-            inputSize="lg"
+            leftIcon={<Mail className="h-4 w-4 sm:h-5 sm:w-5" />}
+            inputSize="md"
           />
 
           <Input
@@ -144,8 +144,8 @@ export default function RegisterPage() {
             required
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            leftIcon={<Phone className="h-5 w-5" />}
-            inputSize="lg"
+            leftIcon={<Phone className="h-4 w-4 sm:h-5 sm:w-5" />}
+            inputSize="md"
             hint="Required for account activation / مطلوب لتفعيل الحساب"
           />
 
@@ -156,21 +156,21 @@ export default function RegisterPage() {
             required
             value={formData.age}
             onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-            leftIcon={<Calendar className="h-5 w-5" />}
-            inputSize="lg"
+            leftIcon={<Calendar className="h-4 w-4 sm:h-5 sm:w-5" />}
+            inputSize="md"
             min="5"
             max="100"
           />
 
           <div>
-            <label className="block text-sm font-medium text-black mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-black mb-2">
               Current English Level / مستواك الحالي *
             </label>
             <select
               required
               value={formData.levelInitial}
               onChange={(e) => setFormData({ ...formData, levelInitial: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-base"
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-sm sm:text-base"
             >
               <option value="">Select your level / اختر مستواك</option>
               <option value="A1">A1 - Beginner / مبتدئ</option>
@@ -184,7 +184,7 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-black mb-2" htmlFor="goal">
+            <label className="block text-xs sm:text-sm font-medium text-black mb-2" htmlFor="goal">
               Learning Goal / الهدف من التعلم *
             </label>
             <textarea
@@ -193,20 +193,20 @@ export default function RegisterPage() {
               value={formData.goal}
               onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
               placeholder="e.g., Travel, Work, Study abroad / مثال: السفر، العمل، الدراسة في الخارج"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-base resize-none"
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-sm sm:text-base resize-none"
               rows={3}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-black mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-black mb-2">
               Preferred Class Time / الوقت المفضل للحصص *
             </label>
             <select
               required
               value={formData.preferredTime}
               onChange={(e) => setFormData({ ...formData, preferredTime: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-base"
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004E89] focus:border-transparent text-sm sm:text-base"
             >
               <option value="">Select preferred time / اختر الوقت المفضل</option>
               <option value="morning">Morning (8 AM - 12 PM) / صباحاً (8 - 12 ظهراً)</option>
@@ -223,8 +223,8 @@ export default function RegisterPage() {
             required
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-            leftIcon={<Lock className="h-5 w-5" />}
-            inputSize="lg"
+            leftIcon={<Lock className="h-4 w-4 sm:h-5 sm:w-5" />}
+            inputSize="md"
             hint="At least 6 characters / 6 أحرف على الأقل"
           />
 
@@ -235,8 +235,8 @@ export default function RegisterPage() {
             required
             value={formData.confirmPassword}
             onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-            leftIcon={<Lock className="h-5 w-5" />}
-            inputSize="lg"
+            leftIcon={<Lock className="h-4 w-4 sm:h-5 sm:w-5" />}
+            inputSize="md"
           />
 
           <Button
@@ -244,31 +244,31 @@ export default function RegisterPage() {
             fullWidth
             size="lg"
             loading={loading}
-            className="font-semibold bg-[#004E89] hover:bg-[#003A6B] text-white"
+            className="font-semibold bg-[#004E89] hover:bg-[#003A6B] text-white text-base sm:text-lg py-3 sm:py-4"
           >
             {loading ? 'Creating Account... / جارٍ إنشاء الحساب' : 'Register / سجل'}
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-black">
+        <p className="mt-4 sm:mt-6 text-center text-black text-xs sm:text-sm">
           Already have an account? / لديك حساب بالفعل؟{' '}
           <Link href="/auth/login" className="text-[#004E89] hover:text-[#003A6B] font-semibold">
             Login / تسجيل الدخول
           </Link>
         </p>
 
-        <Alert variant="info" className="mt-6">
-          <p className="text-sm text-black">
+        <Alert variant="info" className="mt-4 sm:mt-6">
+          <p className="text-xs sm:text-sm text-black">
             <strong>Note / ملاحظة:</strong> After registration, your account will be reviewed.
             You'll be contacted via WhatsApp at <strong className="text-[#004E89]">+201091515594</strong> for payment and activation.
           </p>
-          <p className="text-sm mt-2 text-black">
+          <p className="text-xs sm:text-sm mt-2 text-black">
             بعد التسجيل، سيتم مراجعة حسابك. سيتم التواصل معك عبر الواتساب على <strong className="text-[#004E89]">+201091515594</strong> للدفع والتفعيل.
           </p>
         </Alert>
       </Card>
 
-      <footer className="mt-8 text-center text-sm text-black">
+      <footer className="mt-4 sm:mt-8 text-center text-xs sm:text-sm text-black px-4">
         Made with ❤️ by MA3K Company
       </footer>
     </div>

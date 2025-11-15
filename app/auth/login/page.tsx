@@ -59,18 +59,18 @@ export default function LoginPage() {
         </Link>
       </AppHeader>
       
-      <div className="flex-1 flex items-center justify-center p-4">
+      <div className="flex-1 flex items-center justify-center p-3 sm:p-4 md:p-6">
         <Card className="w-full max-w-md shadow-2xl bg-[#F5F1E8] border-2 border-[#d4c9b8]">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-center mb-2 text-black">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-center mb-2 text-black">
               Welcome Back / مرحباً بعودتك
             </h1>
-            <p className="text-center text-black mb-8">
+            <p className="text-sm sm:text-base text-center text-black mb-4 sm:mb-8">
               Sign in to your account / قم بتسجيل الدخول
             </p>
           </div>
 
-        <Card variant="elevated" padding="lg">
+        <Card variant="elevated" padding="md">
           {error && (
             <Alert
               variant="error"
@@ -82,7 +82,7 @@ export default function LoginPage() {
             </Alert>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             <Input
               type="email"
               label="Email / البريد الإلكتروني"
@@ -90,10 +90,10 @@ export default function LoginPage() {
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              leftIcon={<Mail className="h-5 w-5" />}
-              inputSize="lg"
-              labelClassName="text-black"
-              inputClassName="bg-white text-black"
+              leftIcon={<Mail className="h-4 w-4 sm:h-5 sm:w-5" />}
+              inputSize="md"
+              labelClassName="text-black text-sm sm:text-base"
+              inputClassName="bg-white text-black text-base"
             />
 
             <Input
@@ -103,10 +103,10 @@ export default function LoginPage() {
               required
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              leftIcon={<Lock className="h-5 w-5" />}
-              inputSize="lg"
-              labelClassName="text-black"
-              inputClassName="bg-white text-black"
+              leftIcon={<Lock className="h-4 w-4 sm:h-5 sm:w-5" />}
+              inputSize="md"
+              labelClassName="text-black text-sm sm:text-base"
+              inputClassName="bg-white text-black text-base"
             />
 
             <Button
@@ -114,14 +114,14 @@ export default function LoginPage() {
               fullWidth
               size="lg"
               loading={loading}
-              className="font-semibold bg-[#004E89] hover:bg-[#003A6B] text-white"
+              className="font-semibold bg-[#004E89] hover:bg-[#003A6B] text-white text-base sm:text-lg py-3 sm:py-4"
             >
               {loading ? 'Signing in... / جارٍ تسجيل الدخول' : 'Login / تسجيل الدخول'}
             </Button>
           </form>
 
-          <div className="text-center mt-6">
-            <p className="text-sm text-black">
+          <div className="text-center mt-4 sm:mt-6">
+            <p className="text-xs sm:text-sm text-black">
               Don't have an account? / ليس لديك حساب؟{' '}
               <Link href="/auth/register" className="text-[#004E89] hover:text-[#003A6B] font-semibold">
                 Register / سجل
@@ -130,7 +130,7 @@ export default function LoginPage() {
           </div>
         </Card>
         </Card>
-        <footer className="mt-8 text-center text-sm text-black">
+        <footer className="mt-4 sm:mt-8 text-center text-xs sm:text-sm text-black px-4">
           Made with ❤️ by MA3K Company
         </footer>
       </div>
