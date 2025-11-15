@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { useTheme } from '@/contexts/ThemeContext'
 import { Settings, Sun, Moon, Globe, Palette, Save, ArrowRight } from 'lucide-react'
 import Button from '@/components/ui/Button'
@@ -10,7 +11,7 @@ import Alert from '@/components/ui/Alert'
 export default function SettingsPage() {
   const { theme, language, setTheme, setLanguage } = useTheme()
   const [saved, setSaved] = useState(false)
-  const router = useRouter(); // Assuming useRouter is imported and available
+  const router = useRouter()
 
   const handleSave = () => {
     setSaved(true)
@@ -192,10 +193,10 @@ export default function SettingsPage() {
           </div>
         </div>
       </Card>
+
+      <footer className="mt-8 text-center text-sm text-black pb-4">
+        Made with ❤️ by MA3K Company
+      </footer>
     </div>
-    <footer className="mt-8 text-center text-sm text-black pb-4">
-      Made with ❤️ by MA3K Company
-    </footer>
-  </div>
   )
 }
