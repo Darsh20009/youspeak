@@ -20,15 +20,6 @@ export default function LoginPage() {
   })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [showSplash, setShowSplash] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 2000); // Splash screen duration in milliseconds
-
-    return () => clearTimeout(timer);
-  }, []);
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -57,14 +48,7 @@ export default function LoginPage() {
     }
   }
 
-  if (showSplash) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-[#F5F1E8]">
-        <div className="text-center">
-          <Image src="/logo.png" alt="Youspeak" width={100} height={100} className="mb-4 mx-auto" />
-          <span className="text-4xl font-bold text-[#004E89]">Youspeak</span>
-          <p className="text-lg text-black">Made with ❤️ for English learners worldwide</p>
-          <p className="text-sm text-black">MA3K Company</p>
+  black">MA3K Company</p>
         </div>
       </div>
     );
