@@ -3,766 +3,471 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { cn } from "@/lib/utils";
 import FloatingContactButtons from "@/components/FloatingContactButtons";
-import { BookOpen, Video, Users, Award, Globe, Sparkles, MessageCircle, Target, ArrowRight, CheckCircle, Star, Zap, ChevronLeft, ChevronRight, Headphones, GraduationCap, Trophy, Menu, X, Play, ArrowDown, Map as MapIcon, Tag } from "lucide-react";
-
-const defaultHeroImages = [
-  { src: "/assets/hero-1.png", alt: "Why Us - Be Fluent" },
-  { src: "/assets/hero-2.png", alt: "Live Sessions - Be Fluent" },
-  { src: "/assets/hero-3.png", alt: "Interactive Learning - Be Fluent" },
-  { src: "/assets/hero-4.png", alt: "Unlock Your Potential - Be Fluent" },
-];
+import { Menu, X, ArrowLeft, Play, CheckCircle, ChevronDown, ChevronLeft, ChevronRight, Tag, Star } from "lucide-react";
 
 export default function Home() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [activeCoupons, setActiveCoupons] = useState<any[]>([]);
   const [siteSettings, setSiteSettings] = useState<any>(null);
   const [pageContent, setPageContent] = useState<Record<string, string>>({});
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [cmsHeroImages, setCmsHeroImages] = useState<{ src: string; alt: string }[]>([]);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Helper to get CMS content with fallback
+  const defaultHeroImages = [
+    { src: "/assets/hero-1.png", alt: "Be Fluent" },
+    { src: "/assets/hero-2.png", alt: "Be Fluent" },
+    { src: "/assets/hero-3.png", alt: "Be Fluent" },
+    { src: "/assets/hero-4.png", alt: "Be Fluent" },
+  ];
+
   const cms = (section: string, field: string, fallback: string): string =>
     pageContent[`${section}.${field}`] || fallback;
 
   useEffect(() => {
     setIsVisible(true);
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    // Fetch active coupons
-    fetch('/api/coupons/active')
-      .then(res => res.json())
-      .then(data => { if (Array.isArray(data)) setActiveCoupons(data); })
-      .catch(() => {});
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll, { passive: true });
 
-    // Fetch site settings
-    fetch('/api/admin/settings')
-      .then(res => res.json())
-      .then(data => { if (!data.error) setSiteSettings(data); })
-      .catch(() => {});
-
-    // Fetch CMS page content
-    fetch('/api/admin/page-content?page=homepage')
-      .then(res => res.json())
-      .then(items => {
-        if (Array.isArray(items)) {
-          const map: Record<string, string> = {};
-          items.forEach((item: any) => { map[`${item.section}.${item.field}`] = item.value; });
-          setPageContent(map);
-          // Extract hero images from CMS
-          let imgs: { src: string; alt: string }[] = [];
-          let i = 1;
-          while (map[`hero_images.img${i}_src`]) {
-            imgs.push({ src: map[`hero_images.img${i}_src`], alt: map[`hero_images.img${i}_alt`] || '' });
-            i++;
-          }
-          if (imgs.length > 0) setCmsHeroImages(imgs);
+    fetch('/api/coupons/active').then(r => r.json()).then(d => { if (Array.isArray(d)) setActiveCoupons(d); }).catch(() => {});
+    fetch('/api/admin/settings').then(r => r.json()).then(d => { if (!d.error) setSiteSettings(d); }).catch(() => {});
+    fetch('/api/admin/page-content?page=homepage').then(r => r.json()).then(items => {
+      if (Array.isArray(items)) {
+        const map: Record<string, string> = {};
+        items.forEach((item: any) => { map[`${item.section}.${item.field}`] = item.value; });
+        setPageContent(map);
+        let imgs: { src: string; alt: string }[] = [];
+        let i = 1;
+        while (map[`hero_images.img${i}_src`]) {
+          imgs.push({ src: map[`hero_images.img${i}_src`], alt: map[`hero_images.img${i}_alt`] || '' });
+          i++;
         }
-      })
-      .catch(() => {});
+        if (imgs.length > 0) setCmsHeroImages(imgs);
+      }
+    }).catch(() => {});
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const heroImages = cmsHeroImages.length > 0 ? cmsHeroImages : defaultHeroImages;
   const totalSlides = heroImages.length + activeCoupons.length;
 
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % totalSlides);
-  }, [totalSlides]);
-
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
-  }, [totalSlides]);
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 5000);
-  };
+  const nextSlide = useCallback(() => setCurrentSlide(p => (p + 1) % totalSlides), [totalSlides]);
+  const prevSlide = useCallback(() => setCurrentSlide(p => (p - 1 + totalSlides) % totalSlides), [totalSlides]);
 
   useEffect(() => {
     if (!isAutoPlaying || totalSlides === 0) return;
-    const interval = setInterval(nextSlide, 4000);
-    return () => clearInterval(interval);
+    const iv = setInterval(nextSlide, 5000);
+    return () => clearInterval(iv);
   }, [isAutoPlaying, nextSlide, totalSlides]);
 
+  const navLinks = [
+    { label: "الرئيسية", href: "/" },
+    { label: "باقاتنا", href: "/packages" },
+    { label: "القواعد", href: "/grammar" },
+    { label: "اعرف طريقك", href: "/about-path" },
+  ];
+
+  const features = [
+    { en: "Live Sessions", ar: "حصص تفاعلية مباشرة", desc: "تعلم مع معلمين محترفين في بيئة حية.", num: "01" },
+    { en: "Exclusive Content", ar: "محتوى تعليمي حصري", desc: "دروس وفيديوهات مصممة خصيصاً لك.", num: "02" },
+    { en: "Smart Tests", ar: "اختبارات ذكية", desc: "قياس مستمر لضمان تقدمك الحقيقي.", num: "03" },
+    { en: "Community", ar: "مجتمع داعم", desc: "آلاف الطلاب يتعلمون معك.", num: "04" },
+    { en: "Certificates", ar: "شهادات معتمدة", desc: "شهادات تؤهلك للعمل والدراسة.", num: "05" },
+    { en: "24/7 Support", ar: "دعم مستمر", desc: "نحن هنا معك في كل وقت.", num: "06" },
+  ];
+
+  const steps = [
+    { ar: "تحديد الهدف", desc: "نحلل مستواك ونحدد أهدافك بدقة.", n: 1 },
+    { ar: "الحصة التجريبية", desc: "تجربة حية مع معلم لتقييم مهاراتك.", n: 2 },
+    { ar: "خطة مخصصة", desc: "منهج خاص يناسب وقتك وإيقاعك.", n: 3 },
+    { ar: "نظام المعلمين المزدوج", desc: "معلم أساسي ومعلم متابع.", n: 4 },
+    { ar: "قياس مستمر", desc: "اختبارات دورية تضمن تقدمك.", n: 5 },
+  ];
+
   return (
-    <div className="min-h-screen bg-white text-[#1F2937] overflow-x-hidden">
-      {/* Animated Background */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-bl from-[#10B981]/8 via-emerald-100/20 to-transparent rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/4"></div>
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-[#10B981]/10 via-teal-50/30 to-transparent rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/4"></div>
-        <div className="absolute top-1/2 left-1/2 w-[500px] h-[500px] bg-gradient-radial from-emerald-50/40 to-transparent rounded-full blur-2xl transform -translate-x-1/2 -translate-y-1/2"></div>
-      </div>
+    <div className="min-h-screen bg-[#F9FAFB] text-[#1F2937]" dir="rtl">
 
-      {/* Header */}
-      <header className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        scrollY > 20 
-          ? "bg-white/90 backdrop-blur-xl shadow-lg shadow-emerald-500/5 py-2" 
-          : "bg-transparent py-4 md:py-6"
-      )}>
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-3 group relative z-10">
-              <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl overflow-hidden shadow-md group-hover:shadow-emerald-200/50 transition-all duration-500 transform group-hover:scale-105">
-                <Image src="/logo.png" alt="Be Fluent" fill className="object-contain" sizes="48px" />
-              </div>
-              <div className="flex flex-col">
-                <span className={cn(
-                  "text-lg md:text-2xl font-black tracking-tight leading-none transition-colors duration-300",
-                  scrollY > 20 ? "text-[#1F2937]" : "text-[#1F2937]"
-                )}>Be Fluent</span>
-                <span className="text-[9px] md:text-[10px] text-[#10B981] font-bold tracking-[0.2em] uppercase">Fluency Comes First</span>
-              </div>
+      {/* ── NAVBAR ─────────────────────────────────────────── */}
+      <header className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm' : 'bg-transparent'}`}>
+        <div className="max-w-7xl mx-auto px-5 lg:px-10 h-16 flex items-center justify-between">
+
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl overflow-hidden">
+              <Image src="/logo.png" alt="Be Fluent" width={36} height={36} className="object-contain w-full h-full" />
+            </div>
+            <div className="leading-none">
+              <p className="font-black text-base text-[#1F2937]">Be Fluent</p>
+              <p className="text-[9px] font-semibold text-[#10B981] tracking-widest uppercase">Fluency Comes First</p>
+            </div>
+          </Link>
+
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            {navLinks.map((l, i) => (
+              <Link key={i} href={l.href} className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-[#10B981] rounded-lg hover:bg-emerald-50 transition-all">{l.label}</Link>
+            ))}
+          </nav>
+
+          {/* Desktop CTA */}
+          <div className="hidden md:flex items-center gap-3">
+            <Link href="/auth/login" className="text-sm font-semibold text-gray-600 hover:text-[#10B981] transition-colors px-3 py-2">دخول</Link>
+            <Link href="/auth/register" className="px-5 py-2.5 bg-[#10B981] text-white text-sm font-bold rounded-xl hover:bg-[#059669] transition-colors shadow-md shadow-emerald-200/60">
+              ابدأ الآن
             </Link>
-
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center bg-gray-100/50 backdrop-blur-md px-2 py-1.5 rounded-2xl border border-gray-200/50">
-              {[
-                { label: "الرئيسية", href: "/" },
-                { label: "باقاتنا", href: "/packages" },
-                { label: "القواعد", href: "/grammar" },
-                { label: "اعرف طريقك", href: "/about-path" },
-              ].map((item, i) => (
-                <Link 
-                  key={i} 
-                  href={item.href} 
-                  className="px-5 py-2 text-sm font-bold text-gray-700 hover:text-[#10B981] transition-all duration-300 rounded-xl hover:bg-white hover:shadow-sm"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-
-            <div className="hidden md:flex items-center gap-3">
-              <Link href="/auth/login" className="px-5 py-2.5 text-sm font-bold text-gray-700 hover:text-[#10B981] transition-colors rounded-xl hover:bg-gray-100">
-                تسجيل الدخول
-              </Link>
-              <Link href="/auth/register" className="px-6 py-2.5 text-sm font-bold rounded-xl bg-[#10B981] text-white shadow-lg shadow-emerald-200/50 hover:bg-[#059669] hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
-                انضم إلينا
-              </Link>
-            </div>
-
-            {/* Mobile Actions */}
-            <div className="flex items-center gap-2 md:hidden">
-              <Link href="/auth/login" className="p-2.5 text-gray-700 hover:text-[#10B981] transition-colors">
-                <Users className="w-5 h-5" />
-              </Link>
-              <button 
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
-                className="p-2.5 rounded-xl bg-gray-100 text-[#1F2937] hover:bg-gray-200 transition-all duration-300 relative z-50"
-              >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
           </div>
 
-          {/* Mobile Menu Overlay */}
-          <div className={cn(
-            "fixed inset-0 bg-white/95 backdrop-blur-2xl z-40 md:hidden transition-all duration-500 ease-in-out",
-            mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-          )}>
-            <div className="flex flex-col h-full pt-24 px-6 pb-10">
-              <nav className="flex flex-col gap-4">
-                {[
-                  { label: "الرئيسية", href: "/", icon: <BookOpen className="w-5 h-5" /> },
-                  { label: "باقاتنا", href: "/packages", icon: <Target className="w-5 h-5" /> },
-                  { label: "القواعد", href: "/grammar", icon: <Globe className="w-5 h-5" /> },
-                  { label: "اعرف طريقك", href: "/about-path", icon: <MapIcon className="w-5 h-5" /> },
-                ].map((item, i) => (
-                  <Link 
-                    key={i} 
-                    href={item.href} 
-                    className="flex items-center gap-4 p-4 text-xl font-bold text-gray-800 bg-gray-50 rounded-2xl active:scale-95 transition-all"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-[#10B981]">
-                      {item.icon}
-                    </div>
-                    {item.label}
-                  </Link>
-                ))}
-              </nav>
+          {/* Mobile burger */}
+          <button onClick={() => setMobileMenuOpen(v => !v)} className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
 
-              <div className="mt-auto flex flex-col gap-3">
-                <Link 
-                  href="/auth/login" 
-                  className="w-full py-4 text-center text-gray-800 font-bold bg-gray-100 rounded-2xl active:scale-95 transition-all"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  تسجيل الدخول
-                </Link>
-                <Link 
-                  href="/auth/register" 
-                  className="w-full py-4 text-center bg-[#10B981] text-white font-bold rounded-2xl shadow-lg shadow-emerald-200 active:scale-95 transition-all"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  انضم إلينا الآن
-                </Link>
-              </div>
+        {/* Mobile menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-white border-t border-gray-100 shadow-xl px-5 pb-6 pt-4 flex flex-col gap-2">
+            {navLinks.map((l, i) => (
+              <Link key={i} href={l.href} onClick={() => setMobileMenuOpen(false)}
+                className="py-3 px-4 text-base font-semibold text-gray-700 hover:text-[#10B981] rounded-xl hover:bg-emerald-50 transition-all">{l.label}</Link>
+            ))}
+            <div className="mt-3 flex flex-col gap-2 pt-3 border-t border-gray-100">
+              <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}
+                className="py-3 text-center font-bold text-gray-700 bg-gray-100 rounded-xl">دخول</Link>
+              <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}
+                className="py-3 text-center font-bold text-white bg-[#10B981] rounded-xl shadow-md">ابدأ الآن</Link>
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* ── HERO — VIDEO BANNER ─────────────────────────────── */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#0a0a0a] pt-16">
+
+        {/* Video Background — replace src when video is ready */}
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
+          autoPlay muted loop playsInline
+          poster="/assets/hero-1.png"
+        >
+          {/* <source src="/assets/hero-video.mp4" type="video/mp4" /> */}
+        </video>
+
+        {/* Dark overlay + green tint */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+        <div className="absolute inset-0 bg-gradient-to-tr from-[#10B981]/10 via-transparent to-transparent"></div>
+
+        {/* Coupon badge (if active) */}
+        {activeCoupons.length > 0 && (
+          <div className="absolute top-20 right-5 z-20 flex items-center gap-2 bg-[#10B981] text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg animate-pulse">
+            <Tag className="w-4 h-4" />
+            خصم {activeCoupons[0].discount}% — كود: {activeCoupons[0].code}
+          </div>
+        )}
+
+        {/* Hero Content */}
+        <div className={`relative z-10 text-center text-white px-5 max-w-4xl mx-auto transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+
+          <p className="inline-block mb-6 text-xs font-bold tracking-[0.25em] uppercase text-[#10B981] border border-[#10B981]/40 px-4 py-1.5 rounded-full bg-[#10B981]/10">
+            مستقبلك يبدأ هنا
+          </p>
+
+          <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black leading-[1.05] mb-6 tracking-tight">
+            {cms('hero', 'title_ar', 'تعلم الإنجليزية')}
+            <br />
+            <span className="text-[#10B981]">{cms('hero', 'title_en', 'Be Fluent')}</span>
+          </h1>
+
+          <p className="text-lg sm:text-xl text-white/70 max-w-xl mx-auto mb-10 leading-relaxed font-medium">
+            {cms('hero', 'subtitle_en', 'المنصة المتكاملة لتعلم اللغة الإنجليزية بأسلوب احترافي ومبتكر مع معلمين محترفين')}
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+            <Link href="/auth/register"
+              className="px-8 py-4 bg-[#10B981] text-white font-bold text-base rounded-2xl shadow-lg shadow-emerald-500/30 hover:bg-[#059669] transition-all hover:scale-[1.02] active:scale-[0.98]">
+              {cms('hero', 'cta_text', 'ابدأ رحلتك الآن')}
+            </Link>
+            <a href={`https://api.whatsapp.com/send/?phone=${cms('contact', 'whatsapp', '201091515594')}`}
+              target="_blank" rel="noopener noreferrer"
+              className="px-8 py-4 bg-white/10 border border-white/25 text-white font-bold text-base rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all">
+              تواصل معنا
+            </a>
+          </div>
+        </div>
+
+        {/* Scroll hint */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 text-white/40 animate-bounce">
+          <span className="text-xs font-medium tracking-wide">اكتشف</span>
+          <ChevronDown className="w-4 h-4" />
+        </div>
+      </section>
+
+      {/* ── STATS BAR ──────────────────────────────────────── */}
+      <section className="bg-white border-y border-gray-100">
+        <div className="max-w-6xl mx-auto px-5 py-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          {[
+            { num: "+500", label: "طالب نشط" },
+            { num: "+1000", label: "حصة مكتملة" },
+            { num: "4", label: "مستويات تعليمية" },
+            { num: "24/7", label: "دعم مستمر" },
+          ].map((s, i) => (
+            <div key={i}>
+              <p className="text-3xl lg:text-4xl font-black text-[#10B981]">{s.num}</p>
+              <p className="text-sm text-gray-500 font-medium mt-1">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── FEATURES GRID ──────────────────────────────────── */}
+      <section className="py-24 bg-[#F9FAFB]">
+        <div className="max-w-6xl mx-auto px-5 lg:px-10">
+          <div className="mb-16 text-center">
+            <p className="text-sm font-bold text-[#10B981] tracking-widest uppercase mb-3">لماذا نحن؟</p>
+            <h2 className="text-3xl md:text-5xl font-black text-[#1F2937] leading-tight">
+              كل ما تحتاجه<br />
+              <span className="text-[#10B981]">في مكان واحد</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {features.map((f, i) => {
+              const n = i + 1;
+              const ar = cms('features', `feat${n}_title_ar`, f.ar);
+              const desc = cms('features', `feat${n}_desc_ar`, f.desc);
+              return (
+                <div key={i} className="group bg-white rounded-3xl p-8 border border-gray-100 hover:border-[#10B981]/30 hover:shadow-xl hover:shadow-emerald-500/5 transition-all duration-400 cursor-default">
+                  <p className="text-5xl font-black text-gray-100 group-hover:text-[#10B981]/20 transition-colors mb-4 leading-none">{f.num}</p>
+                  <h3 className="text-xs font-bold text-[#10B981] tracking-widest uppercase mb-1">{f.en}</h3>
+                  <h4 className="text-xl font-black text-[#1F2937] mb-3">{ar}</h4>
+                  <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── LEARNING PATH ──────────────────────────────────── */}
+      <section className="py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-5 lg:px-10">
+          <div className="flex flex-col lg:flex-row gap-16 items-start">
+
+            {/* Left text */}
+            <div className="lg:w-5/12">
+              <p className="text-sm font-bold text-[#10B981] tracking-widest uppercase mb-4">رحلتك</p>
+              <h2 className="text-3xl md:text-4xl font-black text-[#1F2937] leading-tight mb-6">
+                نصمم لك<br />
+                <span className="text-[#10B981]">طريقاً للنجاح</span>
+              </h2>
+              <p className="text-gray-500 leading-relaxed mb-8">
+                لا نعلمك الإنجليزية فحسب — نحن نبني معك منهجاً كاملاً من الصفر حتى الاحتراف.
+              </p>
+              <Link href="/learning-path"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#10B981] text-white font-bold rounded-xl hover:bg-[#059669] transition-colors text-sm">
+                استكشف الخريطة
+                <ArrowLeft className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* Right steps */}
+            <div className="lg:w-7/12 space-y-4">
+              {steps.map((s, i) => {
+                const titleAr = cms('learning_path', `step${s.n}_title_ar`, s.ar);
+                const desc = cms('learning_path', `step${s.n}_desc`, s.desc);
+                return (
+                  <div key={i} className="flex gap-5 items-start p-5 rounded-2xl border border-gray-100 hover:border-[#10B981]/30 hover:bg-emerald-50/30 transition-all group">
+                    <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-[#10B981]/10 group-hover:bg-[#10B981] text-[#10B981] group-hover:text-white flex items-center justify-center font-black text-base transition-all">
+                      {s.n}
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-[#1F2937] text-base mb-1">{titleAr}</h3>
+                      <p className="text-gray-500 text-sm">{desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
-      </header>
+      </section>
 
-      <main className="relative z-10">
-        {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center pt-20 pb-16 lg:pt-0 lg:pb-0 overflow-hidden">
-          {/* Background Image from CMS */}
-          {cms('hero', 'hero_bg', '') && (
-            <div className="absolute inset-0 z-0">
-              <Image 
-                src={cms('hero', 'hero_bg', '')} 
-                alt="Background" 
-                fill 
-                className="object-cover opacity-20 grayscale-[0.5]" 
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/40 to-white"></div>
-            </div>
-          )}
-          {/* Floating Decorative Elements */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-[15%] left-[5%] w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400/20 to-teal-300/10 animate-float" style={{ animationDelay: '0s' }}></div>
-            <div className="absolute top-[60%] left-[8%] w-12 h-12 rounded-full bg-gradient-to-br from-[#10B981]/30 to-emerald-200/20 animate-float" style={{ animationDelay: '2s' }}></div>
-            <div className="absolute top-[25%] right-[8%] w-16 h-16 rounded-full bg-gradient-to-br from-teal-400/20 to-emerald-300/10 animate-float" style={{ animationDelay: '1s' }}></div>
-            <div className="absolute bottom-[20%] right-[12%] w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500/20 to-teal-200/15 animate-float" style={{ animationDelay: '3s' }}></div>
-          </div>
-
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-              {/* Text Content */}
-              <div className={`lg:w-1/2 text-center lg:text-right order-2 lg:order-1 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} dir="rtl">
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#10B981]/15 to-emerald-100/50 px-5 py-2.5 rounded-full mb-6 border border-[#10B981]/20 backdrop-blur-sm">
-                  <Sparkles className="w-4 h-4 text-[#10B981] animate-pulse" />
-                  <span className="text-sm font-bold text-[#047857]">مستقبلك يبدأ هنا</span>
-                </div>
-
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-[#1F2937] mb-6 leading-[1.1]">
-                  {cms('hero', 'title_ar', 'تعلم الإنجليزية')}
-                  <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#10B981] via-emerald-500 to-teal-500">
-                    {cms('hero', 'title_en', 'Learn English')}
-                  </span>
-                  <br />
-                  <span className="text-3xl sm:text-4xl lg:text-5xl bg-gradient-to-r from-gray-700 to-gray-500 bg-clip-text text-transparent">
-                    {cms('hero', 'subtitle_ar', 'بأسلوب احترافي ومبتكر')}
-                  </span>
-                </h1>
-
-                <p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0 font-medium">
-                  {cms('hero', 'subtitle_en', 'Be Fluent هي المنصة المتكاملة لتعلم اللغة الإنجليزية بأساليب حديثة تفاعلية مع معلمين محترفين ومجتمع داعم')}
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10">
-                  <Link href="/auth/register" className="group relative px-8 py-4 bg-gradient-to-r from-[#10B981] to-emerald-500 text-white rounded-2xl text-lg font-bold shadow-xl shadow-emerald-200/50 hover:shadow-2xl hover:shadow-emerald-300/60 transition-all duration-500 flex items-center justify-center gap-3 overflow-hidden">
-                    <span className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-                    <span className="relative">{cms('hero', 'cta_text', 'ابدأ رحلتك الآن')}</span>
-                    <ArrowRight className="relative w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
-                  </Link>
-                  <Link href="/learning-path" className="group px-8 py-4 bg-white border-2 border-gray-200 text-[#1F2937] rounded-2xl text-lg font-bold hover:border-[#10B981] hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-3">
-                    <MapIcon className="w-5 h-5 text-[#10B981] group-hover:scale-110 transition-transform" />
-                    <span>خريطة التعلم الذكية</span>
-                  </Link>
-                  <a href={`https://api.whatsapp.com/send/?phone=${cms('contact', 'whatsapp', '201091515594')}`} target="_blank" rel="noopener noreferrer" className="group px-8 py-4 bg-white border-2 border-gray-200 text-[#1F2937] rounded-2xl text-lg font-bold hover:border-[#10B981] hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-3">
-                    <MessageCircle className="w-5 h-5 text-[#10B981] group-hover:scale-110 transition-transform" />
-                    <span>تواصل معنا</span>
-                  </a>
-                </div>
-              </div>
-
-              {/* Innovative Image Section */}
-              <div className={`lg:w-1/2 order-1 lg:order-2 w-full max-w-2xl mx-auto lg:max-w-none transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
-                <div className="relative">
-                  {/* Background Glow */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#10B981]/20 via-emerald-200/30 to-teal-100/20 rounded-[3rem] blur-3xl scale-110"></div>
-                  
-                  {/* Main Image Container */}
-                  <div className="relative">
-                    {/* Decorative Frame */}
-                    <div className="absolute -inset-4 bg-gradient-to-br from-[#10B981]/20 to-emerald-100/30 rounded-[3rem] transform rotate-3"></div>
-                    <div className="absolute -inset-4 bg-gradient-to-tl from-teal-200/20 to-emerald-50/30 rounded-[3rem] transform -rotate-2"></div>
-                    
-                    {/* Image Carousel */}
-                    <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl shadow-emerald-200/40 border-4 border-white bg-white aspect-[4/3]">
-                      {heroImages.map((image, index) => (
-                        <div key={`hero-${index}`} className={`absolute inset-0 transition-all duration-700 ease-out ${index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}>
-                          <Image 
-                            src={image.src} 
-                            alt={image.alt} 
-                            fill 
-                            className="object-contain" 
-                            priority={index === 0} 
-                            sizes="(max-width: 768px) 100vw, 50vw" 
-                            quality={100}
-                            loading={index === 0 ? "eager" : "lazy"} 
-                          />
-                        </div>
-                      ))}
-
-                      {activeCoupons.map((coupon, index) => {
-                        const slideIndex = heroImages.length + index;
-                        return (
-                          <div key={`coupon-${coupon.id}`} className={`absolute inset-0 transition-all duration-700 ease-out flex flex-col items-center justify-center p-8 bg-gradient-to-br from-emerald-600 via-[#10B981] to-teal-500 text-white text-center ${slideIndex === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}>
-                            <div className="mb-6 p-4 bg-white/20 rounded-full">
-                              <Tag className="w-12 h-12" />
-                            </div>
-                            <h3 className="text-2xl md:text-3xl font-black mb-4">عرض خاص وحصري!</h3>
-                            <div className="bg-white text-emerald-600 px-6 py-3 rounded-2xl text-2xl md:text-4xl font-black shadow-xl mb-6 tracking-wider">
-                              {coupon.code}
-                            </div>
-                            <p className="text-xl md:text-2xl font-bold text-amber-300 mb-2">خصم {coupon.discount}%</p>
-                            <p className="text-sm md:text-base opacity-90">استخدم الكود عند الاشتراك لتفعيل الخصم</p>
-                            {coupon.expiryDate && (
-                              <p className="mt-4 text-xs font-medium bg-black/10 px-3 py-1 rounded-full">
-                                ينتهي في: {new Date(coupon.expiryDate).toLocaleDateString('ar-EG')}
-                              </p>
-                            )}
-                            <div className="mt-8">
-                              <Link href="/auth/register" className="px-8 py-3 bg-white text-[#10B981] rounded-xl font-black hover:bg-emerald-50 transition-colors shadow-lg">
-                                اشترك الآن واستفد من الخصم
-                              </Link>
-                            </div>
-                          </div>
-                        );
-                      })}
-
-                      {/* Navigation */}
-                      <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/20 to-transparent">
-                        <div className="flex items-center justify-center gap-2">
-                          {Array.from({ length: totalSlides }).map((_, index) => (
-                            <button key={index} onClick={() => goToSlide(index)} className={`transition-all duration-300 rounded-full ${index === currentSlide ? 'w-10 h-3 bg-white shadow-lg' : 'w-3 h-3 bg-white/50 hover:bg-white/70'}`} />
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Arrow Buttons */}
-                      <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 shadow-xl flex items-center justify-center hover:bg-[#10B981] hover:text-white transition-all duration-300">
-                        <ChevronLeft className="w-6 h-6" />
-                      </button>
-                      <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 shadow-xl flex items-center justify-center hover:bg-[#10B981] hover:text-white transition-all duration-300">
-                        <ChevronRight className="w-6 h-6" />
-                      </button>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Scroll Indicator */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2 animate-bounce">
-            <span className="text-sm text-gray-400 font-medium">اكتشف المزيد</span>
-            <ArrowDown className="w-5 h-5 text-[#10B981]" />
-          </div>
-        </section>
-
-        {/* Features Section */}
-        <section className="py-24 bg-gray-50/50">
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16" dir="rtl">
-              <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-6">لماذا تختار Be Fluent؟</h2>
-              <p className="text-gray-600 text-lg">نحن نقدم تجربة تعليمية فريدة تركز على النتائج الحقيقية والتمكن الكامل من اللغة.</p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { titleAr: "حصص تفاعلية مباشرة", titleEn: "LIVE SESSIONS", descAr: "تعلم مع معلمين محترفين في حصص حية تفاعلية مع طلاب من جميع أنحاء العالم." },
-                { titleAr: "محتوى تعليمي حصري", titleEn: "EXCLUSIVE CONTENT", descAr: "دروس وفيديوهات ومقالات تعليمية مصممة خصيصاً لتسريع رحلة تعلمك." },
-                { titleAr: "اختبارات وتقييمات", titleEn: "TESTS & ASSESSMENTS", descAr: "اختبارات دورية لقياس تقدمك مع تقارير مفصلة عن نقاط القوة والضعف." },
-                { titleAr: "مجتمع تفاعلي", titleEn: "COMMUNITY", descAr: "انضم لآلاف الطلاب في مجتمعنا التفاعلي للتدريب والتحفيز المتبادل." },
-                { titleAr: "شهادات معتمدة", titleEn: "CERTIFICATES", descAr: "احصل على شهادات معتمدة عند إتمام المستويات تؤهلك للعمل والدراسة." },
-                { titleAr: "دعم على مدار الساعة", titleEn: "24/7 SUPPORT", descAr: "فريق دعم متخصص لمساعدتك في أي وقت والإجابة على جميع استفساراتك." },
-              ].map((def, i) => {
-                const n = i + 1;
-                const titleAr = cms('features', `feat${n}_title_ar`, def.titleAr);
-                const titleEn = cms('features', `feat${n}_title_en`, def.titleEn);
-                const descAr = cms('features', `feat${n}_desc_ar`, def.descAr);
-                const icon = cms('features', `feat${n}_icon`, '');
-                return (
-                  <div key={i} className="bg-white p-8 rounded-[2.5rem] shadow-xl shadow-emerald-500/5 border border-gray-100 hover:border-[#10B981]/30 transition-all duration-500 group" dir="rtl">
-                    <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mb-6 group-hover:bg-[#10B981] transition-colors duration-500 overflow-hidden">
-                      {icon ? (
-                        <div className="relative w-full h-full p-3">
-                          <Image src={icon} fill className="object-contain" alt="" />
-                        </div>
-                      ) : (
-                        <Star className="w-8 h-8 text-[#10B981] group-hover:text-white transition-colors" />
-                      )}
-                    </div>
-                    <h3 className="text-xl font-black text-gray-900 mb-2 uppercase tracking-tight">{titleEn}</h3>
-                    <h4 className="text-2xl font-bold text-gray-800 mb-4">{titleAr}</h4>
-                    <p className="text-gray-600 leading-relaxed">{descAr}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Learning Path Section */}
-        <section className="py-24 bg-gradient-to-b from-white to-emerald-50/30" id="learning-path">
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className="flex flex-col lg:flex-row items-start gap-16">
-              {/* Left: Title + Steps list */}
-              <div className="lg:w-1/2" dir="rtl">
-                <div className="inline-flex items-center gap-2 bg-[#10B981]/10 px-4 py-2 rounded-full mb-6 border border-[#10B981]/20">
-                  <MapIcon className="w-4 h-4 text-[#10B981]" />
-                  <span className="text-sm font-bold text-[#047857]">رحلتك تبدأ بخطوة</span>
-                </div>
-                <h2 className="text-4xl lg:text-5xl font-black text-gray-900 mb-8 leading-tight">
-                  نحن لا نعلمك الإنجليزية فحسب، <br />
-                  <span className="text-[#10B981]">نحن نصمم لك طريقاً للنجاح</span>
-                </h2>
-                <div className="space-y-6">
-                  {[
-                    { titleAr: "تحديد الهدف", desc: "نبدأ بتحليل مستواك وتحديد أهدافك بدقة (عمل، سفر، أو تطوير ذاتي)." },
-                    { titleAr: "الحصة التجريبية", desc: "تجربة حية مع أحد معلمينا لتقييم مهارات التحدث والاستماع." },
-                    { titleAr: "خطة مخصصة", desc: "نصمم لك منهجاً خاصاً يناسب وقتك وسرعة تعلمك." },
-                    { titleAr: "نظام المعلمين المزدوج", desc: "معلم أساسي للحصص، ومعلم متابع للدعم على مدار الساعة." },
-                    { titleAr: "اختبارات وقياس مستمر", desc: "اختبارات دورية لضمان انتقالك للمستوى التالي بثقة." },
-                  ].map((def, i) => {
-                    const n = i + 1;
-                    const titleAr = cms('learning_path', `step${n}_title_ar`, def.titleAr);
-                    const desc = cms('learning_path', `step${n}_desc`, def.desc);
-                    const stepIcon = cms('learning_path', `step${n}_icon`, '');
-                    return (
-                      <div key={i} className="flex gap-4 group">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-white shadow-lg border border-gray-100 flex items-center justify-center text-[#10B981] group-hover:bg-[#10B981] group-hover:text-white transition-all duration-300 overflow-hidden">
-                          {stepIcon ? (
-                            <div className="relative w-full h-full p-2">
-                              <Image src={stepIcon} fill className="object-contain" alt="" />
-                            </div>
-                          ) : (
-                            <span className="font-black text-lg">{n}</span>
-                          )}
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-bold text-gray-800 mb-1">{titleAr}</h3>
-                          <p className="text-gray-600">{desc}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="mt-10">
-                  <Link href="/learning-path" className="inline-flex items-center gap-3 px-8 py-4 bg-[#10B981] text-white rounded-2xl text-lg font-bold shadow-xl shadow-emerald-200 hover:bg-[#059669] transition-all duration-300">
-                    <span>استكشف الخريطة التفاعلية بالكامل</span>
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Right: Visual path cards */}
-              <div className="lg:w-1/2 relative" dir="rtl">
-                <div className="absolute -top-10 -right-10 w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none"></div>
-                <div className="grid grid-cols-1 gap-4 relative z-10">
-                  {[
-                    { titleAr: "تحديد الهدف", desc: "نبدأ بتحليل مستواك وتحديد أهدافك بدقة.", color: "border-blue-200 bg-blue-50", dot: "bg-blue-500" },
-                    { titleAr: "الحصة التجريبية", desc: "تجربة حية مع أحد معلمينا لتقييم مهاراتك.", color: "border-emerald-200 bg-emerald-50", dot: "bg-emerald-500" },
-                    { titleAr: "خطة مخصصة", desc: "نصمم لك منهجاً خاصاً يناسب وقتك.", color: "border-amber-200 bg-amber-50", dot: "bg-amber-500" },
-                    { titleAr: "نظام المعلمين المزدوج", desc: "معلم أساسي ومعلم متابع ودعم على مدار الساعة.", color: "border-purple-200 bg-purple-50", dot: "bg-purple-500" },
-                    { titleAr: "اختبارات وقياس مستمر", desc: "اختبارات دورية لضمان تقدمك للمستوى التالي.", color: "border-rose-200 bg-rose-50", dot: "bg-rose-500" },
-                  ].map((card, i) => {
-                    const n = i + 1;
-                    const title = cms('learning_path', `step${n}_title_ar`, card.titleAr);
-                    const desc = cms('learning_path', `step${n}_desc`, card.desc);
-                    return (
-                      <div key={i} className={`flex items-start gap-4 p-5 rounded-2xl border-2 ${card.color} hover:shadow-md transition-all duration-300`}>
-                        <div className={`flex-shrink-0 w-10 h-10 ${card.dot} rounded-xl flex items-center justify-center text-white font-black text-base shadow-lg`}>
-                          {n}
-                        </div>
-                        <div>
-                          <h4 className="font-black text-gray-900 text-lg mb-1">{title}</h4>
-                          <p className="text-gray-600 text-sm leading-relaxed">{desc}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Why Us Section */}
-        <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#10B981]/5 to-transparent rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-emerald-50/50 to-transparent rounded-full blur-3xl"></div>
-          
-          <div className="container mx-auto px-4 lg:px-8 relative z-10">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#10B981]/10 to-emerald-50 px-5 py-2.5 rounded-full mb-4 border border-[#10B981]/20">
-                <Star className="w-4 h-4 text-[#10B981]" />
-                <span className="text-sm font-bold text-[#047857]">لماذا نحن؟</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1F2937] mb-4">
-                طريقك نحو <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#10B981] to-emerald-500">الطلاقة</span>
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                نوفر لك تجربة تعليمية متكاملة تجمع بين التفاعل الحي والتقنيات الحديثة
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {[
-                { n: 1, defaultTitle: "حصص تفاعلية مباشرة", defaultDesc: "تعلم مع معلمين محترفين في حصص حية تفاعلية مع طلاب من جميع أنحاء العالم.", DefaultIcon: Video, gradient: "from-emerald-500 to-teal-600", bg: "from-emerald-50 to-teal-50" },
-                { n: 2, defaultTitle: "محتوى تعليمي حصري", defaultDesc: "دروس وفيديوهات ومقالات تعليمية مصممة خصيصاً لتسريع رحلة تعلمك.", DefaultIcon: BookOpen, gradient: "from-blue-500 to-indigo-600", bg: "from-blue-50 to-indigo-50" },
-                { n: 3, defaultTitle: "اختبارات وتقييمات", defaultDesc: "اختبارات دورية لقياس تقدمك مع تقارير مفصلة عن نقاط القوة والضعف.", DefaultIcon: Target, gradient: "from-orange-500 to-red-500", bg: "from-orange-50 to-red-50" },
-                { n: 4, defaultTitle: "مجتمع تفاعلي", defaultDesc: "انضم لآلاف الطلاب في مجتمعنا التفاعلي للتدريب والتحفيز المتبادل.", DefaultIcon: Users, gradient: "from-pink-500 to-rose-600", bg: "from-pink-50 to-rose-50" },
-                { n: 5, defaultTitle: "شهادات معتمدة", defaultDesc: "احصل على شهادات معتمدة عند إتمام المستويات تؤهلك للعمل والدراسة.", DefaultIcon: Award, gradient: "from-amber-500 to-yellow-500", bg: "from-amber-50 to-yellow-50" },
-                { n: 6, defaultTitle: "دعم على مدار الساعة", defaultDesc: "فريق دعم متخصص لمساعدتك في أي وقت والإجابة على جميع استفساراتك.", DefaultIcon: MessageCircle, gradient: "from-violet-500 to-purple-600", bg: "from-violet-50 to-purple-50" },
-              ].map(({ n, defaultTitle, defaultDesc, DefaultIcon, gradient, bg }) => {
-                const title = cms('features', `feat${n}_title_ar`, defaultTitle);
-                const desc = cms('features', `feat${n}_desc_ar`, defaultDesc);
-                const icon = cms('features', `feat${n}_icon`, '');
-                return (
-                  <div key={n} className="group relative p-8 rounded-3xl bg-white border border-gray-100 hover:border-transparent shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden" dir="rtl">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${bg} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
-                    <div className={`relative w-14 h-14 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center text-white mb-5 shadow-lg group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 overflow-hidden`}>
-                      {icon ? <Image src={icon} width={28} height={28} alt="" /> : <DefaultIcon className="w-7 h-7" />}
-                    </div>
-                    <h3 className="relative text-xl font-bold text-[#1F2937] mb-3">{title}</h3>
-                    <p className="relative text-gray-600 leading-relaxed">{desc}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Image Showcase Section */}
-        <section className="py-20 lg:py-28 bg-gradient-to-b from-[#0f172a] to-[#1e293b] text-white relative overflow-hidden">
-          <div className="absolute inset-0">
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#10B981]/20 rounded-full blur-[150px]"></div>
-            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[150px]"></div>
-          </div>
-
-          <div className="container mx-auto px-4 lg:px-8 relative z-10">
-            <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-              {/* Images Grid */}
-              <div className="lg:w-1/2 w-full">
-                <div className="relative grid grid-cols-2 gap-4 max-w-lg mx-auto">
-                  <div className="space-y-4">
-                    <div className="rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-500 border-2 border-white/10">
-                      <Image src="/assets/hero-1.png" alt="Learning" width={300} height={250} className="w-full h-auto object-cover" />
-                    </div>
-                    <div className="rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-500 translate-x-6 border-2 border-white/10">
-                      <Image src="/assets/hero-3.png" alt="Interactive" width={300} height={200} className="w-full h-auto object-cover" />
-                    </div>
-                  </div>
-                  <div className="space-y-4 pt-8">
-                    <div className="rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-500 border-2 border-white/10">
-                      <Image src="/assets/hero-2.png" alt="Sessions" width={300} height={200} className="w-full h-auto object-cover" />
-                    </div>
-                    <div className="rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-500 -translate-x-4 border-2 border-white/10">
-                      <Image src="/assets/hero-4.png" alt="Success" width={300} height={250} className="w-full h-auto object-cover" />
-                    </div>
-                  </div>
-
-                  {/* Center Badge */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-gradient-to-br from-[#10B981] to-emerald-600 flex items-center justify-center shadow-2xl border-4 border-white/20 z-10">
-                    <div className="text-center">
-                      <div className="text-2xl font-black">4+</div>
-                      <div className="text-xs font-medium opacity-80">مستويات</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="lg:w-1/2 text-center lg:text-right" dir="rtl">
-                <div className="inline-flex items-center gap-2 bg-[#10B981]/20 px-5 py-2.5 rounded-full mb-6 border border-[#10B981]/30">
-                  <Zap className="w-4 h-4 text-[#10B981]" />
-                  <span className="text-sm font-bold text-[#10B981]">رحلة التعلم</span>
-                </div>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-6 leading-tight">
-                  خطواتك نحو <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#10B981] to-emerald-400">إتقان الإنجليزية</span>
-                </h2>
-                <p className="text-lg text-gray-300 mb-8 max-w-xl mx-auto lg:mx-0">
-                  رحلة مدروسة بعناية تأخذك من البداية حتى الاحتراف مع دعم مستمر في كل خطوة
-                </p>
-
-                <div className="space-y-4 mb-8">
-                  {Array.from({ length: 8 }).map((_, i) => {
-                    const n = i + 1;
-                    const stepTitle = cms('showcase', `step${n}_title`, '');
-                    const stepDesc = cms('showcase', `step${n}_desc`, '');
-                    const defaults = [
-                      { title: "التسجيل والاشتراك", desc: "سجل حسابك واختر الباقة المناسبة" },
-                      { title: "خطة تعلم مخصصة", desc: "منهج مصمم خصيصاً لمستواك" },
-                      { title: "حصص تفاعلية يومية", desc: "تعلم مع معلمين محترفين" },
-                      { title: "تقييم وتحسين مستمر", desc: "تتبع تقدمك وحسّن أداءك" },
-                    ];
-                    const title = stepTitle || defaults[i]?.title || '';
-                    const desc = stepDesc || defaults[i]?.desc || '';
-                    if (!title) return null;
-                    return (
-                      <div key={i} className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 hover:border-[#10B981]/30 transition-all duration-300 backdrop-blur-sm">
-                        <div className="w-12 h-12 shrink-0 rounded-xl bg-gradient-to-br from-[#10B981] to-emerald-600 flex items-center justify-center text-white font-black text-lg shadow-lg">
-                          {n}
-                        </div>
-                        <div className="text-right flex-1">
-                          <h4 className="font-bold text-white text-lg">{title}</h4>
-                          <p className="text-gray-400 text-sm">{desc}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <Link href="/auth/register" className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#10B981] to-emerald-500 text-white rounded-2xl text-lg font-bold hover:shadow-2xl hover:shadow-emerald-500/30 transition-all duration-300">
-                  <span>سجل الآن وابدأ التعلم</span>
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Packages Section */}
-        <section className="py-20 lg:py-28 bg-gradient-to-b from-gray-50 to-white">
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 bg-[#10B981]/10 px-5 py-2.5 rounded-full mb-4 border border-[#10B981]/20">
-                <Globe className="w-4 h-4 text-[#10B981]" />
-                <span className="text-sm font-bold text-[#047857]">استثمر في مستقبلك</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1F2937] mb-4">
-                اختر خطتك التعليمية
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                تجربة تعليمية متميزة بأسعار تنافسية تناسب الجميع
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
-              {Array.from({ length: 6 }).map((_, index) => {
-                const n = index + 1;
-                const defaults = [
-                  { name: "الباقة الشهرية", price: "1500", lessons: "8", duration: "شهر واحد", popular: false },
-                  { name: "الباقة الفصلية", price: "3500", lessons: "24", duration: "3 أشهر", popular: true },
-                  { name: "الباقة النصف سنوية", price: "6000", lessons: "48", duration: "6 أشهر", popular: false },
-                ];
-                const name = cms('packages', `pkg${n}_name`, defaults[index]?.name || '');
-                const price = cms('packages', `pkg${n}_price`, defaults[index]?.price || '');
-                const lessons = cms('packages', `pkg${n}_lessons`, defaults[index]?.lessons || '');
-                const duration = cms('packages', `pkg${n}_duration`, defaults[index]?.duration || '');
-                const popularStr = cms('packages', `pkg${n}_popular`, '');
-                const popular = popularStr === 'true' || (popularStr === '' && defaults[index]?.popular);
-                const badge = cms('packages', `pkg${n}_badge`, '');
-                if (!name) return null;
-                return (
-                  <div key={index} className={`relative rounded-3xl p-8 text-center transition-all duration-500 ${popular ? 'bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-white shadow-2xl scale-100 lg:scale-105 border-2 border-[#10B981]' : 'bg-white border-2 border-gray-100 shadow-xl hover:shadow-2xl hover:border-[#10B981]/30'}`}>
-                    {popular && (
-                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <div className="bg-gradient-to-r from-[#10B981] to-emerald-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg flex items-center gap-2">
-                          <Star className="w-4 h-4 fill-white" />
-                          {badge || 'الأكثر طلباً'}
-                        </div>
-                      </div>
-                    )}
-                    <h3 className={`text-2xl font-bold mb-6 ${popular ? 'text-white' : 'text-[#1F2937]'}`}>{name}</h3>
-                    <div className="mb-8">
-                      <div className="flex items-end justify-center gap-1">
-                        <span className={`text-5xl font-black ${popular ? 'text-white' : 'text-[#10B981]'}`}>{price}</span>
-                        <span className={`text-xl font-bold pb-2 ${popular ? 'text-white/70' : 'text-gray-400'}`}>جنيه</span>
-                      </div>
-                    </div>
-                    <div className="space-y-4 mb-8">
-                      {[`${lessons} حصة`, duration, "دعم فني كامل"].map((feature, i) => (
-                        <div key={i} className={`flex items-center justify-center gap-3 ${popular ? 'text-white' : 'text-gray-600'}`}>
-                          <CheckCircle className="w-5 h-5 text-[#10B981]" />
-                          <span className="font-medium">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <Link href="/packages" className={`block w-full py-4 rounded-2xl font-bold text-lg transition-all duration-300 ${popular ? 'bg-gradient-to-r from-[#10B981] to-emerald-500 text-white hover:shadow-lg hover:shadow-emerald-500/30' : 'bg-[#10B981]/10 text-[#10B981] hover:bg-[#10B981] hover:text-white'}`}>
-                      اشترك الآن
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="text-center mt-12">
-              <Link href="/packages" className="inline-flex items-center gap-2 text-[#10B981] font-bold text-lg hover:gap-4 transition-all duration-300">
-                <span>عرض جميع الباقات</span>
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-20 lg:py-24 bg-gradient-to-r from-[#10B981] via-emerald-500 to-teal-500 text-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iNCIvPjwvZz48L2c+PC9zdmc+')] opacity-50"></div>
-          
-          <div className="container mx-auto px-4 lg:px-8 text-center relative z-10">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-6">
-              {cms('cta', 'title', 'جاهز لبدء رحلتك؟')}
+      {/* ── IMAGE GALLERY ──────────────────────────────────── */}
+      <section className="py-24 bg-[#0f172a] text-white overflow-hidden">
+        <div className="max-w-6xl mx-auto px-5 lg:px-10">
+          <div className="text-center mb-14">
+            <p className="text-sm font-bold text-[#10B981] tracking-widest uppercase mb-3">من داخل المنصة</p>
+            <h2 className="text-3xl md:text-5xl font-black leading-tight">
+              تجربة لا تُنسى<br />
+              <span className="text-[#10B981]">في كل حصة</span>
             </h2>
-            <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto">
-              {cms('cta', 'subtitle', 'انضم لآلاف الطلاب الذين غيروا حياتهم مع Be Fluent واكتشف قدراتك الحقيقية')}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/auth/register" className="px-10 py-4 bg-white text-[#10B981] rounded-2xl text-lg font-bold hover:bg-gray-100 hover:shadow-xl transition-all duration-300 shadow-lg">
-                {cms('cta', 'button_text', 'سجل مجاناً الآن')}
-              </Link>
-              <Link href="/packages" className="px-10 py-4 bg-white/20 border-2 border-white text-white rounded-2xl text-lg font-bold hover:bg-white hover:text-[#10B981] transition-all duration-300 backdrop-blur-sm">
-                تصفح الباقات
-              </Link>
+          </div>
+
+          {/* Carousel */}
+          <div className="relative rounded-3xl overflow-hidden aspect-[16/9] max-w-3xl mx-auto bg-black/30 border border-white/10">
+            {heroImages.map((img, idx) => (
+              <div key={idx} className={`absolute inset-0 transition-opacity duration-700 ${idx === currentSlide ? 'opacity-100' : 'opacity-0'}`}>
+                <Image src={img.src} alt={img.alt} fill className="object-contain" sizes="(max-width:768px) 100vw, 768px" />
+              </div>
+            ))}
+            {activeCoupons.map((coupon, idx) => {
+              const si = heroImages.length + idx;
+              return (
+                <div key={coupon.id} className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-emerald-600 to-teal-600 transition-opacity duration-700 ${si === currentSlide ? 'opacity-100' : 'opacity-0'}`}>
+                  <Tag className="w-10 h-10 mb-4 text-white/70" />
+                  <h3 className="text-2xl font-black mb-2">عرض خاص!</h3>
+                  <div className="bg-white text-emerald-600 px-6 py-2 rounded-xl text-3xl font-black mb-3">{coupon.code}</div>
+                  <p className="text-amber-300 font-bold text-xl">خصم {coupon.discount}%</p>
+                </div>
+              );
+            })}
+
+            {/* Controls */}
+            <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center hover:bg-[#10B981] transition-colors">
+              <ChevronLeft className="w-5 h-5 text-white" />
+            </button>
+            <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center hover:bg-[#10B981] transition-colors">
+              <ChevronRight className="w-5 h-5 text-white" />
+            </button>
+
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+              {Array.from({ length: totalSlides }).map((_, idx) => (
+                <button key={idx} onClick={() => setCurrentSlide(idx)}
+                  className={`rounded-full transition-all ${idx === currentSlide ? 'w-6 h-2 bg-[#10B981]' : 'w-2 h-2 bg-white/30 hover:bg-white/60'}`} />
+              ))}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Footer */}
-        <footer className="py-12 bg-[#0f172a] text-white">
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-[#10B981]/30 shadow-lg">
-                  <Image src="/logo.png" alt="Be Fluent" width={56} height={56} className="object-contain" />
-                </div>
-                <div>
-                  <span className="text-2xl font-black">Be Fluent</span>
-                  <p className="text-sm text-gray-400">Fluency Comes First</p>
-                </div>
-              </div>
-              <div className="flex flex-wrap items-center justify-center gap-6">
-                <Link href="/packages" className="text-gray-400 hover:text-[#10B981] transition-colors font-medium">الباقات</Link>
-                <Link href="/grammar" className="text-gray-400 hover:text-[#10B981] transition-colors font-medium">القواعد</Link>
-                <Link href="/listening" className="text-gray-400 hover:text-[#10B981] transition-colors font-medium">الاستماع</Link>
-                <a href={cms('contact', 'facebook', '#')} target="_blank" className="text-gray-400 hover:text-[#10B981] transition-colors font-medium">فيسبوك</a>
-                <a href={cms('contact', 'instagram', '#')} target="_blank" className="text-gray-400 hover:text-[#10B981] transition-colors font-medium">إنستغرام</a>
-                <Link href="/auth/login" className="text-gray-400 hover:text-[#10B981] transition-colors font-medium">تسجيل الدخول</Link>
-              </div>
-              <p className="text-gray-500 text-sm">
-                © 2025 Be Fluent. جميع الحقوق محفوظة.
-              </p>
-            </div>
+      {/* ── PACKAGES ───────────────────────────────────────── */}
+      <section className="py-24 bg-[#F9FAFB]">
+        <div className="max-w-6xl mx-auto px-5 lg:px-10">
+          <div className="text-center mb-16">
+            <p className="text-sm font-bold text-[#10B981] tracking-widest uppercase mb-3">استثمر في مستقبلك</p>
+            <h2 className="text-3xl md:text-5xl font-black text-[#1F2937]">اختر خطتك</h2>
           </div>
-        </footer>
 
-        <FloatingContactButtons />
-      </main>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            {[
+              { n: 1, name: "الشهرية", price: "1500", lessons: "8", duration: "شهر", popular: false },
+              { n: 2, name: "الفصلية", price: "3500", lessons: "24", duration: "3 أشهر", popular: true },
+              { n: 3, name: "النصف سنوية", price: "6000", lessons: "48", duration: "6 أشهر", popular: false },
+            ].map((pkg) => {
+              const name = cms('packages', `pkg${pkg.n}_name`, pkg.name);
+              const price = cms('packages', `pkg${pkg.n}_price`, pkg.price);
+              const lessons = cms('packages', `pkg${pkg.n}_lessons`, pkg.lessons);
+              const duration = cms('packages', `pkg${pkg.n}_duration`, pkg.duration);
+              const popularStr = cms('packages', `pkg${pkg.n}_popular`, '');
+              const isPopular = popularStr === 'true' || (popularStr === '' && pkg.popular);
+              return (
+                <div key={pkg.n} className={`relative rounded-3xl p-8 flex flex-col transition-all duration-300 ${isPopular
+                  ? 'bg-[#1F2937] text-white shadow-2xl scale-[1.02] ring-2 ring-[#10B981]'
+                  : 'bg-white text-[#1F2937] border border-gray-100 hover:border-[#10B981]/30 hover:shadow-xl'}`}>
+                  {isPopular && (
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#10B981] text-white text-xs font-bold px-4 py-1 rounded-full flex items-center gap-1">
+                      <Star className="w-3 h-3 fill-white" /> الأكثر طلباً
+                    </div>
+                  )}
+                  <h3 className={`text-xl font-black mb-6 ${isPopular ? 'text-white' : 'text-[#1F2937]'}`}>{name}</h3>
+                  <div className="mb-8">
+                    <span className={`text-5xl font-black ${isPopular ? 'text-white' : 'text-[#10B981]'}`}>{price}</span>
+                    <span className={`text-base font-medium mr-1 ${isPopular ? 'text-white/60' : 'text-gray-400'}`}> جنيه</span>
+                  </div>
+                  <ul className="space-y-3 mb-8 flex-1">
+                    {[`${lessons} حصة`, duration, "دعم فني كامل"].map((f, fi) => (
+                      <li key={fi} className="flex items-center gap-2 text-sm font-medium">
+                        <CheckCircle className="w-4 h-4 text-[#10B981] flex-shrink-0" />
+                        <span className={isPopular ? 'text-white/80' : 'text-gray-600'}>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link href="/packages"
+                    className={`text-center py-3.5 rounded-xl font-bold text-sm transition-all ${isPopular
+                      ? 'bg-[#10B981] text-white hover:bg-[#059669]'
+                      : 'bg-[#10B981]/10 text-[#10B981] hover:bg-[#10B981] hover:text-white'}`}>
+                    اشترك الآن
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-      `}</style>
+      {/* ── CTA SECTION ────────────────────────────────────── */}
+      <section className="py-24 bg-[#10B981] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute -top-20 -left-20 w-72 h-72 rounded-full bg-white blur-3xl"></div>
+          <div className="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-white blur-3xl"></div>
+        </div>
+        <div className="relative z-10 max-w-3xl mx-auto px-5 text-center text-white">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-5">
+            {cms('cta', 'title', 'جاهز لبدء رحلتك؟')}
+          </h2>
+          <p className="text-white/80 text-lg mb-10 leading-relaxed">
+            {cms('cta', 'subtitle', 'انضم لآلاف الطلاب الذين غيروا حياتهم مع Be Fluent')}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/auth/register"
+              className="px-10 py-4 bg-white text-[#10B981] font-black rounded-2xl hover:bg-gray-100 transition-colors shadow-lg text-base">
+              {cms('cta', 'button_text', 'سجل مجاناً الآن')}
+            </Link>
+            <Link href="/packages"
+              className="px-10 py-4 bg-white/15 border border-white/30 text-white font-bold rounded-2xl hover:bg-white/25 transition-colors text-base">
+              تصفح الباقات
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOOTER ─────────────────────────────────────────── */}
+      <footer className="bg-[#0f172a] text-white py-14">
+        <div className="max-w-6xl mx-auto px-5 lg:px-10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-10 mb-10">
+
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl overflow-hidden border border-[#10B981]/30">
+                <Image src="/logo.png" alt="Be Fluent" width={48} height={48} className="object-contain" />
+              </div>
+              <div>
+                <p className="text-xl font-black">Be Fluent</p>
+                <p className="text-xs text-gray-500">Fluency Comes First</p>
+              </div>
+            </div>
+
+            <nav className="flex flex-wrap justify-center gap-x-8 gap-y-3">
+              {[
+                { label: "الباقات", href: "/packages" },
+                { label: "القواعد", href: "/grammar" },
+                { label: "الاستماع", href: "/listening" },
+                { label: "فيسبوك", href: cms('contact', 'facebook', '#'), external: true },
+                { label: "إنستغرام", href: cms('contact', 'instagram', '#'), external: true },
+                { label: "تسجيل الدخول", href: "/auth/login" },
+              ].map((l, i) =>
+                l.external ? (
+                  <a key={i} href={l.href} target="_blank" rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-[#10B981] transition-colors text-sm font-medium">{l.label}</a>
+                ) : (
+                  <Link key={i} href={l.href}
+                    className="text-gray-400 hover:text-[#10B981] transition-colors text-sm font-medium">{l.label}</Link>
+                )
+              )}
+            </nav>
+          </div>
+
+          <div className="border-t border-white/5 pt-8 text-center text-gray-600 text-sm">
+            © 2025 Be Fluent. جميع الحقوق محفوظة.
+          </div>
+        </div>
+      </footer>
+
+      <FloatingContactButtons />
     </div>
   );
 }
