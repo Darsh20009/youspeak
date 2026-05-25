@@ -99,7 +99,7 @@ export default function Home() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl overflow-hidden">
-              <Image src="/logo.png" alt="Be Fluent" width={36} height={36} className="object-contain w-full h-full" />
+              <Image src="/logo.png" alt="Be Fluent" width={36} height={36} className="object-contain w-full h-full" priority />
             </div>
             <div className="leading-none">
               <p className="font-black text-base text-[#1F2937]">Be Fluent</p>
@@ -312,7 +312,16 @@ export default function Home() {
           <div className="relative rounded-3xl overflow-hidden aspect-[16/9] max-w-3xl mx-auto bg-black/30 border border-white/10">
             {heroImages.map((img, idx) => (
               <div key={idx} className={`absolute inset-0 transition-opacity duration-700 ${idx === currentSlide ? 'opacity-100' : 'opacity-0'}`}>
-                <Image src={img.src} alt={img.alt} fill className="object-contain" sizes="(max-width:768px) 100vw, 768px" />
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width:768px) 100vw, 768px"
+                  priority={idx === 0}
+                  loading={idx === 0 ? 'eager' : 'lazy'}
+                  quality={85}
+                />
               </div>
             ))}
             {activeCoupons.map((coupon, idx) => {
@@ -433,7 +442,7 @@ export default function Home() {
 
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-2xl overflow-hidden border border-[#10B981]/30">
-                <Image src="/logo.png" alt="Be Fluent" width={48} height={48} className="object-contain" />
+                <Image src="/logo.png" alt="Be Fluent" width={48} height={48} className="object-contain" loading="lazy" />
               </div>
               <div>
                 <p className="text-xl font-black">Be Fluent</p>

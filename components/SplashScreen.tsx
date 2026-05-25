@@ -137,7 +137,7 @@ export default function SplashScreen() {
                     sizes="(max-width: 640px) 80px, (max-width: 768px) 112px, 128px"
                     className="object-contain p-2 sm:p-3"
                     priority
-                    quality={100}
+                    quality={85}
                   />
                 </motion.div>
               </div>

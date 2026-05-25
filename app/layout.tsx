@@ -40,6 +40,9 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
+        {/* Preload critical assets immediately */}
+        <link rel="preload" href="/logo.png" as="image" />
+        <link rel="preload" href="/assets/hero-1.png" as="image" />
         <link rel="icon" href="/logo.png" sizes="any" />
         <link rel="icon" type="image/png" href="/logo.png" />
         <link rel="shortcut icon" type="image/png" href="/logo.png" />
