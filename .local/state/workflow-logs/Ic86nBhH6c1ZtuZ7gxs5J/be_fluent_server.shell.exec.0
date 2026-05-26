@@ -1,0 +1,27 @@
+
+> befluent@1.0.0 dev
+> node start-server.js
+
+[1G[0K🔍 Checking environment variables...
+✅ DATABASE_URL set from MONGODB_URI
+[33m[1m⚠[22m[39m The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+> Ready on http://0.0.0.0:5000
+> Socket.IO server running on path: /api/socket/io
+ GET / [32m200[39m in 626ms[2m (next.js: 350ms, application-code: 277ms)[22m
+✅ MongoDB database configured from DATABASE_URL
+ GET / [32m200[39m in 107ms[2m (next.js: 7ms, application-code: 99ms)[22m
+ GET /api/coupons/active [32m200[39m in 583ms[2m (next.js: 91ms, application-code: 492ms)[22m
+✅ MongoDB database configured from DATABASE_URL
+ GET /api/auth/session [32m200[39m in 779ms[2m (next.js: 750ms, application-code: 28ms)[22m
+ GET /api/coupons/active [32m200[39m in 45ms[2m (next.js: 3ms, application-code: 42ms)[22m
+ GET /api/coupons/active [32m200[39m in 51ms[2m (next.js: 3ms, application-code: 48ms)[22m
+ GET /api/auth/session [32m200[39m in 93ms[2m (next.js: 46ms, application-code: 47ms)[22m
+ GET /api/coupons/active [32m200[39m in 71ms[2m (next.js: 16ms, application-code: 54ms)[22m
+[36m[browser][39m [33mImage with src "/logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.[39m
+✅ MongoDB database configured from DATABASE_URL
+[36m[browser][39m [33mImage with src "/logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.[39m
+ GET /auth/login [32m200[39m in 65ms[2m (next.js: 20ms, application-code: 45ms)[22m
+[36m[browser][39m [33mDetected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior[39m
+ GET / [32m200[39m in 33ms[2m (next.js: 5ms, application-code: 29ms)[22m
+ GET /api/coupons/active [32m200[39m in 40ms[2m (next.js: 3ms, application-code: 37ms)[22m
+ GET /api/coupons/active [32m200[39m in 37ms[2m (next.js: 3ms, application-code: 34ms)[22m

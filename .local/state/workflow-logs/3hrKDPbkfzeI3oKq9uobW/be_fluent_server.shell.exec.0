@@ -1,0 +1,89 @@
+
+> befluent@1.0.0 dev
+> node start-server.js
+
+[1G[0K🔍 Checking environment variables...
+✅ DATABASE_URL set from MONGODB_URI
+[33m[1m⚠[22m[39m The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+> Ready on http://0.0.0.0:5000
+> Socket.IO server running on path: /api/socket/io
+ GET / [32m200[39m in 1053ms[2m (next.js: 607ms, application-code: 446ms)[22m
+ GET / [32m200[39m in 1661ms[2m (next.js: 1296ms, application-code: 365ms)[22m
+✅ MongoDB database configured from DATABASE_URL
+ GET /api/coupons/active [32m200[39m in 569ms[2m (next.js: 85ms, application-code: 484ms)[22m
+ GET /api/admin/settings [32m200[39m in 212ms[2m (next.js: 34ms, application-code: 178ms)[22m
+ GET /api/coupons/active [32m200[39m in 53ms[2m (next.js: 8ms, application-code: 45ms)[22m
+ GET /api/admin/page-content?page=homepage [32m200[39m in 332ms[2m (next.js: 62ms, application-code: 270ms)[22m
+✅ MongoDB database configured from DATABASE_URL
+ GET /api/auth/session [32m200[39m in 776ms[2m (next.js: 741ms, application-code: 35ms)[22m
+ GET /api/coupons/active [32m200[39m in 37ms[2m (next.js: 3ms, application-code: 34ms)[22m
+ GET /api/auth/session [32m200[39m in 28ms[2m (next.js: 18ms, application-code: 10ms)[22m
+ GET /api/admin/settings [32m200[39m in 35ms[2m (next.js: 3ms, application-code: 32ms)[22m
+ GET /api/admin/page-content?page=homepage [32m200[39m in 37ms[2m (next.js: 3ms, application-code: 34ms)[22m
+ GET /api/coupons/active [32m200[39m in 37ms[2m (next.js: 3ms, application-code: 34ms)[22m
+✅ MongoDB database configured from DATABASE_URL
+ GET / [32m200[39m in 98ms[2m (next.js: 4ms, application-code: 95ms)[22m
+ GET /api/coupons/active [32m200[39m in 46ms[2m (next.js: 5ms, application-code: 41ms)[22m
+ GET /api/auth/session [32m200[39m in 36ms[2m (next.js: 23ms, application-code: 12ms)[22m
+ GET /api/coupons/active [32m200[39m in 44ms[2m (next.js: 4ms, application-code: 39ms)[22m
+ GET /api/admin/settings [32m200[39m in 49ms[2m (next.js: 7ms, application-code: 42ms)[22m
+ GET /api/admin/page-content?page=homepage [32m200[39m in 53ms[2m (next.js: 10ms, application-code: 42ms)[22m
+✅ MongoDB database configured from DATABASE_URL
+ GET / [32m200[39m in 105ms[2m (next.js: 6ms, application-code: 99ms)[22m
+ GET /api/coupons/active [32m200[39m in 67ms[2m (next.js: 13ms, application-code: 54ms)[22m
+ GET /api/auth/session [32m200[39m in 50ms[2m (next.js: 27ms, application-code: 23ms)[22m
+ GET /api/coupons/active [32m200[39m in 88ms[2m (next.js: 20ms, application-code: 67ms)[22m
+ GET /api/admin/settings [32m200[39m in 96ms[2m (next.js: 42ms, application-code: 54ms)[22m
+ GET /api/admin/page-content?page=homepage [32m200[39m in 126ms[2m (next.js: 64ms, application-code: 63ms)[22m
+✅ MongoDB database configured from DATABASE_URL
+ GET / [32m200[39m in 83ms[2m (next.js: 2ms, application-code: 80ms)[22m
+ GET /api/coupons/active [32m200[39m in 35ms[2m (next.js: 2ms, application-code: 33ms)[22m
+ GET /api/auth/session [32m200[39m in 28ms[2m (next.js: 19ms, application-code: 10ms)[22m
+ GET /api/admin/settings [32m200[39m in 43ms[2m (next.js: 7ms, application-code: 36ms)[22m
+ GET /api/admin/page-content?page=homepage [32m200[39m in 51ms[2m (next.js: 12ms, application-code: 39ms)[22m
+ GET /api/coupons/active [32m200[39m in 37ms[2m (next.js: 3ms, application-code: 35ms)[22m
+✅ MongoDB database configured from DATABASE_URL
+ GET / [32m200[39m in 107ms[2m (next.js: 3ms, application-code: 104ms)[22m
+ GET /api/coupons/active [32m200[39m in 41ms[2m (next.js: 3ms, application-code: 38ms)[22m
+ GET /api/auth/session [32m200[39m in 43ms[2m (next.js: 22ms, application-code: 20ms)[22m
+ GET /api/coupons/active [32m200[39m in 58ms[2m (next.js: 21ms, application-code: 37ms)[22m
+ GET /api/admin/settings [32m200[39m in 62ms[2m (next.js: 26ms, application-code: 37ms)[22m
+ GET /api/admin/page-content?page=homepage [32m200[39m in 71ms[2m (next.js: 30ms, application-code: 42ms)[22m
+✅ MongoDB database configured from DATABASE_URL
+[32m[1m✓[22m[39m Compiled in 159ms
+ GET / [32m200[39m in 48ms[2m (next.js: 6ms, application-code: 42ms)[22m
+[32m[1m✓[22m[39m Compiled in 175ms
+[32m[1m✓[22m[39m Compiled in 164ms
+[32m[1m✓[22m[39m Compiled in 145ms
+[32m[1m✓[22m[39m Compiled in 135ms
+[36m[browser][39m [33mImage with src "/assets/hero-1.png" is using quality "85" which is not configured in images.qualities [75, 100]. Please update your config to [100, 75, 85].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities[39m [2m(<anonymous>)[22m
+[36m[browser][39m [33mImage with src "/assets/hero-2.png" is using quality "85" which is not configured in images.qualities [75, 100]. Please update your config to [100, 75, 85].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities[39m [2m(<anonymous>)[22m
+[36m[browser][39m [33mImage with src "/assets/hero-3.png" is using quality "85" which is not configured in images.qualities [75, 100]. Please update your config to [100, 75, 85].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities[39m [2m(<anonymous>)[22m
+[36m[browser][39m [33mImage with src "/assets/hero-4.png" is using quality "85" which is not configured in images.qualities [75, 100]. Please update your config to [100, 75, 85].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities[39m [2m(<anonymous>)[22m
+ GET /auth/login [32m200[39m in 962ms[2m (next.js: 917ms, application-code: 45ms)[22m
+[36m[browser][39m [33mDetected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior[39m
+ GET / [32m200[39m in 30ms[2m (next.js: 5ms, application-code: 25ms)[22m
+ GET /api/coupons/active [32m200[39m in 40ms[2m (next.js: 3ms, application-code: 37ms)[22m
+ GET /api/admin/settings [32m200[39m in 57ms[2m (next.js: 2ms, application-code: 54ms)[22m
+ GET /api/admin/page-content?page=homepage [32m200[39m in 50ms[2m (next.js: 2ms, application-code: 48ms)[22m
+ GET /api/coupons/active [32m200[39m in 37ms[2m (next.js: 3ms, application-code: 34ms)[22m
+ GET /api/admin/settings [32m200[39m in 34ms[2m (next.js: 3ms, application-code: 31ms)[22m
+ GET /api/admin/page-content?page=homepage [32m200[39m in 36ms[2m (next.js: 2ms, application-code: 34ms)[22m
+[32m[1m✓[22m[39m Compiled in 343ms
+ GET / [32m200[39m in 107ms[2m (next.js: 58ms, application-code: 50ms)[22m
+✅ MongoDB database configured from DATABASE_URL
+ GET /api/coupons/active [32m200[39m in 80ms[2m (next.js: 38ms, application-code: 42ms)[22m
+ GET / [32m200[39m in 45ms[2m (next.js: 11ms, application-code: 34ms)[22m
+ GET / [32m200[39m in 33ms[2m (next.js: 3ms, application-code: 30ms)[22m
+ GET / [32m200[39m in 244ms[2m (next.js: 4ms, application-code: 239ms)[22m
+ GET /api/coupons/active [32m200[39m in 141ms[2m (next.js: 3ms, application-code: 138ms)[22m
+ GET /api/auth/session [32m200[39m in 160ms[2m (next.js: 102ms, application-code: 58ms)[22m
+[36m[browser][39m [33mImage with src "/logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.[39m
+ GET /api/coupons/active [32m200[39m in 63ms[2m (next.js: 8ms, application-code: 55ms)[22m
+[36m[browser][39m [33mImage with src "/logo.png" is using quality "85" which is not configured in images.qualities [75, 100]. Please update your config to [100, 75, 85].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities[39m
+✅ MongoDB database configured from DATABASE_URL
