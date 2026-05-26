@@ -4,145 +4,205 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import FloatingContactButtons from "@/components/FloatingContactButtons";
-import { Globe, CheckCircle, ArrowDown, ChevronRight } from "lucide-react";
+import { Globe, CheckCircle, ArrowDown } from "lucide-react";
 
 /* ─── translations ─────────────────────────────────────── */
 const T = {
   ar: {
     dir: 'rtl' as const,
     toggle: 'English',
-    badge: 'منصة تعليمية احترافية',
-    h1a: 'تعلم الإنجليزية',
-    h1b: 'بثقة واحتراف',
-    sub: 'معلمون محترفون  •  حصص مباشرة  •  متابعة يومية على واتساب',
-    cta: 'اختر مستواك الآن',
-    sec_levels: 'ما هو مستواك الحالي؟',
-    sec_levels_sub: 'اضغط على المستوى الذي يناسبك لترى الباقات المخصصة لك',
-    sec_pricing: 'باقاتنا',
-    sec_pricing_sub: 'أسعار واضحة، بدون أي تعقيد',
-    popular: 'الأكثر طلباً',
-    subscribe: 'سجل الآن',
-    trial: 'جميع الباقات تشمل حصة تجريبية مجانية',
-    sec_test: 'لا تعرف مستواك؟',
-    sec_test_sub: 'خذ اختبار تحديد المستوى المجاني واعرف نقطة بدايتك الصحيحة',
+    hero_kicker: 'منصة Be Fluent للغة الإنجليزية',
+    hero_h1: 'تعلم الإنجليزية',
+    hero_h2: 'واحكم العالم',
+    hero_sub: 'معلمون محترفون  •  حصص خاصة مباشرة  •  متابعة يومية على واتساب',
+    hero_cta: 'احسب استثمارك الآن',
+    hero_cta2: 'ابدأ اختبار المستوى مجاناً',
+    graduates: 'طالب متخرج',
+    rating_label: 'تقييم الطلاب',
+    calc_title: 'احسب استثمارك',
+    calc_sub: 'اختر مستواك الحالي وهدفك — السعر يظهر فوراً',
+    step1: 'ما هو مستواك الحالي؟',
+    step2: 'إلى أين تريد أن تصل؟',
+    step3: 'اختر نوع الاشتراك',
+    monthly: 'شهري',
+    bundle: 'باقة ⚡',
+    per_month: 'جنيه / شهر',
+    egp: 'جنيه',
+    save: 'وفّر',
+    book: 'احجز حصتك التجريبية المجانية',
+    no_sel: 'اختر مستواك الحالي وهدفك لترى السعر',
+    test_title: 'لست متأكداً من مستواك؟',
+    test_sub: 'خذ اختبار تحديد المستوى المجاني واعرف نقطة بدايتك بدقة',
     test_cta: 'ابدأ الاختبار المجاني  →',
     footer: '© 2025 Be Fluent — جميع الحقوق محفوظة',
-    f_month: 'جنيه / شهر',
-    f_quarter: 'جنيه / 3 أشهر',
-    f_semi: 'جنيه / 6 أشهر',
-    f_monthly: 'شهري',
-    f_quarterly: 'فصلي',
-    f_semi_name: 'نصف سنوي',
-    f_items: ['حصص مباشرة مع معلم', 'متابعة يومية واتساب', 'دعم 24/7', 'شهادة إتمام المستوى', 'اختبار مستوى مجاني'],
-    f_pkg: [[0,1,2],[0,1,2,3],[0,1,2,3,4]],
-    f_sessions: ['8 حصص', '24 حصة', '48 حصة'],
-    levels: [
-      { id:'a1', emoji:'🌱', name:'مبتدئ',    code:'A1 – A2', desc:'لم تتعلم الإنجليزية من قبل أو تعرف كلمات بسيطة جداً' },
-      { id:'b1', emoji:'📖', name:'أساسي',    code:'B1',      desc:'تفهم الجمل البسيطة وتريد تطوير مهارات التواصل' },
-      { id:'b2', emoji:'🎯', name:'متوسط',    code:'B2',      desc:'تتحدث الإنجليزية وتحتاج مزيداً من الطلاقة والثقة' },
-      { id:'c1', emoji:'🏆', name:'متقدم',    code:'C1 – C2', desc:'مستواك جيد وتريد الوصول للاحتراف والأصالة التامة' },
+    features: [
+      'حصص خاصة مباشرة مع معلم',
+      'متابعة يومية على واتساب',
+      'دعم فني على مدار الساعة',
+      'شهادة إتمام المستوى',
+      'اختبار مستوى مجاني',
     ],
+    from_levels: [
+      { id:'a1', label:'A1', name:'مبتدئ تماماً',   desc:'لم أتعلم الإنجليزية من قبل أو أعرف كلمات قليلة جداً' },
+      { id:'a2', label:'A2', name:'أساسي',          desc:'أعرف بعض الجمل البسيطة لكنني لا أستطيع المحادثة' },
+      { id:'b1', label:'B1', name:'متوسط',          desc:'أفهم ما يُقال لي لكن أجد صعوبة في التعبير بوضوح' },
+      { id:'b2', label:'B2', name:'متوسط متقدم',   desc:'أتحدث الإنجليزية لكن أجد صعوبة في المواقف المعقدة' },
+    ],
+    to_levels: [
+      { id:'a2', label:'A2', name:'أساسي',          desc:'أريد التعامل في المواقف اليومية البسيطة بثقة' },
+      { id:'b1', label:'B1', name:'متوسط',          desc:'أريد التعبير عن نفسي بسهولة في معظم المواقف' },
+      { id:'b2', label:'B2', name:'متوسط متقدم',   desc:'أريد التحدث بطلاقة تامة في أي موقف كان' },
+      { id:'c1', label:'C1', name:'متقدم',          desc:'أريد إتقان اللغة وأن أتحدث كأهلها تماماً' },
+    ],
+    months_label: (n: number, from: string, to: string) => `${n} أشهر  •  ${from} ← ${to}`,
   },
   en: {
     dir: 'ltr' as const,
     toggle: 'العربية',
-    badge: 'Professional Learning Platform',
-    h1a: 'Learn English',
-    h1b: 'With Confidence',
-    sub: 'Expert Teachers  •  Live Classes  •  Daily WhatsApp Support',
-    cta: 'Choose Your Level',
-    sec_levels: 'What is your current level?',
-    sec_levels_sub: 'Tap your level to see the packages designed for you',
-    sec_pricing: 'Our Plans',
-    sec_pricing_sub: 'Clear prices — no surprises, no complexity',
-    popular: 'Most Popular',
-    subscribe: 'Subscribe Now',
-    trial: 'All plans include a free trial session with your teacher',
-    sec_test: "Don't know your level?",
-    sec_test_sub: 'Take our free placement test and discover exactly where to start',
+    hero_kicker: 'Be Fluent English Platform',
+    hero_h1: 'Learn English',
+    hero_h2: 'Rule the World',
+    hero_sub: 'Expert Teachers  •  Private Live Classes  •  Daily WhatsApp Support',
+    hero_cta: 'Calculate Your Investment',
+    hero_cta2: 'Start Free Level Test',
+    graduates: 'Graduates',
+    rating_label: 'Student Rating',
+    calc_title: 'Calculate Your Investment',
+    calc_sub: 'Choose your current level and goal — price appears instantly',
+    step1: 'What is your current level?',
+    step2: 'Where do you want to reach?',
+    step3: 'Choose plan type',
+    monthly: 'Monthly',
+    bundle: 'Bundle ⚡',
+    per_month: 'EGP / month',
+    egp: 'EGP',
+    save: 'Save',
+    book: 'Book Your Free Trial Session',
+    no_sel: 'Select your current level and goal to see the price',
+    test_title: "Not sure of your level?",
+    test_sub: 'Take our free placement test and find out exactly where to start',
     test_cta: 'Start Free Test  →',
     footer: '© 2025 Be Fluent — All rights reserved',
-    f_month: 'EGP / month',
-    f_quarter: 'EGP / 3 months',
-    f_semi: 'EGP / 6 months',
-    f_monthly: 'Monthly',
-    f_quarterly: 'Quarterly',
-    f_semi_name: 'Semi-Annual',
-    f_items: ['Live sessions with teacher', 'Daily WhatsApp follow-up', '24/7 support', 'Level completion certificate', 'Free placement test'],
-    f_pkg: [[0,1,2],[0,1,2,3],[0,1,2,3,4]],
-    f_sessions: ['8 sessions', '24 sessions', '48 sessions'],
-    levels: [
-      { id:'a1', emoji:'🌱', name:'Beginner',     code:'A1 – A2', desc:"You've never learned English or know very few basic words" },
-      { id:'b1', emoji:'📖', name:'Elementary',   code:'B1',      desc:'You understand simple sentences and want to improve communication' },
-      { id:'b2', emoji:'🎯', name:'Intermediate', code:'B2',      desc:"You speak English but need more fluency and confidence" },
-      { id:'c1', emoji:'🏆', name:'Advanced',     code:'C1 – C2', desc:"Your level is high and you want complete mastery and authentic accent" },
+    features: [
+      'Private live sessions with teacher',
+      'Daily WhatsApp follow-up',
+      '24/7 technical support',
+      'Level completion certificate',
+      'Free placement test',
     ],
+    from_levels: [
+      { id:'a1', label:'A1', name:'Complete Beginner',   desc:"I've never studied English or know very few words" },
+      { id:'a2', label:'A2', name:'Elementary',          desc:'I know some sentences but struggle with conversation' },
+      { id:'b1', label:'B1', name:'Intermediate',        desc:"I understand English but struggle to express myself clearly" },
+      { id:'b2', label:'B2', name:'Upper Intermediate',  desc:"I speak English but struggle in complex situations" },
+    ],
+    to_levels: [
+      { id:'a2', label:'A2', name:'Elementary',          desc:'I want to handle basic everyday situations confidently' },
+      { id:'b1', label:'B1', name:'Intermediate',        desc:'I want to express myself easily in most situations' },
+      { id:'b2', label:'B2', name:'Upper Intermediate',  desc:'I want to speak fluently in any situation' },
+      { id:'c1', label:'C1', name:'Advanced',            desc:'I want to master English like a native speaker' },
+    ],
+    months_label: (n: number, from: string, to: string) => `${n} months  •  ${from} → ${to}`,
   },
 };
 
-/* ─── level color palette ───────────────────────────────── */
-const LEVEL_COLORS: Record<string, { card: string; glow: string; badge: string }> = {
-  a1: { card: 'from-sky-400 to-sky-600',      glow: 'shadow-sky-200 ring-sky-400',      badge: 'bg-sky-100 text-sky-700' },
-  b1: { card: 'from-teal-400 to-teal-600',    glow: 'shadow-teal-200 ring-teal-400',    badge: 'bg-teal-100 text-teal-700' },
-  b2: { card: 'from-emerald-400 to-emerald-600', glow: 'shadow-emerald-200 ring-emerald-400', badge: 'bg-emerald-100 text-emerald-700' },
-  c1: { card: 'from-violet-500 to-violet-700', glow: 'shadow-violet-200 ring-violet-400', badge: 'bg-violet-100 text-violet-700' },
+/* ─── pricing matrix ────────────────────────────────────── */
+const ORDER = ['a1','a2','b1','b2','c1'];
+const MONTHLY_PRICE: Record<string,number> = { a1:1800, a2:1600, b1:1500, b2:1400 };
+const DURATION: Record<string,Record<string,number>> = {
+  a1: { a2:3, b1:6, b2:9,  c1:12 },
+  a2: {       b1:3, b2:6,  c1:9  },
+  b1: {             b2:3,  c1:6  },
+  b2: {                    c1:3  },
+};
+const LEVEL_DISC: Record<string,number> = { a2:0, b1:15, b2:25, c1:35 };
+const BUNDLE_EXTRA = 10; // extra bundle discount on top of level discount
+
+const TO_RING: Record<string,string> = {
+  a2: 'ring-sky-400',
+  b1: 'ring-teal-400',
+  b2: 'ring-amber-400',
+  c1: 'ring-violet-500',
+};
+const TO_ACTIVE_BG: Record<string,string> = {
+  a2: 'bg-sky-500',
+  b1: 'bg-teal-500',
+  b2: 'bg-amber-500',
+  c1: 'bg-violet-600',
+};
+const TO_BADGE: Record<string,string> = {
+  a2: 'bg-sky-400/20 text-sky-300',
+  b1: 'bg-teal-400/20 text-teal-300',
+  b2: 'bg-amber-400/20 text-amber-300',
+  c1: 'bg-violet-400/20 text-violet-300',
 };
 
 export default function Home() {
-  const [lang, setLang] = useState<'ar'|'en'>('ar');
-  const [selected, setSelected] = useState<string|null>(null);
+  const [lang, setLang]       = useState<'ar'|'en'>('ar');
+  const [fromLvl, setFromLvl] = useState('a1');
+  const [toLvl, setToLvl]     = useState<string|null>(null);
+  const [plan, setPlan]       = useState<'monthly'|'bundle'>('bundle');
   const [visible, setVisible] = useState(false);
-  const pricingRef = useRef<HTMLDivElement>(null);
-  const testRef    = useRef<HTMLDivElement>(null);
-
+  const calcRef = useRef<HTMLDivElement>(null);
   const t = T[lang];
 
-  /* restore lang from storage */
   useEffect(() => {
     const saved = localStorage.getItem('bf_lang') as 'ar'|'en'|null;
     if (saved) setLang(saved);
-    const timer = setTimeout(() => setVisible(true), 50);
-    return () => clearTimeout(timer);
+    setTimeout(() => setVisible(true), 60);
   }, []);
+
+  // reset target if now below/equal to source
+  useEffect(() => {
+    if (toLvl && ORDER.indexOf(toLvl) <= ORDER.indexOf(fromLvl)) setToLvl(null);
+  }, [fromLvl, toLvl]);
 
   const switchLang = () => {
     const next = lang === 'ar' ? 'en' : 'ar';
-    setLang(next);
-    localStorage.setItem('bf_lang', next);
+    setLang(next); localStorage.setItem('bf_lang', next);
   };
 
-  const pickLevel = (id: string) => {
-    setSelected(id);
-    setTimeout(() => pricingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
-  };
+  // valid target levels
+  const validTo = t.to_levels.filter(l => ORDER.indexOf(l.id) > ORDER.indexOf(fromLvl));
 
-  const packages = [
-    { name: t.f_monthly,   price: '1500', unit: t.f_month,   sessions: t.f_sessions[0], popular: false, fi: 0 },
-    { name: t.f_quarterly, price: '3500', unit: t.f_quarter, sessions: t.f_sessions[1], popular: true,  fi: 1 },
-    { name: t.f_semi_name, price: '6000', unit: t.f_semi,    sessions: t.f_sessions[2], popular: false, fi: 2 },
-  ];
+  // price calculation
+  const baseMonthly = MONTHLY_PRICE[fromLvl] ?? 1500;
+  const months      = toLvl ? (DURATION[fromLvl]?.[toLvl] ?? null) : null;
+  const levelDisc   = toLvl ? (LEVEL_DISC[toLvl] ?? 0) : 0;
+
+  let priceMonthly = baseMonthly;
+  let priceBundle: number | null = null;
+  let origBundle:  number | null = null;
+  let saveBundle:  number | null = null;
+  let savingMonthly = 0;
+
+  if (months && toLvl) {
+    // monthly: apply level discount to per-month rate
+    priceMonthly  = Math.round(baseMonthly * (1 - levelDisc / 100) / 100) * 100;
+    savingMonthly = baseMonthly - priceMonthly;
+
+    // bundle: full duration with combined discount
+    const totalDisc = Math.min(levelDisc + BUNDLE_EXTRA, 45);
+    origBundle  = baseMonthly * months;
+    priceBundle = Math.round(origBundle * (1 - totalDisc / 100) / 100) * 100;
+    saveBundle  = origBundle - priceBundle;
+  }
+
+  const fromLabel = t.from_levels.find(l => l.id === fromLvl);
+  const toLabel   = toLvl ? t.to_levels.find(l => l.id === toLvl) : null;
 
   return (
-    <div
-      dir={t.dir}
-      className={`min-h-screen bg-white text-[#1F2937] transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}
-    >
+    <div dir={t.dir} className={`min-h-screen bg-white text-[#1F2937] transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}>
 
-      {/* ══════════════════ NAVBAR ══════════════════ */}
-      <header className="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-
-          {/* Logo */}
+      {/* ══════════ NAVBAR ══════════ */}
+      <header className="fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
+        <div className="max-w-5xl mx-auto px-5 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
             <Image src="/logo.png" alt="Be Fluent" width={38} height={38} className="rounded-xl" priority />
             <span className="text-xl font-black tracking-tight">Be Fluent</span>
           </Link>
-
-          {/* Language toggle only */}
-          <button
-            onClick={switchLang}
-            className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-sm font-semibold text-gray-600 hover:border-[#10B981] hover:text-[#10B981] transition-all duration-200"
-          >
+          <button onClick={switchLang}
+            className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-sm font-semibold text-gray-600 hover:border-[#10B981] hover:text-[#10B981] transition-all">
             <Globe className="w-4 h-4" />
             {t.toggle}
           </button>
@@ -151,207 +211,247 @@ export default function Home() {
 
       <main className="pt-16">
 
-        {/* ══════════════════ HERO ══════════════════ */}
-        <section className="min-h-[92vh] flex flex-col md:flex-row items-center max-w-6xl mx-auto px-5 py-16 gap-12">
+        {/* ══════════ HERO ══════════ */}
+        <section className="min-h-[90vh] flex flex-col items-center justify-center text-center px-5 py-20 relative overflow-hidden">
+          {/* subtle bg radials */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-50 rounded-full -translate-y-1/2 translate-x-1/3 opacity-70" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-sky-50 rounded-full translate-y-1/2 -translate-x-1/3 opacity-70" />
+          </div>
 
-          {/* Text side */}
-          <div className="flex-1 flex flex-col items-start text-start order-2 md:order-1">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-50 text-emerald-700 text-sm font-bold rounded-full mb-6 border border-emerald-100">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block" />
-              {t.badge}
+          <div className="relative z-10 flex flex-col items-center">
+            <span className="inline-flex items-center gap-2 px-5 py-2 bg-white border border-emerald-100 text-emerald-700 text-sm font-bold rounded-full mb-8 shadow-sm shadow-emerald-50">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              {t.hero_kicker}
             </span>
 
-            <h1 className="text-5xl md:text-7xl font-black leading-[1.1] text-[#1F2937] mb-5">
-              {t.h1a}<br />
-              <span className="text-[#10B981]">{t.h1b}</span>
+            <h1 className="text-6xl sm:text-7xl md:text-8xl font-black leading-[1.0] mb-6 max-w-3xl">
+              {t.hero_h1}<br />
+              <span className="text-[#10B981]">{t.hero_h2}</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-gray-500 mb-10 leading-relaxed max-w-lg">
-              {t.sub}
-            </p>
+            <p className="text-xl text-gray-500 mb-10 max-w-xl leading-relaxed">{t.hero_sub}</p>
 
-            <button
-              onClick={() => document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth' })}
-              className="group flex items-center gap-3 px-8 py-4 bg-[#10B981] text-white font-black text-xl rounded-2xl hover:bg-[#059669] transition-all duration-200 shadow-xl shadow-emerald-100 hover:shadow-emerald-200 hover:-translate-y-0.5"
-            >
-              {t.cta}
-              <ArrowDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
-            </button>
+            <div className="flex flex-col sm:flex-row gap-4 items-center">
+              <button
+                onClick={() => calcRef.current?.scrollIntoView({ behavior:'smooth', block:'start' })}
+                className="group flex items-center gap-3 px-10 py-4 bg-[#10B981] text-white font-black text-xl rounded-2xl hover:bg-[#059669] transition-all shadow-xl shadow-emerald-100 hover:-translate-y-0.5">
+                {t.hero_cta}
+                <ArrowDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
+              </button>
+              <Link href="/placement-test"
+                className="px-10 py-4 border-2 border-gray-200 text-gray-700 font-bold text-lg rounded-2xl hover:border-[#10B981] hover:text-[#10B981] transition-all">
+                {t.hero_cta2}
+              </Link>
+            </div>
           </div>
 
-          {/* Image side */}
-          <div className="flex-1 order-1 md:order-2 w-full max-w-lg mx-auto">
-            <div className="relative">
-              {/* Decorative blob behind image */}
-              <div className="absolute -inset-4 bg-gradient-to-br from-emerald-100 to-sky-100 rounded-[3rem] opacity-60 -z-10" />
-              <Image
-                src="/assets/hero-1.png"
-                alt="Be Fluent - Learn English"
-                width={600}
-                height={500}
-                className="w-full h-auto rounded-[2rem] shadow-2xl shadow-gray-200 object-cover"
-                priority
-              />
-              {/* Floating stats */}
-              <div className="absolute -bottom-5 start-4 bg-white rounded-2xl shadow-lg px-5 py-3 flex items-center gap-3 border border-gray-100">
-                <span className="text-3xl">🎓</span>
-                <div>
-                  <p className="font-black text-[#1F2937] text-lg leading-none">+5,000</p>
-                  <p className="text-xs text-gray-400 mt-0.5">{lang === 'ar' ? 'طالب متخرج' : 'Graduates'}</p>
-                </div>
+          {/* hero image */}
+          <div className="relative z-10 mt-16 w-full max-w-3xl">
+            <div className="absolute -inset-3 bg-gradient-to-br from-emerald-100 to-sky-100 rounded-[3rem] blur-2xl opacity-60 -z-10" />
+            <Image
+              src="/assets/hero-1.png"
+              alt="Be Fluent"
+              width={900}
+              height={450}
+              className="w-full h-auto rounded-3xl shadow-2xl object-cover"
+              priority
+            />
+            <div className="absolute -bottom-4 start-6 bg-white rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 border border-gray-100">
+              <span className="text-2xl">🎓</span>
+              <div className="text-start">
+                <p className="font-black text-[#1F2937] leading-none">+5,000</p>
+                <p className="text-xs text-gray-400 mt-0.5">{t.graduates}</p>
               </div>
-              <div className="absolute -top-5 end-4 bg-white rounded-2xl shadow-lg px-5 py-3 flex items-center gap-3 border border-gray-100">
-                <span className="text-3xl">⭐</span>
-                <div>
-                  <p className="font-black text-[#1F2937] text-lg leading-none">4.9 / 5</p>
-                  <p className="text-xs text-gray-400 mt-0.5">{lang === 'ar' ? 'تقييم الطلاب' : 'Student Rating'}</p>
-                </div>
+            </div>
+            <div className="absolute -top-4 end-6 bg-white rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 border border-gray-100">
+              <span className="text-2xl">⭐</span>
+              <div className="text-start">
+                <p className="font-black text-[#1F2937] leading-none">4.9 / 5</p>
+                <p className="text-xs text-gray-400 mt-0.5">{t.rating_label}</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ══════════════════ LEVELS ══════════════════ */}
-        <section id="levels" className="py-24 px-5 bg-[#F8FAFC]">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-14">
-              <h2 className="text-4xl md:text-5xl font-black text-[#1F2937] mb-3">{t.sec_levels}</h2>
-              <p className="text-xl text-gray-500 max-w-xl mx-auto">{t.sec_levels_sub}</p>
+        {/* ══════════ INVESTMENT CALCULATOR ══════════ */}
+        <section ref={calcRef} className="py-28 px-5" style={{ background: '#0B1120' }}>
+          <div className="max-w-2xl mx-auto">
+
+            {/* heading */}
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-6xl font-black text-white mb-3">{t.calc_title}</h2>
+              <p className="text-lg text-slate-400 max-w-md mx-auto">{t.calc_sub}</p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-              {t.levels.map(level => {
-                const col = LEVEL_COLORS[level.id];
-                const isSelected = selected === level.id;
-                return (
-                  <button
-                    key={level.id}
-                    onClick={() => pickLevel(level.id)}
-                    className={`group relative flex flex-col items-center text-center p-7 rounded-3xl cursor-pointer transition-all duration-300 select-none
-                      ${isSelected
-                        ? `bg-gradient-to-b ${col.card} text-white shadow-2xl ${col.glow} ring-4 ring-offset-2 scale-[1.04]`
-                        : 'bg-white text-[#1F2937] border border-gray-100 hover:shadow-xl hover:-translate-y-1 hover:border-gray-200'
-                      }`}
-                  >
-                    <span className="text-6xl mb-4">{level.emoji}</span>
-                    <p className={`text-2xl font-black mb-1 ${isSelected ? 'text-white' : 'text-[#1F2937]'}`}>
-                      {level.name}
-                    </p>
-                    <span className={`text-xs font-bold px-3 py-1 rounded-full mb-3 ${isSelected ? 'bg-white/20 text-white' : col.badge}`}>
-                      {level.code}
-                    </span>
-                    <p className={`text-sm leading-snug ${isSelected ? 'text-white/80' : 'text-gray-500'}`}>
-                      {level.desc}
-                    </p>
-                    {isSelected && (
-                      <span className="absolute top-3 end-3 bg-white/25 text-white text-xs font-bold px-2.5 py-1 rounded-full">
-                        ✓
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
+            {/* STEP 1: current level */}
+            <div className="mb-10">
+              <p className="text-white font-black text-lg mb-4 flex items-center gap-3">
+                <span className="w-8 h-8 rounded-full bg-[#10B981] text-white text-sm font-black flex items-center justify-center flex-shrink-0">1</span>
+                {t.step1}
+              </p>
+              <div className="grid grid-cols-4 gap-3">
+                {t.from_levels.map(lvl => {
+                  const active = fromLvl === lvl.id;
+                  return (
+                    <button key={lvl.id} onClick={() => setFromLvl(lvl.id)}
+                      className={`rounded-2xl p-4 text-center border-2 transition-all duration-200 cursor-pointer select-none
+                        ${active
+                          ? 'bg-[#10B981] border-[#10B981] text-white shadow-lg shadow-emerald-900/40 scale-[1.04]'
+                          : 'bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:border-white/25'
+                        }`}>
+                      <p className="text-3xl font-black mb-1">{lvl.label}</p>
+                      <p className="text-xs opacity-75 leading-tight">{lvl.name}</p>
+                    </button>
+                  );
+                })}
+              </div>
+              {/* level progress bar */}
+              <div className="mt-4 h-1 bg-white/10 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-[#10B981] to-[#34d399] rounded-full transition-all duration-500"
+                  style={{ width:`${(ORDER.indexOf(fromLvl) / 3) * 100}%` }} />
+              </div>
+              {/* current level desc */}
+              <div className="mt-4 px-4 py-3 rounded-xl bg-white/5 border border-white/8">
+                <p className="text-slate-300 text-sm leading-relaxed">{fromLabel?.desc}</p>
+              </div>
             </div>
-          </div>
-        </section>
 
-        {/* ══════════════════ PRICING ══════════════════ */}
-        <section ref={pricingRef} className="py-24 px-5 bg-white">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-14">
-              <h2 className="text-4xl md:text-5xl font-black text-[#1F2937] mb-3">{t.sec_pricing}</h2>
-              <p className="text-xl text-gray-500">{t.sec_pricing_sub}</p>
-              {selected && (
-                <div className="inline-flex items-center gap-2 mt-4 px-5 py-2 bg-emerald-50 border border-emerald-100 rounded-full text-emerald-700 font-semibold text-sm">
-                  <span>{t.levels.find(l => l.id === selected)?.emoji}</span>
-                  {lang === 'ar'
-                    ? `باقات مناسبة لمستوى ${t.levels.find(l => l.id === selected)?.name}`
-                    : `Plans for ${t.levels.find(l => l.id === selected)?.name} level`
-                  }
+            {/* STEP 2: target level */}
+            <div className="mb-10">
+              <p className="text-white font-black text-lg mb-4 flex items-center gap-3">
+                <span className="w-8 h-8 rounded-full bg-[#10B981] text-white text-sm font-black flex items-center justify-center flex-shrink-0">2</span>
+                {t.step2}
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {t.to_levels.map(lvl => {
+                  const isValid  = ORDER.indexOf(lvl.id) > ORDER.indexOf(fromLvl);
+                  const isActive = toLvl === lvl.id;
+                  const disc     = LEVEL_DISC[lvl.id];
+                  return (
+                    <button key={lvl.id}
+                      onClick={() => isValid && setToLvl(lvl.id)}
+                      disabled={!isValid}
+                      className={`relative rounded-2xl p-4 text-center border-2 transition-all duration-200 select-none
+                        ${!isValid
+                          ? 'opacity-20 cursor-not-allowed bg-white/3 border-white/5'
+                          : isActive
+                            ? `${TO_ACTIVE_BG[lvl.id]} border-transparent text-white shadow-xl scale-[1.04] ring-4 ring-offset-2 ring-offset-[#0B1120] ${TO_RING[lvl.id]}`
+                            : `bg-white/5 border-white/15 text-slate-300 cursor-pointer hover:bg-white/10 hover:border-white/30 hover:scale-[1.02]`
+                        }`}>
+                      {disc > 0 && isValid && (
+                        <span className={`absolute -top-2.5 ${lang==='ar'?'left-2':'right-2'} text-xs font-black px-2 py-0.5 rounded-full ${isActive ? 'bg-white/25 text-white' : TO_BADGE[lvl.id]}`}>
+                          -{disc}%
+                        </span>
+                      )}
+                      <p className="text-3xl font-black mb-1">{lvl.label}</p>
+                      <p className="text-xs opacity-75 leading-tight">{lvl.name}</p>
+                    </button>
+                  );
+                })}
+              </div>
+              {toLvl && (
+                <div className="mt-4 px-4 py-3 rounded-xl bg-white/5 border border-white/8">
+                  <p className="text-slate-300 text-sm leading-relaxed">{toLabel?.desc}</p>
                 </div>
               )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-              {packages.map((pkg, i) => (
-                <div
-                  key={i}
-                  className={`relative flex flex-col rounded-3xl p-8 transition-all duration-300
-                    ${pkg.popular
-                      ? 'bg-[#1F2937] text-white shadow-2xl shadow-gray-300 ring-4 ring-[#10B981] ring-offset-2 scale-[1.03]'
-                      : 'bg-[#F8FAFC] border border-gray-100 hover:shadow-xl'
-                    }`}
-                >
-                  {pkg.popular && (
-                    <div className="absolute -top-4 start-1/2 -translate-x-1/2 rtl:translate-x-1/2">
-                      <span className="bg-[#10B981] text-white text-sm font-black px-5 py-1.5 rounded-full shadow-md shadow-emerald-200 whitespace-nowrap">
-                        ⭐ {t.popular}
-                      </span>
-                    </div>
-                  )}
+            {/* STEP 3: price result */}
+            {toLvl && months ? (
+              <div>
+                <p className="text-white font-black text-lg mb-4 flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-full bg-[#10B981] text-white text-sm font-black flex items-center justify-center flex-shrink-0">3</span>
+                  {t.step3}
+                </p>
 
-                  <p className={`text-lg font-black mb-1 ${pkg.popular ? 'text-white/70' : 'text-gray-400'}`}>
-                    {pkg.sessions}
-                  </p>
+                {/* plan toggle */}
+                <div className="flex gap-2 mb-6 bg-white/5 rounded-2xl p-1.5 border border-white/10 w-fit">
+                  {(['monthly','bundle'] as const).map(p => (
+                    <button key={p} onClick={() => setPlan(p)}
+                      className={`px-7 py-2.5 rounded-xl font-black text-sm transition-all
+                        ${plan===p ? 'bg-[#10B981] text-white shadow-md' : 'text-slate-400 hover:text-white'}`}>
+                      {p === 'monthly' ? t.monthly : t.bundle}
+                    </button>
+                  ))}
+                </div>
 
-                  <h3 className={`text-3xl font-black mb-5 ${pkg.popular ? 'text-white' : 'text-[#1F2937]'}`}>
-                    {pkg.name}
-                  </h3>
-
-                  <div className="mb-7">
-                    <span className={`text-6xl font-black ${pkg.popular ? 'text-white' : 'text-[#10B981]'}`}>
-                      {pkg.price}
-                    </span>
-                    <span className={`text-sm ms-2 ${pkg.popular ? 'text-white/50' : 'text-gray-400'}`}>
-                      {pkg.unit}
-                    </span>
+                {/* price card */}
+                <div className="rounded-3xl border border-white/12 bg-white/6 backdrop-blur-md p-8">
+                  {/* price row */}
+                  <div className="flex flex-wrap items-end gap-3 mb-3">
+                    {plan === 'monthly' ? (
+                      <>
+                        {savingMonthly > 0 && (
+                          <span className="text-slate-500 line-through text-2xl">{baseMonthly.toLocaleString()}</span>
+                        )}
+                        <span className="text-6xl font-black text-white">{priceMonthly.toLocaleString()}</span>
+                        <span className="text-slate-400 text-lg pb-1">{t.per_month}</span>
+                      </>
+                    ) : (
+                      <>
+                        {origBundle && <span className="text-slate-500 line-through text-2xl">{origBundle.toLocaleString()}</span>}
+                        <span className="text-6xl font-black text-white">{priceBundle?.toLocaleString()}</span>
+                        <span className="text-slate-400 text-lg pb-1">{t.egp}</span>
+                      </>
+                    )}
                   </div>
 
-                  <ul className="space-y-3 flex-1 mb-8">
-                    {(t.f_pkg[pkg.fi] as number[]).map(fi => (
-                      <li key={fi} className="flex items-center gap-3">
-                        <CheckCircle className={`w-5 h-5 flex-shrink-0 ${pkg.popular ? 'text-[#10B981]' : 'text-[#10B981]'}`} />
-                        <span className={`text-base ${pkg.popular ? 'text-white/85' : 'text-gray-600'}`}>
-                          {t.f_items[fi]}
-                        </span>
+                  {/* journey info & saving */}
+                  <div className="flex flex-wrap items-center gap-3 mb-8">
+                    <span className="text-slate-400 text-sm">
+                      {t.months_label(months, fromLabel?.label ?? '', toLabel?.label ?? '')}
+                    </span>
+                    {plan === 'monthly' && savingMonthly > 0 && (
+                      <span className="bg-[#10B981]/20 text-[#10B981] text-sm font-bold px-3 py-1 rounded-full">
+                        {t.save} {savingMonthly.toLocaleString()} {t.egp}
+                      </span>
+                    )}
+                    {plan === 'bundle' && saveBundle && (
+                      <span className="bg-[#10B981]/20 text-[#10B981] text-sm font-bold px-3 py-1 rounded-full">
+                        {t.save} {saveBundle.toLocaleString()} {t.egp}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* features */}
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8 pt-6 border-t border-white/10">
+                    {t.features.map((f,i) => (
+                      <li key={i} className="flex items-center gap-3">
+                        <CheckCircle className="w-5 h-5 text-[#10B981] flex-shrink-0" />
+                        <span className="text-slate-300 text-sm">{f}</span>
                       </li>
                     ))}
                   </ul>
 
-                  <Link
-                    href="/auth/register"
-                    className={`block text-center py-4 rounded-2xl font-black text-lg transition-all duration-200
-                      ${pkg.popular
-                        ? 'bg-[#10B981] text-white hover:bg-[#059669] shadow-lg shadow-emerald-900/20'
-                        : 'bg-white border-2 border-[#10B981] text-[#10B981] hover:bg-[#10B981] hover:text-white'
-                      }`}
-                  >
-                    {t.subscribe}
+                  {/* CTA */}
+                  <Link href="/auth/register"
+                    className="block text-center py-4 px-8 bg-[#10B981] text-white font-black text-xl rounded-2xl hover:bg-[#059669] transition-all shadow-xl shadow-emerald-900/40 hover:-translate-y-0.5">
+                    {t.book}
                   </Link>
                 </div>
-              ))}
-            </div>
-
-            <p className="text-center text-gray-400 mt-8 text-base">{t.trial}</p>
+              </div>
+            ) : (
+              <div className="border-2 border-dashed border-white/10 rounded-3xl p-12 text-center">
+                <p className="text-5xl mb-4">👆</p>
+                <p className="text-slate-500 text-lg">{t.no_sel}</p>
+              </div>
+            )}
           </div>
         </section>
 
-        {/* ══════════════════ PLACEMENT TEST ══════════════════ */}
-        <section ref={testRef} className="py-20 px-5 bg-[#F8FAFC]">
-          <div className="max-w-3xl mx-auto">
-            <div className="bg-gradient-to-br from-[#1F2937] to-[#374151] rounded-3xl p-12 text-center relative overflow-hidden">
-              {/* bg decoration */}
-              <div className="absolute top-0 end-0 w-64 h-64 bg-[#10B981]/10 rounded-full -translate-y-1/2 translate-x-1/4 pointer-events-none" />
-              <div className="absolute bottom-0 start-0 w-48 h-48 bg-[#10B981]/10 rounded-full translate-y-1/2 -translate-x-1/4 pointer-events-none" />
-
-              <div className="relative z-10">
-                <span className="text-7xl block mb-6">🎯</span>
-                <h2 className="text-4xl md:text-5xl font-black text-white mb-4">{t.sec_test}</h2>
-                <p className="text-xl text-gray-300 mb-10 max-w-xl mx-auto leading-relaxed">{t.sec_test_sub}</p>
-                <Link
-                  href="/placement-test"
-                  className="inline-flex items-center gap-3 px-10 py-5 bg-[#10B981] text-white font-black text-xl rounded-2xl hover:bg-[#059669] transition-all duration-200 shadow-xl shadow-emerald-900/30 hover:-translate-y-0.5"
-                >
+        {/* ══════════ PLACEMENT TEST ══════════ */}
+        <section className="py-20 px-5 bg-[#F8FAFC]">
+          <div className="max-w-2xl mx-auto">
+            <div className="relative overflow-hidden rounded-3xl" style={{ background: '#0B1120' }}>
+              <div className="absolute top-0 end-0 w-72 h-72 bg-[#10B981]/8 rounded-full -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+              <div className="absolute bottom-0 start-0 w-56 h-56 bg-[#10B981]/8 rounded-full translate-y-1/2 -translate-x-1/3 pointer-events-none" />
+              <div className="relative z-10 p-12 text-center">
+                <span className="text-6xl block mb-5">🎯</span>
+                <h2 className="text-3xl md:text-4xl font-black text-white mb-4">{t.test_title}</h2>
+                <p className="text-lg text-slate-400 mb-8 max-w-md mx-auto leading-relaxed">{t.test_sub}</p>
+                <Link href="/placement-test"
+                  className="inline-block px-10 py-4 bg-[#10B981] text-white font-black text-xl rounded-2xl hover:bg-[#059669] transition-all shadow-xl hover:-translate-y-0.5">
                   {t.test_cta}
                 </Link>
               </div>
@@ -359,18 +459,16 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ══════════════════ FOOTER ══════════════════ */}
-        <footer className="border-t border-gray-100 py-8 px-5">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        {/* ══════════ FOOTER ══════════ */}
+        <footer className="border-t border-gray-100 py-8 px-5 bg-white">
+          <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <Image src="/logo.png" alt="Be Fluent" width={30} height={30} className="rounded-lg" />
-              <span className="font-black text-[#1F2937]">Be Fluent</span>
+              <span className="font-black">Be Fluent</span>
             </div>
             <p className="text-gray-400 text-sm">{t.footer}</p>
-            <button
-              onClick={switchLang}
-              className="flex items-center gap-2 text-sm text-gray-400 hover:text-[#10B981] transition-colors font-medium"
-            >
+            <button onClick={switchLang}
+              className="flex items-center gap-2 text-sm text-gray-400 hover:text-[#10B981] transition-colors font-semibold">
               <Globe className="w-4 h-4" />
               {t.toggle}
             </button>
@@ -378,7 +476,6 @@ export default function Home() {
         </footer>
 
       </main>
-
       <FloatingContactButtons />
     </div>
   );
