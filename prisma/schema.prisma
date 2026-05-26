@@ -825,3 +825,18 @@ model LiveParticipant {
   @@unique([liveId, userId])
 }
 
+
+model TrialBooking {
+  id        String   @id @default(uuid()) @map("_id")
+  name      String
+  phone     String
+  email     String?
+  fromLevel String
+  toLevel   String
+  plan      String
+  price     Float?
+  status    String   @default("NEW")
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}

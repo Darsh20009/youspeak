@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import {
   Home, Users, CreditCard, Activity, LogOut, Shield, BookOpen,
   GraduationCap, ClipboardList, Mail, Tag, ChevronRight, Menu, X,
-  Bell, Settings, BarChart3, Globe, Layers, ChevronDown
+  Bell, Settings, BarChart3, Globe, Layers, ChevronDown, PhoneCall
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -20,6 +20,7 @@ import PlacementTestTab from './components/PlacementTestTab'
 import EmailTab from './components/EmailTab'
 import CouponsTab from './components/CouponsTab'
 import PageEditorTab from './components/PageEditorTab'
+import LeadsTab from './components/LeadsTab'
 import FloatingContactButtons from '@/components/FloatingContactButtons'
 
 interface Props {
@@ -31,6 +32,12 @@ const MENU_GROUPS = [
     label: 'الرئيسية',
     items: [
       { id: 'home', label: 'لوحة التحكم', icon: Home },
+    ]
+  },
+  {
+    label: 'العملاء المحتملون',
+    items: [
+      { id: 'leads', label: 'طلبات الحجز', icon: PhoneCall },
     ]
   },
   {
@@ -228,6 +235,7 @@ export default function AdminDashboardClient({ user }: Props) {
         <main className="flex-1 p-6">
           <div className="max-w-7xl mx-auto">
             {activeTab === 'home'          && <HomeTab setActiveTab={setActiveTab} />}
+            {activeTab === 'leads'         && <LeadsTab />}
             {activeTab === 'users'         && <UsersTab />}
             {activeTab === 'subscriptions' && <SubscriptionsTab />}
             {activeTab === 'coupons'       && <CouponsTab />}
