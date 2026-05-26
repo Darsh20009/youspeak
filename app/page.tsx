@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import FloatingContactButtons from "@/components/FloatingContactButtons";
-import { Globe, CheckCircle, ArrowDown } from "lucide-react";
+import { Globe, CheckCircle, ArrowDown, User, Phone, Mail } from "lucide-react";
 
 /* ─── translations ──────────────────────────────────────── */
 const T = {
@@ -27,10 +27,27 @@ const T = {
     per_month: 'جنيه / شهر',
     egp: 'جنيه',
     save: 'وفّر',
-    book: 'احجز حصتك التجريبية المجانية',
     hint: 'اختر مستواك الحالي ثم مستوى هدفك',
     features: ['حصص خاصة مباشرة', 'متابعة يومية على واتساب', 'دعم 24/7', 'شهادة إتمام المستوى', 'اختبار مستوى مجاني'],
     pkgFeats: [[0,1,2],[0,1,2,3],[0,1,2,3,4]],
+    // booking form
+    book_h: 'احجز حصتك التجريبية المجانية',
+    book_sub: 'سيتواصل معك معلمك خلال 24 ساعة على الواتساب',
+    f_name: 'الاسم الكامل',
+    f_name_ph: 'أدخل اسمك الكامل',
+    f_phone: 'رقم الواتساب',
+    f_phone_ph: '01234567890',
+    f_email: 'البريد الإلكتروني (اختياري)',
+    f_email_ph: 'example@email.com',
+    submit: 'احجز الآن مجاناً →',
+    submitting: 'جاري الحجز...',
+    success_h: 'تم الحجز بنجاح! 🎉',
+    success_sub: 'سيتواصل معك فريقنا على الواتساب في أقرب وقت',
+    success_cta: 'تواصل معنا الآن على واتساب',
+    err: 'حدث خطأ، يرجى المحاولة مجدداً',
+    has_account: 'لديك حساب بالفعل؟',
+    login: 'تسجيل الدخول',
+    // placement test
     test_h: 'لست متأكداً من مستواك؟',
     test_sub: 'خذ اختبار تحديد المستوى المجاني واعرف نقطة بدايتك الصحيحة بدقة',
     test_btn: 'ابدأ الاختبار المجاني',
@@ -42,10 +59,10 @@ const T = {
       { id:'b2', label:'B2', name:'متقدم',    desc:'أتحدث الإنجليزية لكن أجد صعوبة في المواقف المعقدة' },
     ],
     to_levels: [
-      { id:'a2', label:'A2', name:'أساسي',    desc:'أريد التعامل في المواقف اليومية البسيطة' },
-      { id:'b1', label:'B1', name:'متوسط',    desc:'أريد التعبير عن نفسي بسهولة في معظم المواقف' },
+      { id:'a2', label:'A2', name:'أساسي',        desc:'أريد التعامل في المواقف اليومية البسيطة' },
+      { id:'b1', label:'B1', name:'متوسط',        desc:'أريد التعبير عن نفسي بسهولة في معظم المواقف' },
       { id:'b2', label:'B2', name:'متوسط متقدم', desc:'أريد التحدث بطلاقة تامة في أي موقف' },
-      { id:'c1', label:'C1', name:'متقدم',    desc:'أريد إتقان اللغة وأتحدث كأهلها تماماً' },
+      { id:'c1', label:'C1', name:'متقدم',        desc:'أريد إتقان اللغة وأتحدث كأهلها تماماً' },
     ],
   },
   en: {
@@ -67,25 +84,40 @@ const T = {
     per_month: 'EGP / month',
     egp: 'EGP',
     save: 'Save',
-    book: 'Book Your Free Trial Session',
     hint: 'Choose your current level then your target level',
     features: ['Private live sessions', 'Daily WhatsApp follow-up', '24/7 support', 'Level completion certificate', 'Free placement test'],
     pkgFeats: [[0,1,2],[0,1,2,3],[0,1,2,3,4]],
+    book_h: 'Book Your Free Trial Session',
+    book_sub: 'Your teacher will contact you within 24 hours on WhatsApp',
+    f_name: 'Full Name',
+    f_name_ph: 'Enter your full name',
+    f_phone: 'WhatsApp Number',
+    f_phone_ph: '+201234567890',
+    f_email: 'Email Address (optional)',
+    f_email_ph: 'example@email.com',
+    submit: 'Book Now for Free →',
+    submitting: 'Booking...',
+    success_h: 'Booking Confirmed! 🎉',
+    success_sub: 'Our team will contact you on WhatsApp as soon as possible',
+    success_cta: 'Contact Us on WhatsApp Now',
+    err: 'An error occurred, please try again',
+    has_account: 'Already have an account?',
+    login: 'Log in',
     test_h: "Not sure of your level?",
     test_sub: 'Take our free placement test and find out exactly where to start',
     test_btn: 'Start Free Test',
     footer: '© 2025 Be Fluent — All rights reserved',
     from_levels: [
-      { id:'a1', label:'A1', name:'Beginner',         desc:"I've never studied English or know very few words" },
-      { id:'a2', label:'A2', name:'Elementary',       desc:'I know some sentences but struggle with conversation' },
-      { id:'b1', label:'B1', name:'Intermediate',     desc:"I understand English but struggle to express myself" },
-      { id:'b2', label:'B2', name:'Upper Int.',       desc:"I speak English but struggle in complex situations" },
+      { id:'a1', label:'A1', name:'Beginner',       desc:"I've never studied English or know very few words" },
+      { id:'a2', label:'A2', name:'Elementary',     desc:'I know some sentences but struggle with conversation' },
+      { id:'b1', label:'B1', name:'Intermediate',   desc:"I understand English but struggle to express myself" },
+      { id:'b2', label:'B2', name:'Upper Int.',     desc:"I speak English but struggle in complex situations" },
     ],
     to_levels: [
-      { id:'a2', label:'A2', name:'Elementary',       desc:'I want to handle basic everyday situations' },
-      { id:'b1', label:'B1', name:'Intermediate',     desc:'I want to express myself easily in most situations' },
-      { id:'b2', label:'B2', name:'Upper Int.',       desc:'I want to speak fluently in any situation' },
-      { id:'c1', label:'C1', name:'Advanced',         desc:'I want to master the language like a native speaker' },
+      { id:'a2', label:'A2', name:'Elementary',     desc:'I want to handle basic everyday situations' },
+      { id:'b1', label:'B1', name:'Intermediate',   desc:'I want to express myself easily in most situations' },
+      { id:'b2', label:'B2', name:'Upper Int.',     desc:'I want to speak fluently in any situation' },
+      { id:'c1', label:'C1', name:'Advanced',       desc:'I want to master the language like a native speaker' },
     ],
   },
 };
@@ -101,11 +133,12 @@ const DUR: Record<string,Record<string,number>> = {
 };
 const DISC: Record<string,number>  = { a2:0, b1:15, b2:25, c1:35 };
 const BUNDLE_ADD = 10;
+const WA_NUMBER = '201091515594';
 
 const DISC_COLOR: Record<string,{ pill:string; border:string; activeBg:string }> = {
-  a2: { pill:'bg-sky-50 text-sky-600',    border:'border-sky-200 hover:border-sky-400',    activeBg:'bg-sky-500 border-sky-500 text-white' },
-  b1: { pill:'bg-teal-50 text-teal-600',  border:'border-teal-200 hover:border-teal-400',  activeBg:'bg-teal-500 border-teal-500 text-white' },
-  b2: { pill:'bg-amber-50 text-amber-600',border:'border-amber-200 hover:border-amber-400',activeBg:'bg-amber-500 border-amber-500 text-white' },
+  a2: { pill:'bg-sky-50 text-sky-600',     border:'border-sky-200 hover:border-sky-400',     activeBg:'bg-sky-500 border-sky-500 text-white' },
+  b1: { pill:'bg-teal-50 text-teal-600',   border:'border-teal-200 hover:border-teal-400',   activeBg:'bg-teal-500 border-teal-500 text-white' },
+  b2: { pill:'bg-amber-50 text-amber-600', border:'border-amber-200 hover:border-amber-400', activeBg:'bg-amber-500 border-amber-500 text-white' },
   c1: { pill:'bg-violet-50 text-violet-600',border:'border-violet-200 hover:border-violet-400',activeBg:'bg-violet-600 border-violet-600 text-white' },
 };
 
@@ -115,7 +148,15 @@ export default function Home() {
   const [to, setTo]       = useState<string|null>(null);
   const [plan, setPlan]   = useState<'monthly'|'bundle'>('bundle');
   const [ready, setReady] = useState(false);
-  const calcRef = useRef<HTMLDivElement>(null);
+
+  // booking form state
+  const [bookName,  setBookName]  = useState('');
+  const [bookPhone, setBookPhone] = useState('');
+  const [bookEmail, setBookEmail] = useState('');
+  const [bookStatus, setBookStatus] = useState<'idle'|'loading'|'success'|'error'>('idle');
+
+  const calcRef    = useRef<HTMLDivElement>(null);
+  const bookingRef = useRef<HTMLDivElement>(null);
   const t = T[lang];
 
   useEffect(() => {
@@ -128,26 +169,55 @@ export default function Home() {
     if (to && ORDER.indexOf(to) <= ORDER.indexOf(from)) setTo(null);
   }, [from, to]);
 
-  const toggle = () => {
+  // scroll to booking when price is selected
+  useEffect(() => {
+    if (to) {
+      setTimeout(() => bookingRef.current?.scrollIntoView({ behavior:'smooth', block:'nearest' }), 150);
+    }
+  }, [to, plan]);
+
+  const toggleLang = () => {
     const n = lang === 'ar' ? 'en' : 'ar';
     setLang(n); localStorage.setItem('bf_lang', n);
   };
 
   /* price calc */
-  const base    = M_BASE[from] ?? 1500;
-  const months  = to ? (DUR[from]?.[to] ?? null) : null;
-  const lvlDisc = to ? (DISC[to] ?? 0) : 0;
-
+  const base        = M_BASE[from] ?? 1500;
+  const months      = to ? (DUR[from]?.[to] ?? null) : null;
+  const lvlDisc     = to ? (DISC[to] ?? 0) : 0;
   const monthlyRate = months ? Math.round(base * (1 - lvlDisc / 100) / 100) * 100 : base;
   const saveMo      = base - monthlyRate;
   const orig        = months ? base * months : null;
   const bundleTotal = orig ? Math.round(orig * (1 - Math.min(lvlDisc + BUNDLE_ADD, 45) / 100) / 100) * 100 : null;
   const saveBundle  = orig && bundleTotal ? orig - bundleTotal : null;
+  const fromData    = t.from_levels.find(l => l.id === from);
+  const toData      = to ? t.to_levels.find(l => l.id === to) : null;
 
-  const fromData = t.from_levels.find(l => l.id === from);
-  const toData   = to ? t.to_levels.find(l => l.id === to) : null;
+  /* booking submit */
+  const handleBook = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setBookStatus('loading');
+    try {
+      await fetch('/api/book-trial', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: bookName, phone: bookPhone, email: bookEmail,
+          fromLevel: from, toLevel: to, plan,
+          price: plan === 'monthly' ? monthlyRate : bundleTotal,
+        }),
+      });
+      setBookStatus('success');
+    } catch {
+      setBookStatus('error');
+    }
+  };
 
-  const validTo = t.to_levels.filter(l => ORDER.indexOf(l.id) > ORDER.indexOf(from));
+  const waMsg = encodeURIComponent(
+    lang === 'ar'
+      ? `مرحباً، أريد حجز حصة تجريبية مجانية.\nالاسم: ${bookName}\nالمستوى: ${fromData?.label} → ${toData?.label}`
+      : `Hi, I'd like to book a free trial session.\nName: ${bookName}\nLevel: ${fromData?.label} → ${toData?.label}`
+  );
 
   return (
     <div dir={t.dir} className={`min-h-screen bg-white text-[#111827] transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}>
@@ -159,7 +229,7 @@ export default function Home() {
             <Image src="/logo.png" alt="Be Fluent" width={36} height={36} className="rounded-xl" priority />
             <span className="text-xl font-black">Be Fluent</span>
           </Link>
-          <button onClick={toggle}
+          <button onClick={toggleLang}
             className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-sm font-semibold text-gray-600 hover:border-[#10B981] hover:text-[#10B981] transition-colors">
             <Globe className="w-4 h-4" />
             {t.toggle}
@@ -187,7 +257,7 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* hero image with floating badges */}
+          {/* hero image */}
           <div className="relative">
             <Image src="/assets/hero-1.png" alt="Be Fluent" width={900} height={480}
               className="w-full h-auto rounded-3xl shadow-xl shadow-gray-100 border border-gray-100 object-cover" priority />
@@ -206,15 +276,14 @@ export default function Home() {
         <section ref={calcRef} className="py-24 px-5 bg-gray-50">
           <div className="max-w-2xl mx-auto">
 
-            {/* heading */}
             <div className="text-center mb-14">
               <h2 className="text-4xl md:text-5xl font-black mb-3">{t.calc_h}</h2>
               <p className="text-xl text-gray-500">{t.calc_sub}</p>
             </div>
 
-            {/* STEP 1 – current level tab bar */}
+            {/* STEP 1 – level tab bar */}
             <div className="mb-12">
-              <p className="text-base font-bold text-gray-500 uppercase tracking-widest mb-5 text-center">{t.step1}</p>
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-5 text-center">{t.step1}</p>
               <div className="border-b-2 border-gray-200 flex">
                 {t.from_levels.map(lvl => {
                   const active = from === lvl.id;
@@ -222,21 +291,19 @@ export default function Home() {
                     <button key={lvl.id} onClick={() => setFrom(lvl.id)}
                       className={`flex-1 pb-4 text-center relative transition-all duration-200 select-none
                         ${active ? 'text-[#10B981]' : 'text-gray-400 hover:text-gray-600'}`}>
-                      <p className={`text-2xl font-black mb-1 ${active ? '' : ''}`}>{lvl.label}</p>
+                      <p className="text-2xl font-black mb-1">{lvl.label}</p>
                       <p className="text-xs">{lvl.name}</p>
                       {active && <div className="absolute bottom-0 inset-x-0 h-0.5 bg-[#10B981] rounded-full" />}
                     </button>
                   );
                 })}
               </div>
-              <div className="mt-4 text-center">
-                <p className="text-gray-500 text-sm leading-relaxed">{fromData?.desc}</p>
-              </div>
+              <p className="mt-4 text-gray-500 text-sm text-center leading-relaxed">{fromData?.desc}</p>
             </div>
 
-            {/* STEP 2 – target level cards */}
+            {/* STEP 2 – target cards */}
             <div className="mb-10">
-              <p className="text-base font-bold text-gray-500 uppercase tracking-widest mb-5 text-center">{t.step2}</p>
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-5 text-center">{t.step2}</p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {t.to_levels.map(lvl => {
                   const valid  = ORDER.indexOf(lvl.id) > ORDER.indexOf(from);
@@ -250,8 +317,7 @@ export default function Home() {
                       className={`relative p-5 rounded-2xl border-2 text-center transition-all duration-200 select-none
                         ${!valid  ? 'opacity-25 cursor-not-allowed bg-white border-gray-100'
                         : active  ? col.activeBg + ' shadow-lg scale-[1.03]'
-                        :           'bg-white cursor-pointer ' + col.border
-                        }`}>
+                        :           'bg-white cursor-pointer ' + col.border}`}>
                       {disc > 0 && valid && (
                         <span className={`absolute -top-2.5 ${lang==='ar' ? 'left-2' : 'right-2'} text-xs font-black px-2 py-0.5 rounded-full
                           ${active ? 'bg-white/30 text-white' : col.pill}`}>
@@ -269,7 +335,7 @@ export default function Home() {
               )}
             </div>
 
-            {/* RESULT */}
+            {/* PRICE CARD */}
             {to && months ? (
               <div className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm">
                 {/* plan toggle */}
@@ -284,7 +350,6 @@ export default function Home() {
                 </div>
 
                 <div className="p-8">
-                  {/* price */}
                   {plan==='monthly' ? (
                     <div className="mb-2 flex items-end gap-2 flex-wrap">
                       {saveMo > 0 && <span className="text-gray-300 line-through text-2xl">{base.toLocaleString()}</span>}
@@ -299,7 +364,6 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* meta */}
                   <div className="flex flex-wrap items-center gap-3 mb-8">
                     <span className="text-gray-400 text-sm">
                       {fromData?.label} → {toData?.label} · {months} {lang==='ar'?'أشهر':'months'}
@@ -316,8 +380,7 @@ export default function Home() {
                     )}
                   </div>
 
-                  {/* features */}
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-8 pb-8 border-b border-gray-100">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pb-8 border-b border-gray-100">
                     {(plan==='monthly' ? t.pkgFeats[0] : t.pkgFeats[2]).map((fi: number) => (
                       <li key={fi} className="flex items-center gap-2.5">
                         <CheckCircle className="w-5 h-5 text-[#10B981] flex-shrink-0" />
@@ -326,11 +389,78 @@ export default function Home() {
                     ))}
                   </ul>
 
-                  {/* CTA */}
-                  <Link href="/auth/register"
-                    className="block text-center py-4 bg-[#111827] text-white font-black text-xl rounded-2xl hover:bg-[#1F2937] transition-colors">
-                    {t.book}
-                  </Link>
+                  {/* ── INLINE BOOKING FORM ── */}
+                  <div ref={bookingRef} className="pt-8">
+                    {bookStatus === 'success' ? (
+                      /* success state */
+                      <div className="text-center py-8">
+                        <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-5">
+                          <span className="text-4xl">🎉</span>
+                        </div>
+                        <h3 className="text-2xl font-black mb-2">{t.success_h}</h3>
+                        <p className="text-gray-500 mb-6 leading-relaxed">{t.success_sub}</p>
+                        <a href={`https://api.whatsapp.com/send/?phone=${WA_NUMBER}&text=${waMsg}`}
+                          target="_blank" rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-8 py-4 bg-[#25D366] text-white font-black text-lg rounded-2xl hover:bg-[#1ebe5d] transition-colors">
+                          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                          {t.success_cta}
+                        </a>
+                      </div>
+                    ) : (
+                      /* booking form */
+                      <form onSubmit={handleBook}>
+                        <h3 className="text-2xl font-black mb-1">{t.book_h}</h3>
+                        <p className="text-gray-400 text-sm mb-6">{t.book_sub}</p>
+
+                        <div className="space-y-4 mb-6">
+                          {/* name */}
+                          <div>
+                            <label className="block text-sm font-bold text-gray-600 mb-1.5">{t.f_name}</label>
+                            <div className="relative">
+                              <User className="absolute top-1/2 -translate-y-1/2 start-4 w-5 h-5 text-gray-300" />
+                              <input type="text" required value={bookName} onChange={e => setBookName(e.target.value)}
+                                placeholder={t.f_name_ph}
+                                className="w-full ps-12 pe-4 py-3.5 border border-gray-200 rounded-xl text-base focus:outline-none focus:border-[#10B981] transition-colors" />
+                            </div>
+                          </div>
+                          {/* phone */}
+                          <div>
+                            <label className="block text-sm font-bold text-gray-600 mb-1.5">{t.f_phone}</label>
+                            <div className="relative">
+                              <Phone className="absolute top-1/2 -translate-y-1/2 start-4 w-5 h-5 text-gray-300" />
+                              <input type="tel" required value={bookPhone} onChange={e => setBookPhone(e.target.value)}
+                                placeholder={t.f_phone_ph}
+                                className="w-full ps-12 pe-4 py-3.5 border border-gray-200 rounded-xl text-base focus:outline-none focus:border-[#10B981] transition-colors" />
+                            </div>
+                          </div>
+                          {/* email optional */}
+                          <div>
+                            <label className="block text-sm font-bold text-gray-600 mb-1.5">{t.f_email}</label>
+                            <div className="relative">
+                              <Mail className="absolute top-1/2 -translate-y-1/2 start-4 w-5 h-5 text-gray-300" />
+                              <input type="email" value={bookEmail} onChange={e => setBookEmail(e.target.value)}
+                                placeholder={t.f_email_ph}
+                                className="w-full ps-12 pe-4 py-3.5 border border-gray-200 rounded-xl text-base focus:outline-none focus:border-[#10B981] transition-colors" />
+                            </div>
+                          </div>
+                        </div>
+
+                        {bookStatus === 'error' && (
+                          <p className="text-red-500 text-sm mb-4 text-center">{t.err}</p>
+                        )}
+
+                        <button type="submit" disabled={bookStatus==='loading'}
+                          className="w-full py-4 bg-[#10B981] text-white font-black text-xl rounded-2xl hover:bg-[#059669] transition-colors disabled:opacity-60 shadow-lg shadow-emerald-100">
+                          {bookStatus==='loading' ? t.submitting : t.submit}
+                        </button>
+
+                        <p className="text-center text-gray-400 text-sm mt-5">
+                          {t.has_account}{' '}
+                          <Link href="/auth/login" className="text-[#10B981] font-semibold hover:underline">{t.login}</Link>
+                        </p>
+                      </form>
+                    )}
+                  </div>
                 </div>
               </div>
             ) : (
@@ -363,7 +493,7 @@ export default function Home() {
               <span className="font-black text-[#111827]">Be Fluent</span>
             </div>
             <p className="text-gray-400 text-sm">{t.footer}</p>
-            <button onClick={toggle}
+            <button onClick={toggleLang}
               className="flex items-center gap-2 text-sm text-gray-400 hover:text-[#10B981] transition-colors font-semibold">
               <Globe className="w-4 h-4" />
               {t.toggle}
