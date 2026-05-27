@@ -38,7 +38,6 @@ Response format for final result (after 10 questions):
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const body = await req.json();
     const { action, history = [], lastAnswer, questionId, isCorrect } = body;
@@ -125,35 +124,37 @@ export async function POST(req: NextRequest) {
 
       const finalLevel = aiResult?.level || level;
 
-      try {
-        await prisma.placementTestAttempt.create({
-          data: {
-            studentId: session.user.id,
-            testType: 'PLACEMENT',
-            score: correctCount,
-            percentage,
-            levelResult: finalLevel,
-            details: JSON.stringify(answers),
-            completedAt: new Date()
-          }
-        });
+      if (session?.user?.id) {
+        try {
+          await prisma.placementTestAttempt.create({
+            data: {
+              studentId: session.user.id,
+              testType: 'PLACEMENT',
+              score: correctCount,
+              percentage,
+              levelResult: finalLevel,
+              details: JSON.stringify(answers),
+              completedAt: new Date()
+            }
+          });
 
-        const existingProfile = await prisma.studentProfile.findUnique({
-          where: { userId: session.user.id },
-          select: { levelInitial: true }
-        });
+          const existingProfile = await prisma.studentProfile.findUnique({
+            where: { userId: session.user.id },
+            select: { levelInitial: true }
+          });
 
-        await prisma.studentProfile.update({
-          where: { userId: session.user.id },
-          data: {
-            levelCurrent: finalLevel,
-            levelInitial: existingProfile?.levelInitial || finalLevel,
-            placementTestScore: correctCount,
-            placementTestPercentage: Math.round(percentage)
-          }
-        });
-      } catch (dbErr) {
-        console.error('DB save error:', dbErr);
+          await prisma.studentProfile.update({
+            where: { userId: session.user.id },
+            data: {
+              levelCurrent: finalLevel,
+              levelInitial: existingProfile?.levelInitial || finalLevel,
+              placementTestScore: correctCount,
+              placementTestPercentage: Math.round(percentage)
+            }
+          });
+        } catch (dbErr) {
+          console.error('DB save error:', dbErr);
+        }
       }
 
       return NextResponse.json({

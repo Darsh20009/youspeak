@@ -31,7 +31,7 @@ export default function SplashScreen() {
     const hideTimer = setTimeout(() => {
       setIsVisible(false);
       sessionStorage.setItem('hasShownSplash', 'true');
-    }, 1200);
+    }, 800);
 
     return () => {
       clearInterval(progressInterval);
