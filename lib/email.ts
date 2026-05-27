@@ -94,14 +94,26 @@ export function getWelcomeEmailTemplate(studentName: string) {
       <div style="text-align: center; margin-bottom: 20px;">
         <img src="${LOGO_URL}" alt="Be Fluent Academy Logo" style="max-width: 150px; height: auto;" />
       </div>
-      <h2 style="color: #10B981; border-bottom: 2px solid #10B981; padding-bottom: 10px;">أهلاً بك في Be Fluent Academy! / Welcome to Be Fluent Academy!</h2>
-      <p>مرحباً ${studentName}،</p>
-      <p>يسعدنا جداً انضمامك إلينا! لقد تم استلام طلب تسجيلك بنجاح.</p>
-      <p>حسابك الآن في انتظار التفعيل من قبل الإدارة بعد مراجعة بيانات الاشتراك.</p>
-      <div style="margin-top: 20px; text-align: center;">
-        <a href="https://befluent.academy/dashboard/student" style="background-color: #10B981; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">انتقل إلى لوحة التحكم</a>
+      <h2 style="color: #10B981; font-size: 22px; font-weight: 900; margin: 0 0 8px;">أهلاً بك يا ${studentName}! 🎉</h2>
+      <p style="color: #374151; font-size: 15px; line-height: 1.7;">يسعدنا انضمامك لعائلة <strong>Be Fluent Academy</strong>. رحلتك نحو الطلاقة بدأت الآن!</p>
+
+      <div style="background: #f9fafb; border-radius: 12px; padding: 20px; margin: 20px 0;">
+        <p style="font-weight: 700; color: #111827; margin: 0 0 12px;">ما الذي يحدث الآن؟</p>
+        <p style="margin: 0 0 8px; color: #374151; font-size: 14px;">✅ <strong>الخطوة ١:</strong> فريقنا يراجع بيانات اشتراكك حالياً</p>
+        <p style="margin: 0 0 8px; color: #374151; font-size: 14px;">⏳ <strong>الخطوة ٢:</strong> تفعيل الحساب خلال 24 ساعة</p>
+        <p style="margin: 0; color: #374151; font-size: 14px;">🚀 <strong>الخطوة ٣:</strong> تبدأ حصصك الخاصة مع معلمك!</p>
       </div>
-      <p style="margin-top: 30px; font-size: 12px; color: #6b7280; border-top: 1px solid #eee; pt: 10px;">فريق Be Fluent Academy - تعلم الإنجليزية بطلاقة</p>
+
+      <div style="margin: 24px 0; text-align: center;">
+        <a href="https://befluent-edu.online/auth/login" style="background-color: #111827; color: white; padding: 14px 32px; text-decoration: none; border-radius: 10px; font-weight: 900; font-size: 15px; display: inline-block;">دخول لوحة التحكم</a>
+      </div>
+
+      <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; text-align: center; margin-top: 20px;">
+        <p style="color: #166534; font-weight: 700; margin: 0 0 8px; font-size: 14px;">💬 هل لديك أي سؤال؟ تواصل معنا على واتساب</p>
+        <a href="https://api.whatsapp.com/send/?phone=201091515594" style="background-color: #25D366; color: white; padding: 10px 24px; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 14px; display: inline-block;">واتساب مباشر</a>
+      </div>
+
+      <p style="margin-top: 24px; font-size: 12px; color: #9ca3af; border-top: 1px solid #f3f4f6; padding-top: 16px; text-align: center;">فريق Be Fluent Academy — befluent-edu.online</p>
     </div>
   `;
 }

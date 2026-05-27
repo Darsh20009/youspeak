@@ -1,14 +1,19 @@
 import OpenAI from 'openai';
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  baseURL: 'https://api.moonshot.ai/v1',
-});
+function getClient() {
+  const apiKey = process.env.MOONSHOT_API_KEY;
+  if (!apiKey) throw new Error('MOONSHOT_API_KEY is not set');
+  return new OpenAI({
+    apiKey,
+    baseURL: 'https://api.moonshot.ai/v1',
+  });
+}
 
 export async function askKimi(
   messages: { role: 'system' | 'user' | 'assistant'; content: string }[],
   options?: { temperature?: number; max_tokens?: number }
 ): Promise<string> {
+  const client = getClient();
   const response = await client.chat.completions.create({
     model: 'kimi-k2-0905-preview',
     messages,
@@ -17,5 +22,3 @@ export async function askKimi(
   });
   return response.choices[0]?.message?.content ?? '';
 }
-
-export default client;
